@@ -1,0 +1,16 @@
+# WordPress core files (re-downloaded by Docker)
+www/portfolio/*
+!www/portfolio/wp-content/
+www/shop/*
+!www/shop/wp-content/
+
+# Don't commit actual DB backups (they may contain passwords/emails)
+.env
+db-backups/
+
+portfolio_backup.sql
+shop_backup.sql
+
+# Docker volumes
+portfolio_db_data/
+shop_db_data/

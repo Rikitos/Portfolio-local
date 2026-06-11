@@ -1,0 +1,16 @@
+.swiper-slide {
+  overflow: hidden;
+  &>img {
+    width: 170px;
+    height: 150px;
+    object-fit: fill;
+  }
+}
+
+.swiper-wrapper {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  text-align: center;
+  align-items: center;
+  transition-timing-function: linear;
+}
