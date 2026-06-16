@@ -1,0 +1,116 @@
+@import '../_dev/src/scss/utilities/variables';
+@import '../_dev/src/scss/utilities/mixins';
+
+.designer {
+  height: calc(100vh - 64px);
+  background: $steel-blue;
+  overflow: hidden;
+
+  // Flex row: left column (toolbar + canvas) + right sidebar
+  &__main {
+    display: flex;
+    height: 100%;
+  }
+
+  // Left column — toolbar sits above the canvas and centers relative to it, not the full page
+  &__left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding-left: 20px; // breathing room so grid labels don't touch the browser edge
+  }
+
+  &__toolbar {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center; // centered over the canvas column, not the full page width
+    gap: 16px;
+    padding: 10px 20px;
+    margin-top: 10px; // gap between fixed header border and toolbar buttons
+    background: $steel-blue;
+    border-radius: 4px;
+    margin-right: 20px; // matches left padding so it floats centered
+
+    &__group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    &__label {
+      font-family: $primary-font;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: $silver-cool;
+    }
+
+    &__btn {
+      font-family: $primary-font;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      color: $silver-bright;
+      background: $navy-light;
+      border: 1px solid rgba($gold, 0.25);
+      padding: 4px 12px;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+      min-width: 32px;
+      text-align: center;
+
+      &:hover {
+        background: $navy-dark;
+        border-color: rgba($gold, 0.5);
+        color: $gold;
+      }
+    }
+
+    // Editable zoom percentage input — styled to match the button row
+    &__zoom-input {
+      font-family: $primary-font;
+      font-size: 0.8rem;
+      color: $silver-bright;
+      background: $navy-light;
+      border: 1px solid rgba($gold, 0.25);
+      padding: 4px 8px;
+      border-radius: 2px;
+      width: 60px;
+      text-align: center;
+      cursor: text;
+      transition: border-color 0.15s;
+
+      &:focus {
+        outline: none;
+        border-color: rgba($gold, 0.6);
+        color: $gold;
+      }
+    }
+  }
+
+  &__workspace {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba($gold, 0.35);
+
+    canvas {
+      display: block;
+      cursor: grab;
+
+      &:active {
+        cursor: grabbing;
+      }
+    }
+  }
+
+  // Right sidebar — empty placeholder, populated in Phase 3 with furniture catalogue
+  &__sidebar {
+    flex-shrink: 0;
+    width: 220px;
+    background: $steel-blue;
+    border-left: 1px solid rgba($gold, 0.15);
+  }
+}

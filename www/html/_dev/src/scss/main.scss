@@ -1,0 +1,15 @@
+@import 'utilities/variables';
+@import 'utilities/mixins';
+
+// @import 'base/normalize';
+// @import 'base/layout';
+@import 'base/universal';
+
+body {
+  padding-top: 64px;
+  background: $navy-dark;
+}
+
+@import 'partials/header';
+@import 'partials/hero';
+// @import 'partials/tic-tac-toe';

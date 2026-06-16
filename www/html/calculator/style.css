@@ -1,0 +1,92 @@
+/** COLORS **/
+/** BRAND PALETTE **/
+/** LEGACY (biuro senatora) **/
+/** RESPONSIVE BREAKPOINTS **/
+/** BREAKPOINTS MEDIA **/
+.calc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #fff;
+}
+.calc__wrapper {
+  background: #fff;
+  border: 2px solid #2C2C2C;
+  border-radius: 8px;
+  overflow: hidden;
+  width: 280px;
+}
+@media (min-width: 768px) {
+  .calc__wrapper {
+    width: 320px;
+  }
+}
+.calc__display {
+  background: #587289;
+  padding: 20px 16px 12px;
+  text-align: right;
+}
+.calc__display__expression {
+  font-family: "Palatino Linotype", Palatino, serif;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  min-height: 1.2em;
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.calc__display__value {
+  font-family: "Palatino Linotype", Palatino, serif;
+  color: #fff;
+  font-size: 2.2rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (min-width: 768px) {
+  .calc__display__value {
+    font-size: 2.6rem;
+  }
+}
+.calc__buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+.calc__btn {
+  font-family: "Palatino Linotype", Palatino, serif;
+  font-size: 1.1rem;
+  color: #587289;
+  background: #fff;
+  border: 1px solid #c5c5c5;
+  padding: 18px 0;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+@media (min-width: 768px) {
+  .calc__btn {
+    font-size: 1.2rem;
+    padding: 20px 0;
+  }
+}
+.calc__btn:hover {
+  background: rgb(230.5226666667, 235.168, 239.2773333333);
+}
+.calc__btn--operator {
+  color: #587289;
+  font-weight: bold;
+}
+.calc__btn--equals {
+  background: #587289;
+  color: #fff;
+}
+.calc__btn--equals:hover {
+  background: rgb(68.0533333333, 88.16, 105.9466666667);
+}
+.calc__btn--clear {
+  color: #c0392b;
+}
+.calc__btn--span2 {
+  grid-column: span 2;
+}/*# sourceMappingURL=style.css.map */

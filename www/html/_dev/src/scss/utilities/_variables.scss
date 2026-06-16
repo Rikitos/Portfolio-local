@@ -1,0 +1,36 @@
+/** COLORS **/
+$white: #fff;
+$black: #000;
+
+/** BRAND PALETTE **/
+$navy-dark: #060D1A;       // header, outer page wrapper
+$navy: #0A1628;            // base dark
+$navy-light: #112240;      // button backgrounds
+$steel-blue: #243D5C;      // room designer toolbar
+$navy-canvas: #0E1F38;     // room designer canvas background
+$gold: #C9A84C;            // borders, gridlines, decorative accents
+$silver: #A8B8C8;          // primary font color
+$silver-bright: #C8D8E8;   // high-contrast text on darker steel surfaces
+$silver-muted: #8899AA;    // secondary/muted text
+$silver-cool: #9AAEBB;     // muted text on steel-blue toolbar
+
+// Future variety (not currently used):
+// $navy-deeper: #030810    — more contrast between layers
+// $violet: #4A4880         — violet accent direction
+
+/** LEGACY (biuro senatora) **/
+$primary-bg: #fff;
+$primary-text: #587289;
+$primary-color: #587289;
+$primary-border: #2C2C2C;
+$primary-font: 'Palatino Linotype', Palatino, serif;
+
+/** RESPONSIVE BREAKPOINTS **/
+$breakpoints: (
+  xs: 576px,
+  sm: 768px,
+  md: 992px,
+  lg: 1200px,
+  xl: 1600px,
+  xxl: 1920px,
+);

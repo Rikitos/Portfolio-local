@@ -1,0 +1,18 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Static (nginx via Docker)",
+      "runtimeExecutable": "docker",
+      "runtimeArgs": ["compose", "-f", "D:/Websites git/portfolio/docker-compose.yml", "up"],
+      "port": 80,
+      "autoPort": false
+    },
+    {
+      "name": "Simple local HTTP server",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "5501", "--directory", "D:/Websites git/portfolio/www/html"],
+      "port": 5501
+    }
+  ]
+}

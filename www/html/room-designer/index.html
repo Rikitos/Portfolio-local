@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Room Designer</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="designer">
+  <div class="designer__main">
+
+    <div class="designer__left">
+
+      <div class="designer__toolbar">
+        <div class="designer__toolbar__group">
+          <span class="designer__toolbar__label">Zoom</span>
+          <button class="designer__toolbar__btn" id="zoom-out">−</button>
+          <input class="designer__toolbar__zoom-input" id="zoom-input" value="100%" title="Type a zoom % and press Enter">
+          <button class="designer__toolbar__btn" id="zoom-in">+</button>
+          <button class="designer__toolbar__btn" id="zoom-reset">Reset</button>
+        </div>
+      </div>
+
+      <div class="designer__workspace">
+        <canvas id="canvas"></canvas>
+      </div>
+
+    </div>
+
+    <!-- Sidebar — populated in Phase 3 with furniture catalogue and tools -->
+    <aside class="designer__sidebar"></aside>
+
+  </div>
+</div>
+
+<script src="/assets/js/header.js"></script>
+<script src="viewport.js"></script>
+<script src="grid.js"></script>
+<script src="designer.js"></script>
+</body>
+</html>

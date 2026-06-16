@@ -4,6 +4,8 @@ www/portfolio/*
 www/shop/*
 !www/shop/wp-content/
 
+www/shop/wp-content/plugins/*/vendor/
+
 # Don't commit actual DB backups (they may contain passwords/emails)
 .env
 db-backups/
@@ -14,3 +16,4 @@ shop_backup.sql
 # Docker volumes
 portfolio_db_data/
 shop_db_data/
+

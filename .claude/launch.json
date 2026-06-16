@@ -1,0 +1,18 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "HTML Dev Server (live-server)",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["live-server", "www/html", "--no-browser"],
+      "port": 5500,
+      "autoPort": true
+    },
+    {
+      "name": "Docker Stack (nginx + WordPress + MySQL)",
+      "runtimeExecutable": "docker",
+      "runtimeArgs": ["compose", "up"],
+      "port": 80
+    }
+  ]
+}

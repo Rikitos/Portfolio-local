@@ -1,0 +1,74 @@
+.hero {
+  min-height: 100vh;
+  background: $navy;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    text-align: center;
+    padding: 0 20px;
+  }
+
+  &__logo {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 8px;
+
+    @include media('sm') {
+      width: 150px;
+      height: 150px;
+    }
+  }
+
+  &__name {
+    font-family: $primary-font;
+    font-size: 1.8rem;
+    color: $silver;
+    letter-spacing: 0.1em;
+    margin: 0;
+
+    @include media('sm') {
+      font-size: 2.4rem;
+    }
+  }
+
+  &__line {
+    width: 60px;
+    height: 1px;
+    background: rgba($gold, 0.5);
+  }
+
+  &__role {
+    font-family: $primary-font;
+    font-size: 0.75rem;
+    color: $silver-muted;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+  }
+
+  &__btn {
+    margin-top: 12px;
+    display: inline-block;
+    padding: 10px 28px;
+    border: 1px solid rgba($gold, 0.35);
+    color: $gold;
+    background: $navy-light;
+    font-family: $primary-font;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: background 0.2s, border-color 0.2s;
+
+    &:hover {
+      background: $navy-dark;
+      border-color: rgba($gold, 0.5);
+    }
+  }
+}

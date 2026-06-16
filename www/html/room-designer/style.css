@@ -1,0 +1,101 @@
+/** COLORS **/
+/** BRAND PALETTE **/
+/** LEGACY (biuro senatora) **/
+/** RESPONSIVE BREAKPOINTS **/
+/** BREAKPOINTS MEDIA **/
+.designer {
+  height: calc(100vh - 64px);
+  background: #243D5C;
+  overflow: hidden;
+}
+.designer__main {
+  display: flex;
+  height: 100%;
+}
+.designer__left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding-left: 20px;
+}
+.designer__toolbar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 10px 20px;
+  margin-top: 10px;
+  background: #243D5C;
+  border-radius: 4px;
+  margin-right: 20px;
+}
+.designer__toolbar__group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.designer__toolbar__label {
+  font-family: "Palatino Linotype", Palatino, serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #9AAEBB;
+}
+.designer__toolbar__btn {
+  font-family: "Palatino Linotype", Palatino, serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  color: #C8D8E8;
+  background: #112240;
+  border: 1px solid rgba(201, 168, 76, 0.25);
+  padding: 4px 12px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  min-width: 32px;
+  text-align: center;
+}
+.designer__toolbar__btn:hover {
+  background: #060D1A;
+  border-color: rgba(201, 168, 76, 0.5);
+  color: #C9A84C;
+}
+.designer__toolbar__zoom-input {
+  font-family: "Palatino Linotype", Palatino, serif;
+  font-size: 0.8rem;
+  color: #C8D8E8;
+  background: #112240;
+  border: 1px solid rgba(201, 168, 76, 0.25);
+  padding: 4px 8px;
+  border-radius: 2px;
+  width: 60px;
+  text-align: center;
+  cursor: text;
+  transition: border-color 0.15s;
+}
+.designer__toolbar__zoom-input:focus {
+  outline: none;
+  border-color: rgba(201, 168, 76, 0.6);
+  color: #C9A84C;
+}
+.designer__workspace {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(201, 168, 76, 0.35);
+}
+.designer__workspace canvas {
+  display: block;
+  cursor: grab;
+}
+.designer__workspace canvas:active {
+  cursor: grabbing;
+}
+.designer__sidebar {
+  flex-shrink: 0;
+  width: 220px;
+  background: #243D5C;
+  border-left: 1px solid rgba(201, 168, 76, 0.15);
+}/*# sourceMappingURL=style.css.map */

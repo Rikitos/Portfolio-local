@@ -1,0 +1,97 @@
+.ttt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  background: $primary-bg;
+
+  &__title {
+    font-family: $primary-font;
+    color: $primary-text;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+
+    @include media('sm') {
+      font-size: 2.4rem;
+    }
+  }
+
+  &__status {
+    font-family: $primary-font;
+    color: $primary-text;
+    font-size: 1rem;
+    margin-bottom: 16px;
+    min-height: 1.4em;
+
+    @include media('sm') {
+      font-size: 1.2rem;
+    }
+  }
+
+  &__board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-bottom: 24px;
+  }
+
+  &__cell {
+    width: 90px;
+    height: 90px;
+    border: 2px solid $primary-border;
+    background: $white;
+    font-family: $primary-font;
+    font-size: 2.2rem;
+    color: $primary-text;
+    cursor: pointer;
+    transition: background 0.15s;
+
+    @include media('sm') {
+      width: 120px;
+      height: 120px;
+      font-size: 3rem;
+    }
+
+    &:hover {
+      background: lighten($primary-color, 48%);
+    }
+
+    &--x {
+      color: $primary-color;
+    }
+
+    &--o {
+      color: $primary-border;
+    }
+
+    &--winner {
+      background: lighten($primary-color, 42%);
+    }
+
+    &--disabled {
+      cursor: default;
+
+      &:hover {
+        background: $white;
+      }
+    }
+  }
+
+  &__btn {
+    font-family: $primary-font;
+    font-size: 1rem;
+    color: $white;
+    background: $primary-color;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+      background: darken($primary-color, 10%);
+    }
+  }
+}

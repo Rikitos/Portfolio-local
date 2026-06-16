@@ -1,0 +1,82 @@
+@import '../_dev/src/scss/utilities/variables';
+@import '../_dev/src/scss/utilities/mixins';
+
+.cat-gen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 40px 20px;
+  background: $navy;
+
+  &__title {
+    font-family: $primary-font;
+    font-size: 1.8rem;
+    color: $silver;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+
+    @include media('sm') {
+      font-size: 2.2rem;
+    }
+  }
+
+  &__description {
+    font-family: $primary-font;
+    font-size: 0.85rem;
+    color: $silver-muted;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+
+  &__img-wrapper {
+    width: 280px;
+    height: 280px;
+    border: 2px solid rgba($gold, 0.4);
+    border-radius: 50px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    background: $navy-dark;
+
+    @include media('sm') {
+      width: 360px;
+      height: 360px;
+    }
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.5s linear;
+
+    &--show {
+      opacity: 1;
+    }
+
+    &--fade {
+      opacity: 0;
+    }
+  }
+
+  &__btn {
+    font-family: $primary-font;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: $gold;
+    background: $navy-light;
+    border: 1px solid rgba($gold, 0.35);
+    padding: 10px 28px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+
+    &:hover {
+      background: $navy-dark;
+      border-color: rgba($gold, 0.5);
+    }
+  }
+}

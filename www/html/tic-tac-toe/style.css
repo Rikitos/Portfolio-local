@@ -1,0 +1,93 @@
+/** COLORS **/
+/** BRAND PALETTE **/
+/** LEGACY (biuro senatora) **/
+/** RESPONSIVE BREAKPOINTS **/
+/** BREAKPOINTS MEDIA **/
+.ttt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  background: #fff;
+}
+.ttt__title {
+  font-family: "Palatino Linotype", Palatino, serif;
+  color: #587289;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+@media (min-width: 768px) {
+  .ttt__title {
+    font-size: 2.4rem;
+  }
+}
+.ttt__status {
+  font-family: "Palatino Linotype", Palatino, serif;
+  color: #587289;
+  font-size: 1rem;
+  margin-bottom: 16px;
+  min-height: 1.4em;
+}
+@media (min-width: 768px) {
+  .ttt__status {
+    font-size: 1.2rem;
+  }
+}
+.ttt__board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-bottom: 24px;
+}
+.ttt__cell {
+  width: 90px;
+  height: 90px;
+  border: 2px solid #2C2C2C;
+  background: #fff;
+  font-family: "Palatino Linotype", Palatino, serif;
+  font-size: 2.2rem;
+  color: #587289;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+@media (min-width: 768px) {
+  .ttt__cell {
+    width: 120px;
+    height: 120px;
+    font-size: 3rem;
+  }
+}
+.ttt__cell:hover {
+  background: rgb(230.5226666667, 235.168, 239.2773333333);
+}
+.ttt__cell--x {
+  color: #587289;
+}
+.ttt__cell--o {
+  color: #2C2C2C;
+}
+.ttt__cell--winner {
+  background: rgb(211.8906666667, 220.072, 227.3093333333);
+}
+.ttt__cell--disabled {
+  cursor: default;
+}
+.ttt__cell--disabled:hover {
+  background: #fff;
+}
+.ttt__btn {
+  font-family: "Palatino Linotype", Palatino, serif;
+  font-size: 1rem;
+  color: #fff;
+  background: #587289;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.ttt__btn:hover {
+  background: rgb(68.0533333333, 88.16, 105.9466666667);
+}/*# sourceMappingURL=style.css.map */
