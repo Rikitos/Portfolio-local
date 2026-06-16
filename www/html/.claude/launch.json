@@ -11,7 +11,7 @@
     {
       "name": "Simple local HTTP server",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "5501", "--directory", "D:/Websites git/portfolio/www/html"],
+      "runtimeArgs": ["-m", "http.server", "5501", "--directory", "F:/Projekty/Portfolio/www/html"],
       "port": 5501
     }
   ]
