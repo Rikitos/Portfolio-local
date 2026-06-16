@@ -1,8 +1,29 @@
 @import '../_dev/src/scss/utilities/variables';
 @import '../_dev/src/scss/utilities/mixins';
 
+body:has(.designer) {
+  background: $steel-blue;
+}
+
+.designer__furniture-ghost {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+  color: rgba(201, 168, 76, 0.9);
+  opacity: 0.85;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
 .designer {
   height: calc(100vh - 64px);
+  margin-top: 64px;
   background: $steel-blue;
   overflow: hidden;
 
@@ -24,7 +45,7 @@
   &__toolbar {
     flex-shrink: 0;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center; // centered over the canvas column, not the full page width
     gap: 16px;
     padding: 10px 20px;
@@ -35,7 +56,7 @@
 
     &__group {
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       gap: 8px;
     }
 
@@ -45,6 +66,7 @@
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: $silver-cool;
+      align-self: center;
     }
 
     &__btn {
@@ -66,6 +88,45 @@
         border-color: rgba($gold, 0.5);
         color: $gold;
       }
+
+      &--active {
+        background: $navy-dark;
+        border-color: rgba($gold, 0.6);
+        color: $gold;
+      }
+    }
+
+    // Wrapper stacking dim-label above, then input+unit in a row
+    &__unit-wrap {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    &__dim-label {
+      font-family: $primary-font;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: $silver-cool;
+      line-height: 1;
+    }
+
+    &__unit-row {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    &__unit {
+      position: absolute;
+      right: 7px;
+      font-family: $primary-font;
+      font-size: 0.7rem;
+      color: $silver-cool;
+      pointer-events: none;
+      user-select: none;
     }
 
     // Editable zoom percentage input — styled to match the button row
@@ -87,6 +148,90 @@
         border-color: rgba($gold, 0.6);
         color: $gold;
       }
+
+      // Room dimension inputs inside unit-wrap need room for the "m" suffix
+      .designer__toolbar__unit-row & {
+        padding-right: 20px;
+        width: 64px;
+        text-align: left;
+      }
+    }
+  }
+
+  &__canvas-controls {
+    position: absolute;
+    top: 36px;
+    left: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    z-index: 10;
+
+    &__toggle {
+      font-family: $primary-font;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      color: rgba($silver-bright, 0.9);
+      background: rgba($navy-light, 0.85);
+      border: 1px solid rgba($gold, 0.35);
+      border-radius: 2px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      white-space: nowrap;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+
+      &:hover {
+        background: $navy-dark;
+        border-color: rgba($gold, 0.5);
+        color: $gold;
+      }
+    }
+
+    &__btn {
+      font-family: $primary-font;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      color: rgba($silver-bright, 0.9);
+      background: rgba($navy-light, 0.85);
+      border: 1px solid rgba($gold, 0.35);
+      padding: 3px 10px;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, opacity 0.15s, color 0.15s, padding 0.15s;
+      text-align: left;
+      white-space: nowrap;
+
+      &:hover:not(:disabled) {
+        background: $navy-dark;
+        border-color: rgba($gold, 0.5);
+        color: $gold;
+      }
+
+      &:disabled {
+        opacity: 0.35;
+        cursor: default;
+      }
+    }
+
+    &__label {
+      display: inline;
+      transition: opacity 0.15s;
+    }
+
+    // Icon-only mode — label text hidden, buttons shrink to icon width
+    &--collapsed {
+      .designer__canvas-controls__label {
+        display: none;
+      }
+
+      .designer__canvas-controls__btn,
+      .designer__canvas-controls__toggle {
+        padding: 3px 7px;
+      }
     }
   }
 
@@ -104,13 +249,156 @@
         cursor: grabbing;
       }
     }
+
+    &__nav {
+      position: absolute;
+      font-size: 0.7rem;
+      line-height: 1;
+      color: rgba($silver-bright, 0.55);
+      background: rgba($navy-light, 0.55);
+      border: 1px solid rgba($gold, 0.2);
+      border-radius: 2px;
+      width: 24px;
+      height: 24px;
+      padding: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      z-index: 5;
+
+      &:hover {
+        background: rgba($navy-dark, 0.85);
+        border-color: rgba($gold, 0.45);
+        color: $gold;
+      }
+
+      &#nav-up    { top: 8px;    left: 50%; transform: translateX(-50%); }
+      &#nav-down  { bottom: 8px; left: 50%; transform: translateX(-50%); }
+      &#nav-left  { left: 8px;   top: 50%;  transform: translateY(-50%); }
+      &#nav-right { right: 8px;  top: 50%;  transform: translateY(-50%); }
+    }
   }
 
-  // Right sidebar — empty placeholder, populated in Phase 3 with furniture catalogue
+  // Nudge arrows — appear around the selected item, gold-tinted to distinguish from pan arrows
+  &__nudge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 6;
+
+    &--hidden {
+      display: none;
+    }
+
+    &__btn {
+      position: absolute;
+      pointer-events: all;
+      font-size: 0.65rem;
+      line-height: 1;
+      color: rgba($gold, 0.85);
+      background: rgba($navy-light, 0.8);
+      border: 1px solid rgba($gold, 0.45);
+      border-radius: 2px;
+      width: 20px;
+      height: 20px;
+      padding: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.1s, border-color 0.1s, color 0.1s;
+
+      &:hover {
+        background: $navy-dark;
+        border-color: rgba($gold, 0.75);
+        color: $gold;
+      }
+    }
+  }
+
   &__sidebar {
     flex-shrink: 0;
     width: 220px;
     background: $steel-blue;
     border-left: 1px solid rgba($gold, 0.15);
+    overflow-y: auto;
+    padding: 30px 8px 10px;
+
+    &__section {
+      margin-bottom: 14px;
+    }
+
+    &__cat-title {
+      font-family: $primary-font;
+      font-size: 0.58rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: $silver-cool;
+      padding: 0 2px 6px;
+      border-bottom: 1px solid rgba($gold, 0.15);
+      margin-bottom: 7px;
+    }
+
+    &__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+    }
+
+    &__item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 7px 4px 5px;
+      border: 1px solid rgba($gold, 0.2);
+      border-radius: 3px;
+      background: rgba($navy-light, 0.4);
+      cursor: grab;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+      user-select: none;
+      color: rgba($gold, 0.65);
+
+      &:hover {
+        border-color: rgba($gold, 0.5);
+        background: $navy-light;
+        color: rgba($gold, 0.9);
+      }
+    }
+
+    &__item-icon {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    &__item-name {
+      font-family: $primary-font;
+      font-size: 0.6rem;
+      letter-spacing: 0.06em;
+      color: $silver-bright;
+      text-align: center;
+      margin-top: 5px;
+      line-height: 1.2;
+    }
+
+    &__item-dims {
+      font-family: $primary-font;
+      font-size: 0.52rem;
+      color: $silver-cool;
+      margin-top: 2px;
+      text-align: center;
+    }
   }
 }

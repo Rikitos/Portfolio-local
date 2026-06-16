@@ -1,4 +1,4 @@
-# Project: Biuro Senatora — WordPress Theme "Just"
+# Project: Portfolio
 
 ## SCSS Style Guide
 
@@ -77,3 +77,27 @@ $breakpoints: (
 3. `base/*` (if needed)
 4. `partials/*`
 5. `plugs/*`
+
+## JavaScript Comment Style
+
+Write comments proactively and in detail — the owner reads this code while travelling, away from the original context.
+
+### Every file must have a header block explaining:
+- What the class/module does
+- Coordinate systems or units in use (e.g. world cm vs screen px)
+- Data model shape (e.g. rect vs polygon items, what each property means)
+- Any non-obvious design decisions (e.g. why object references instead of indices)
+
+### Every method needs a one-line purpose comment unless the name is completely self-explanatory.
+
+### Inline comments are required for:
+- **Algorithms** — name the technique (e.g. "ray-casting even-odd rule", "closest-point-on-segment")
+- **Priority/order logic** — explain why things happen in that order (e.g. hit-test priority, draw order)
+- **Snapshot patterns** — explain why a copy is taken instead of reading the live value
+- **Branching on type** — explain what each branch handles (e.g. rect vs polygon furniture)
+- **Magic numbers** — explain the unit and why that value (e.g. `MIN = 30 // minimum side length in cm`)
+- **Anchor/fixed-point math** — explain which corner/edge stays fixed and why
+
+### State variable groups in constructors:
+- Group related state with a `// ── Group name ───` section comment
+- Add a one-line note on each non-obvious variable explaining its role and valid values

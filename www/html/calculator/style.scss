@@ -1,6 +1,10 @@
 @import '../_dev/src/scss/utilities/variables';
 @import '../_dev/src/scss/utilities/mixins';
 
+body:has(.calc) {
+  background: $primary-bg;
+}
+
 .calc {
   display: flex;
   align-items: center;

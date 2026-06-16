@@ -16,16 +16,55 @@
 
       <div class="designer__toolbar">
         <div class="designer__toolbar__group">
+          <div class="designer__toolbar__unit-wrap">
+            <span class="designer__toolbar__dim-label">Width</span>
+            <div class="designer__toolbar__unit-row">
+              <input class="designer__toolbar__zoom-input" id="room-width" type="number" value="5" min="1" max="30" title="Width in meters">
+              <span class="designer__toolbar__unit">m</span>
+            </div>
+          </div>
+          <span class="designer__toolbar__label">×</span>
+          <div class="designer__toolbar__unit-wrap">
+            <span class="designer__toolbar__dim-label">Height</span>
+            <div class="designer__toolbar__unit-row">
+              <input class="designer__toolbar__zoom-input" id="room-height" type="number" value="4" min="1" max="30" title="Height in meters">
+              <span class="designer__toolbar__unit">m</span>
+            </div>
+          </div>
+          <button class="designer__toolbar__btn" id="draw-room">Place Room</button>
+        </div>
+
+        <div class="designer__toolbar__group">
+          <span class="designer__toolbar__label">Mode</span>
+          <button class="designer__toolbar__btn" id="mode-freeform">Free Draw</button>
+        </div>
+
+        <div class="designer__toolbar__group">
           <span class="designer__toolbar__label">Zoom</span>
           <button class="designer__toolbar__btn" id="zoom-out">−</button>
           <input class="designer__toolbar__zoom-input" id="zoom-input" value="100%" title="Type a zoom % and press Enter">
           <button class="designer__toolbar__btn" id="zoom-in">+</button>
-          <button class="designer__toolbar__btn" id="zoom-reset">Reset</button>
+          <button class="designer__toolbar__btn" id="zoom-reset">Reset Zoom</button>
         </div>
       </div>
 
       <div class="designer__workspace">
         <canvas id="canvas"></canvas>
+        <div class="designer__nudge designer__nudge--hidden" id="nudge-controls">
+          <button class="designer__nudge__btn" id="nudge-up"    title="Move up 10cm (Shift+↑)">↑</button>
+          <button class="designer__nudge__btn" id="nudge-down"  title="Move down 10cm (Shift+↓)">↓</button>
+          <button class="designer__nudge__btn" id="nudge-left"  title="Move left 10cm (Shift+←)">←</button>
+          <button class="designer__nudge__btn" id="nudge-right" title="Move right 10cm (Shift+→)">→</button>
+        </div>
+        <button class="designer__workspace__nav" id="nav-up"    data-dx="0"  data-dy="1"  title="Pan up (↑)">↑</button>
+        <button class="designer__workspace__nav" id="nav-down"  data-dx="0"  data-dy="-1" title="Pan down (↓)">↓</button>
+        <button class="designer__workspace__nav" id="nav-left"  data-dx="1"  data-dy="0"  title="Pan left (←)">←</button>
+        <button class="designer__workspace__nav" id="nav-right" data-dx="-1" data-dy="0"  title="Pan right (→)">→</button>
+        <div class="designer__canvas-controls" id="canvas-controls">
+          <button class="designer__canvas-controls__toggle" id="ctrl-toggle" title="Toggle labels"><span id="ctrl-arrow">‹</span><span class="designer__canvas-controls__label"> Hide</span></button>
+          <button class="designer__canvas-controls__btn" id="ctrl-undo-point" title="Undo last placement (Ctrl+Z)" disabled>↩<span class="designer__canvas-controls__label"> Undo</span></button>
+          <button class="designer__canvas-controls__btn" id="ctrl-delete" title="Delete selected (Del)" disabled>✕<span class="designer__canvas-controls__label"> Delete</span></button>
+        </div>
       </div>
 
     </div>
@@ -37,8 +76,15 @@
 </div>
 
 <script src="/assets/js/header.js"></script>
-<script src="viewport.js"></script>
-<script src="grid.js"></script>
-<script src="designer.js"></script>
+<script src="/assets/js/footer.js"></script>
+<script src="viewport.js?v=3"></script>
+<script src="grid.js?v=3"></script>
+<script src="room.js?v=6"></script>
+<script src="rooms-renderer.js?v=9"></script>
+<script src="polygon.js?v=6"></script>
+<script src="furniture-data.js?v=2"></script>
+<script src="furniture-catalogue.js?v=2"></script>
+<script src="furniture-renderer.js?v=4"></script>
+<script src="designer.js?v=21"></script>
 </body>
 </html>

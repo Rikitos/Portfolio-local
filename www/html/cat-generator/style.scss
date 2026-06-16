@@ -1,6 +1,10 @@
 @import '../_dev/src/scss/utilities/variables';
 @import '../_dev/src/scss/utilities/mixins';
 
+body:has(.cat-gen) {
+  background: $navy;
+}
+
 .cat-gen {
   display: flex;
   flex-direction: column;

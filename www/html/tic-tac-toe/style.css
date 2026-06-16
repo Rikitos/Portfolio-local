@@ -3,6 +3,10 @@
 /** LEGACY (biuro senatora) **/
 /** RESPONSIVE BREAKPOINTS **/
 /** BREAKPOINTS MEDIA **/
+body:has(.ttt) {
+  background: #fff;
+}
+
 .ttt {
   display: flex;
   flex-direction: column;

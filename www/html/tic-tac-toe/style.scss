@@ -1,6 +1,10 @@
 @import '../_dev/src/scss/utilities/variables';
 @import '../_dev/src/scss/utilities/mixins';
 
+body:has(.ttt) {
+  background: $primary-bg;
+}
+
 .ttt {
   display: flex;
   flex-direction: column;

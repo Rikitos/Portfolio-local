@@ -1,5 +1,9 @@
+body:has(.hero) {
+  background: $navy;
+}
+
 .hero {
-  min-height: 100vh;
+  min-height: calc(100vh - 64px);
   background: $navy;
   display: flex;
   align-items: center;
