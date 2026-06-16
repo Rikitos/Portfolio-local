@@ -6,6 +6,9 @@
   box-sizing: border-box;
 }
 
+// Enforce the HTML `hidden` attribute even when an element has an explicit display rule
+[hidden] { display: none !important; }
+
 html {
   scroll-behavior: smooth;
 }

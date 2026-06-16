@@ -90,6 +90,11 @@ class Designer {
     this.catalogue = new FurnitureCatalogue(document.querySelector('.designer__sidebar'));
     // Wire sidebar drag so dropping onto the canvas places the item
     this.catalogue.onDragStart = (def, e) => this._startFurnitureDrag(def, e);
+    // Wire sidebar card click to open the size-and-place config panel
+    this.catalogue.onCardClick = (def) => this._openFurnitureConfig(def);
+    // Inject the config panel at the top of the sidebar after catalogue renders
+    // (catalogue clears innerHTML on render so this must happen after)
+    this._injectConfigPanel();
 
     this.resizeCanvas();
     this.viewport.zoom = 0.5; // default zoom — 5×4m room visible on load
@@ -97,6 +102,7 @@ class Designer {
     this.bindEvents();
     this.render();
     this.updateZoomInput();
+    window.__designer = this; // dev reference — makes instance inspectable from console
   }
 
   resizeCanvas() {
@@ -137,7 +143,102 @@ class Designer {
     document.getElementById('ctrl-delete').disabled = sel === null;
     if (sel && changed) this.showDragHint();
     this.updateNudgeControls();
+    this._updateRotateControls();
     this.render();
+  }
+
+  // Creates the info panel DOM and prepends it to the sidebar.
+  // Called once after FurnitureCatalogue renders (which wipes sidebar.innerHTML).
+  // Creates the click-to-configure panel and prepends it to the sidebar.
+  // Must run after FurnitureCatalogue renders because catalogue does sidebar.innerHTML = ''.
+  _injectConfigPanel() {
+    const panel = document.createElement('div');
+    panel.id        = 'furniture-config';
+    panel.className = 'designer__sidebar__config';
+    panel.hidden    = true;
+    panel.innerHTML = `
+      <div class="designer__sidebar__config-header">
+        <span class="designer__sidebar__config-name" id="config-name"></span>
+        <button class="designer__sidebar__config-close" id="config-close" title="Close">✕</button>
+      </div>
+      <div class="designer__sidebar__config-fields">
+        <label class="designer__sidebar__config-label">
+          <span>W</span>
+          <input class="designer__sidebar__config-input" id="config-width" type="number" step="0.1" min="0.3" max="20">
+          <span>m</span>
+        </label>
+        <span class="designer__sidebar__config-sep">×</span>
+        <label class="designer__sidebar__config-label">
+          <span>H</span>
+          <input class="designer__sidebar__config-input" id="config-height" type="number" step="0.1" min="0.3" max="20">
+          <span>m</span>
+        </label>
+      </div>
+      <button class="designer__sidebar__config-place" id="config-place">Place on canvas</button>
+    `;
+    document.querySelector('.designer__sidebar').prepend(panel);
+    document.getElementById('config-close').addEventListener('click', () => { panel.hidden = true; });
+    document.getElementById('config-place').addEventListener('click', () => { this._placeAtCenter(); });
+  }
+
+  // Opens the config panel for the clicked catalogue item, pre-filling W/H from its defaults.
+  _openFurnitureConfig(def) {
+    this._configDef = def;
+    document.getElementById('config-name').textContent = def.name;
+    document.getElementById('config-width').value      = parseFloat((def.defaultWidth  / 100).toFixed(2));
+    document.getElementById('config-height').value     = parseFloat((def.defaultHeight / 100).toFixed(2));
+    document.getElementById('furniture-config').hidden = false;
+  }
+
+  // Shows/hides and updates the rotation popup next to the Rotate canvas-controls button.
+  // Also keeps the button's enabled state in sync with whether furniture is selected.
+  _updateRotateControls() {
+    const isFurniture = this.selected?.type === 'furniture';
+    const btn         = document.getElementById('ctrl-rotate');
+    const popup       = document.getElementById('rotate-popup');
+    btn.disabled = !isFurniture;
+    if (isFurniture) {
+      const rot = this.furniture[this.selected.index].rotation || 0;
+      document.getElementById('rot-val').textContent = `${rot}°`;
+    } else {
+      // Close popup when furniture is deselected
+      popup.hidden = true;
+    }
+  }
+
+  // Places the configured furniture item at the current canvas centre.
+  // For polygon furniture, points are scaled to match the entered W/H.
+  _placeAtCenter() {
+    const def = this._configDef;
+    if (!def) return;
+
+    const wCm = Math.round(parseFloat(document.getElementById('config-width').value)  * 100);
+    const hCm = Math.round(parseFloat(document.getElementById('config-height').value) * 100);
+    if (!wCm || !hCm) return;
+
+    const cx = Math.round((this.viewport.screenToWorld(this.canvas.width  / 2, 0).x) / 10) * 10;
+    const cy = Math.round((this.viewport.screenToWorld(0, this.canvas.height / 2).y) / 10) * 10;
+    const ox = cx - Math.round(wCm / 2 / 10) * 10;
+    const oy = cy - Math.round(hCm / 2 / 10) * 10;
+
+    let f;
+    if (def.shape === 'polygon') {
+      const scaleX = wCm / def.defaultWidth;
+      const scaleY = hCm / def.defaultHeight;
+      f = {
+        id: def.id, name: def.name, rotation: 0,
+        points: def.defaultPoints.map(p => ({ x: ox + p.x * scaleX, y: oy + p.y * scaleY })),
+        x: ox, y: oy, width: wCm, height: hCm,
+      };
+    } else {
+      f = { id: def.id, name: def.name, rotation: 0, x: ox, y: oy, width: wCm, height: hCm };
+    }
+
+    this.furniture.push(f);
+    this.history.push({ action: 'place', type: 'furniture', item: f });
+    this.syncUndoButton();
+    this.setSelected({ type: 'furniture', index: this.furniture.length - 1 });
+    document.getElementById('furniture-config').hidden = true;
   }
 
   // ── Vertex / edge helpers ─────────────────────────────────────────────────
@@ -264,17 +365,124 @@ class Designer {
     return false;
   }
 
+  // Rotates a world point (wx, wy) by -angleDeg around centre (cx, cy).
+  // Used to transform the cursor into item-local space for hit testing rotated furniture.
+  _unrotatePoint(wx, wy, cx, cy, angleDeg) {
+    const rad = -angleDeg * Math.PI / 180;
+    const cos = Math.cos(rad), sin = Math.sin(rad);
+    const dx = wx - cx, dy = wy - cy;
+    return { x: cx + dx * cos - dy * sin, y: cy + dx * sin + dy * cos };
+  }
+
+  // Rotates an array of points around furniture item's bbox centre.
+  _applyRotation(pts, f) {
+    if (!f.rotation) return pts;
+    const cx = f.x + f.width / 2, cy = f.y + f.height / 2;
+    const rad = f.rotation * Math.PI / 180;
+    const cos = Math.cos(rad), sin = Math.sin(rad);
+    return pts.map(p => {
+      const dx = p.x - cx, dy = p.y - cy;
+      return { x: cx + dx * cos - dy * sin, y: cy + dx * sin + dy * cos };
+    });
+  }
+
+  // Splits a concave polygon into two convex sub-polygons by finding the one concave
+  // vertex and cutting diagonally across to the opposite side.
+  // Works for L-shapes (6 points) — the only concave furniture shape we have.
+  // Returns [pts] unchanged if the polygon is already convex (no concave vertex found).
+  _decomposePolygon(pts) {
+    const n = pts.length;
+    if (n <= 4) return [pts];
+    // Cross product of edges meeting at each vertex: minority sign = concave vertex
+    const crosses = pts.map((b, i) => {
+      const a = pts[(i - 1 + n) % n], c = pts[(i + 1) % n];
+      return (b.x - a.x) * (c.y - b.y) - (b.y - a.y) * (c.x - b.x);
+    });
+    const pos = crosses.filter(x => x > 0).length;
+    const concaveSign = pos < n / 2 ? 1 : -1; // minority sign marks the concave vertex
+    const ci = crosses.findIndex(x => Math.sign(x) === concaveSign);
+    if (ci === -1) return [pts];
+    // For a 6-point L-shape: cut from concave vertex (ci) to opposite vertex (ci+3),
+    // yielding two 4-point convex quads.
+    const half = Math.floor(n / 2);
+    const poly1 = Array.from({ length: half + 1 }, (_, k) => pts[(ci + k) % n]);
+    const poly2 = Array.from({ length: half + 1 }, (_, k) => pts[(ci + half + k) % n]);
+    return [poly1, poly2];
+  }
+
+  // Returns an array of convex sub-polygons (with rotation applied) for collision testing.
+  // Rect items return one 4-point polygon; L-shaped polygon items return two quads.
+  _getItemSubPolygons(f) {
+    const pts = f.points
+      ? f.points
+      : [
+          { x: f.x,           y: f.y           },
+          { x: f.x + f.width, y: f.y           },
+          { x: f.x + f.width, y: f.y + f.height },
+          { x: f.x,           y: f.y + f.height },
+        ];
+    return this._decomposePolygon(pts).map(poly => this._applyRotation(poly, f));
+  }
+
+  // SAT (Separating Axis Theorem) overlap test between two convex polygons.
+  // Projects both polygons onto each edge-normal of both shapes.
+  // A single gap on any axis means no collision; if all axes overlap, shapes intersect.
+  _satOverlap(a, b) {
+    for (const poly of [a, b]) {
+      const n = poly.length;
+      for (let i = 0; i < n; i++) {
+        const p = poly[i], q = poly[(i + 1) % n];
+        // Outward-facing edge normal (not normalised — projection ratio is the same)
+        const nx = -(q.y - p.y), ny = q.x - p.x;
+        let minA = Infinity, maxA = -Infinity;
+        let minB = Infinity, maxB = -Infinity;
+        for (const v of a) { const d = v.x * nx + v.y * ny; if (d < minA) minA = d; if (d > maxA) maxA = d; }
+        for (const v of b) { const d = v.x * nx + v.y * ny; if (d < minB) minB = d; if (d > maxB) maxB = d; }
+        if (maxA <= minB || maxB <= minA) return false; // separating axis found (touching edges are not a collision)
+      }
+    }
+    return true; // no separating axis — polygons overlap
+  }
+
+  // Returns a Set of furniture indices whose shapes overlap at least one other item.
+  // L-shaped items are decomposed into 2 convex quads before SAT so concave shapes
+  // don't produce false positives when another item sits in the empty corner.
+  _findCollisions() {
+    const colliding  = new Set();
+    const subPolys   = this.furniture.map(f => this._getItemSubPolygons(f));
+    for (let i = 0; i < this.furniture.length; i++) {
+      for (let j = i + 1; j < this.furniture.length; j++) {
+        // Collision if ANY sub-polygon of i overlaps ANY sub-polygon of j
+        let hit = false;
+        outer: for (const a of subPolys[i]) {
+          for (const b of subPolys[j]) {
+            if (this._satOverlap(a, b)) { hit = true; break outer; }
+          }
+        }
+        if (hit) { colliding.add(i); colliding.add(j); }
+      }
+    }
+    return colliding;
+  }
+
   // Returns the topmost item at world position (wx, wy), or null.
   // Priority: furniture (topmost layer) → rooms → freeform polygons.
   // Iterates in reverse so the last-placed item (drawn on top) is hit-tested first.
   // tol: edge-click tolerance in world cm, scaled so it stays ~10px regardless of zoom.
+  // For rotated furniture the test point is un-rotated into item-local space first.
   hitTest(wx, wy) {
     const tol = 10 / this.viewport.zoom;
     for (let i = this.furniture.length - 1; i >= 0; i--) {
       const f = this.furniture[i];
+      let twx = wx, twy = wy;
+      if (f.rotation) {
+        // Un-rotate cursor into the item's local (axis-aligned) coordinate space
+        const cx = f.x + f.width / 2, cy = f.y + f.height / 2;
+        ({ x: twx, y: twy } = this._unrotatePoint(wx, wy, cx, cy, f.rotation));
+      }
       const hit = f.points
-        ? this._hitTestPolygon(f.points, wx, wy)
-        : wx >= f.x && wx <= f.x + f.width && wy >= f.y && wy <= f.y + f.height;
+        ? this._hitTestPolygon(f.points, twx, twy)
+        : twx >= f.x && twx <= f.x + f.width && twy >= f.y && twy <= f.y + f.height;
       if (hit) return { type: 'furniture', index: i };
     }
     for (let i = this.rooms.length - 1; i >= 0; i--)
@@ -344,11 +552,30 @@ class Designer {
     } else if (last.action === 'resize') {
       // from: { x, y, width, height } — restores all four in one call
       Object.assign(last.item, last.from);
+    } else if (last.action === 'rotate') {
+      last.item.rotation = last.from.rotation;
     }
 
     document.getElementById('ctrl-delete').disabled = this.selected === null;
     this.updateNudgeControls();
     this.syncUndoButton();
+    this.render();
+  }
+
+  // Rotates the selected furniture item by `delta` degrees (positive = clockwise).
+  // R = +15°, Shift+R = −15°. Resize handles are hidden while rotation != 0.
+  rotateSelected(delta) {
+    if (!this.selected || this.selected.type !== 'furniture') return;
+    const f = this.furniture[this.selected.index];
+    const oldRot = f.rotation || 0;
+    const newRot = ((oldRot + delta) % 360 + 360) % 360;
+    this.history.push({ action: 'rotate', type: 'furniture', item: f, from: { rotation: oldRot } });
+    f.rotation = newRot;
+    this.syncUndoButton();
+    this._updateRotateControls();
+    // Keep popup value live while it's open
+    const popup = document.getElementById('rotate-popup');
+    if (popup && !popup.hidden) document.getElementById('rot-val').textContent = `${newRot}°`;
     this.render();
   }
 
@@ -824,6 +1051,7 @@ class Designer {
         return;
       }
       if (e.key === 'Delete' || e.key === 'Backspace') this.deleteSelected();
+      if (e.key === 'r' || e.key === 'R') { e.preventDefault(); this.rotateSelected(e.shiftKey ? -15 : 15); }
     });
 
     ['nav-up','nav-down','nav-left','nav-right'].forEach(id => {
@@ -841,6 +1069,18 @@ class Designer {
 
     document.getElementById('ctrl-undo-point').addEventListener('click', () => this.undoLast());
     document.getElementById('ctrl-delete').addEventListener('click', () => this.deleteSelected());
+
+    // Rotate button toggles the popup; popup buttons call rotateSelected
+    const rotateBtn = document.getElementById('ctrl-rotate');
+    const rotatePopup = document.getElementById('rotate-popup');
+    rotateBtn.addEventListener('click', () => {
+      if (this.selected?.type !== 'furniture') return;
+      rotatePopup.hidden = !rotatePopup.hidden;
+    });
+    document.getElementById('rot-left').addEventListener('click',  () => this.rotateSelected(-15));
+    document.getElementById('rot-right').addEventListener('click', () => this.rotateSelected(15));
+    // Close popup when clicking anywhere on the canvas
+    this.canvas.addEventListener('mousedown', () => { rotatePopup.hidden = true; });
     const ctrlWrap   = document.getElementById('canvas-controls');
     const ctrlToggle = document.getElementById('ctrl-toggle');
     const ctrlArrow  = document.getElementById('ctrl-arrow');
@@ -884,7 +1124,7 @@ class Designer {
   _hitTestFurnitureCorner(sx, sy) {
     if (!this.selected || this.selected.type !== 'furniture') return null;
     const f = this.furniture[this.selected.index];
-    if (!f || f.points) return null; // polygon furniture has no resize handles
+    if (!f || f.points || f.rotation) return null; // no resize handles for polygon or rotated items
     const corners = [
       this.viewport.worldToScreen(f.x,           f.y),
       this.viewport.worldToScreen(f.x + f.width, f.y),
@@ -984,12 +1224,13 @@ class Designer {
           // defaultPoints are bbox-relative cm — translate to absolute world coords
           f = {
             id:     def.id,
+            name:   def.name,
             points: def.defaultPoints.map(p => ({ x: ox + p.x, y: oy + p.y })),
             x:      ox, y: oy,
             width:  def.defaultWidth, height: def.defaultHeight,
           };
         } else {
-          f = { id: def.id, x: ox, y: oy, width: def.defaultWidth, height: def.defaultHeight };
+          f = { id: def.id, name: def.name, x: ox, y: oy, width: def.defaultWidth, height: def.defaultHeight };
         }
         this.furniture.push(f);
         this.history.push({ action: 'place', type: 'furniture', item: f });
@@ -1025,11 +1266,12 @@ class Designer {
 
     this.grid.draw(ctx, this.viewport, canvas.width, canvas.height);
     this.roomsRenderer.draw(ctx, this.viewport, this.rooms, this.polygons, this.selected);
-    this.furnitureRenderer.draw(ctx, this.viewport, this.furniture, this.selected);
+    this.furnitureRenderer.draw(ctx, this.viewport, this.furniture, this.selected, this._findCollisions());
     // Preview ghost — only shown when the cursor is over the canvas while dragging from sidebar
     if (this.isDraggingFromSidebar && this.dragFurnitureWorld)
       this.furnitureRenderer.drawPreview(ctx, this.viewport, this.dragFurnitureDef, this.dragFurnitureWorld.x, this.dragFurnitureWorld.y);
     this.furnitureRenderer.drawHandles(ctx, this.viewport, this.furniture, this.selected, this.hoverCorner);
+    this.furnitureRenderer.drawRotationLabel(ctx, this.viewport, this.furniture, this.selected);
     this.roomsRenderer.drawVertexHandles(
       ctx, this.viewport, this.rooms, this.polygons,
       this.selected, this.hoverVertex, this.hoverEdge

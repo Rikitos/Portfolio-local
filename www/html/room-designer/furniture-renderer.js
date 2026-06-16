@@ -5,8 +5,9 @@
 class FurnitureRenderer {
   constructor() {
     // Fill and stroke colours for furniture bodies
-    this.FILL         = 'rgba(88, 114, 137, 0.22)';
-    this.STROKE       = 'rgba(200, 218, 232, 0.55)';
+    this.FILL           = 'rgba(88, 114, 137, 0.22)';
+    this.STROKE         = 'rgba(200, 218, 232, 0.55)';
+    this.STROKE_COLLIDE = 'rgba(220, 75, 55, 0.85)'; // warning red for overlapping items
     // Gold tint applied to icons and dimension labels
     this.ICON_COLOR   = 'rgba(201, 168, 76, 0.8)';
     this.LABEL_COLOR  = 'rgba(201, 168, 76, 0.85)';
@@ -32,11 +33,11 @@ class FurnitureRenderer {
   }
 
   // Draws resize-handle circles at the four corners of the selected rectangular item.
-  // Polygon furniture has no resize handles, so this is a no-op for those items.
+  // No handles for polygon furniture or any rotated item — resize at 0° first, then rotate.
   drawHandles(ctx, viewport, furniture, selected, hoverCorner) {
     if (!selected || selected.type !== 'furniture') return;
     const f = furniture[selected.index];
-    if (!f || f.points) return; // polygon furniture has no resize handles
+    if (!f || f.points || f.rotation) return;
     // Convert all four corners from world cm to screen px
     const corners = [
       viewport.worldToScreen(f.x,           f.y),
@@ -59,10 +60,12 @@ class FurnitureRenderer {
   }
 
   // Draws all placed furniture items; selected: { type: 'furniture', index } or null
-  draw(ctx, viewport, items, selected) {
+  // colliding: Set of indices whose shapes overlap another item — drawn with a red warning stroke
+  draw(ctx, viewport, items, selected, colliding) {
     for (let i = 0; i < items.length; i++) {
-      const isSelected = selected?.type === 'furniture' && selected.index === i;
-      this._draw(ctx, viewport, items[i], false, isSelected);
+      const isSelected  = selected?.type === 'furniture' && selected.index === i;
+      const isColliding = colliding?.has(i) ?? false;
+      this._draw(ctx, viewport, items[i], false, isSelected, isColliding);
     }
   }
 
@@ -79,25 +82,32 @@ class FurnitureRenderer {
   }
 
   // Routes to the correct draw method based on whether the item has polygon points
-  _draw(ctx, viewport, item, isPreview, isSelected) {
+  _draw(ctx, viewport, item, isPreview, isSelected, isColliding) {
     if (item.points) {
-      this._drawPoly(ctx, viewport, item, isPreview, isSelected);
+      this._drawPoly(ctx, viewport, item, isPreview, isSelected, isColliding);
     } else {
-      this._drawRect(ctx, viewport, item, isPreview, isSelected);
+      this._drawRect(ctx, viewport, item, isPreview, isSelected, isColliding);
     }
   }
 
   // Draws a rectangular furniture item in screen space
-  _drawRect(ctx, viewport, item, isPreview, isSelected) {
+  _drawRect(ctx, viewport, item, isPreview, isSelected, isColliding) {
     // Convert world-cm corners to screen-px so everything scales with zoom/pan
     const tl = viewport.worldToScreen(item.x, item.y);
     const br = viewport.worldToScreen(item.x + item.width, item.y + item.height);
     const w  = br.x - tl.x;
     const h  = br.y - tl.y;
+    const cx = tl.x + w / 2;
+    const cy = tl.y + h / 2;
 
     ctx.save();
-    // Preview ghost is drawn at reduced opacity so the room plan shows through
     if (isPreview) ctx.globalAlpha = 0.6;
+    // Rotate around the item's screen-space centre
+    if (item.rotation) {
+      ctx.translate(cx, cy);
+      ctx.rotate(item.rotation * Math.PI / 180);
+      ctx.translate(-cx, -cy);
+    }
 
     ctx.fillStyle = this.FILL;
     ctx.fillRect(tl.x, tl.y, w, h);
@@ -110,9 +120,9 @@ class FurnitureRenderer {
       ctx.strokeRect(tl.x - pad, tl.y - pad, w + pad * 2, h + pad * 2);
     }
 
-    // Preview uses a dashed gold border; placed items use the quieter default stroke
-    ctx.strokeStyle = isPreview ? 'rgba(201, 168, 76, 0.75)' : this.STROKE;
-    ctx.lineWidth   = 1.5;
+    // Preview uses dashed gold; colliding items use warning red; otherwise default stroke
+    ctx.strokeStyle = isPreview ? 'rgba(201, 168, 76, 0.75)' : isColliding ? this.STROKE_COLLIDE : this.STROKE;
+    ctx.lineWidth   = isColliding ? 2 : 1.5;
     if (isPreview) ctx.setLineDash([5, 3]);
     ctx.strokeRect(tl.x, tl.y, w, h);
     ctx.setLineDash([]);
@@ -125,16 +135,24 @@ class FurnitureRenderer {
   }
 
   // Draws a polygon furniture item (e.g. L-sofa, L-desk) in screen space
-  _drawPoly(ctx, viewport, item, isPreview, isSelected) {
+  _drawPoly(ctx, viewport, item, isPreview, isSelected, isColliding) {
     // All points are in world cm — convert the whole array to screen px at once
     const pts = item.points.map(p => viewport.worldToScreen(p.x, p.y));
     // Derive the screen-space bounding box so icon and labels can be centred
     const xs  = pts.map(p => p.x), ys = pts.map(p => p.y);
     const bx  = Math.min(...xs), by = Math.min(...ys);
     const bw  = Math.max(...xs) - bx, bh = Math.max(...ys) - by;
+    const cx  = bx + bw / 2;
+    const cy  = by + bh / 2;
 
     ctx.save();
     if (isPreview) ctx.globalAlpha = 0.6;
+    // Rotate around the bounding-box centre in screen space
+    if (item.rotation) {
+      ctx.translate(cx, cy);
+      ctx.rotate(item.rotation * Math.PI / 180);
+      ctx.translate(-cx, -cy);
+    }
 
     // Filled polygon
     ctx.beginPath();
@@ -157,8 +175,8 @@ class FurnitureRenderer {
     ctx.moveTo(pts[0].x, pts[0].y);
     for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
     ctx.closePath();
-    ctx.strokeStyle = isPreview ? 'rgba(201, 168, 76, 0.75)' : this.STROKE;
-    ctx.lineWidth   = 1.5;
+    ctx.strokeStyle = isPreview ? 'rgba(201, 168, 76, 0.75)' : isColliding ? this.STROKE_COLLIDE : this.STROKE;
+    ctx.lineWidth   = isColliding ? 2 : 1.5;
     if (isPreview) ctx.setLineDash([5, 3]);
     ctx.stroke();
     ctx.setLineDash([]);
@@ -197,6 +215,36 @@ class FurnitureRenderer {
       ctx.fillText(this._label(heightCm), 0, 0);
       ctx.restore();
     }
+  }
+
+  // Draws the rotation angle (e.g. "45°") below the selected item when it is rotated.
+  // Drawn outside the rotation transform (called after ctx.restore) so text stays upright.
+  drawRotationLabel(ctx, viewport, furniture, selected) {
+    if (!selected || selected.type !== 'furniture') return;
+    const f = furniture[selected.index];
+    if (!f || !f.rotation) return;
+
+    // Find the bottom-centre of the item's bounding box in screen space
+    let bx, by, bw, bh;
+    if (f.points) {
+      const pts = f.points.map(p => viewport.worldToScreen(p.x, p.y));
+      const xs = pts.map(p => p.x), ys = pts.map(p => p.y);
+      bx = Math.min(...xs); by = Math.min(...ys);
+      bw = Math.max(...xs) - bx; bh = Math.max(...ys) - by;
+    } else {
+      const tl = viewport.worldToScreen(f.x, f.y);
+      const br = viewport.worldToScreen(f.x + f.width, f.y + f.height);
+      bx = tl.x; by = tl.y; bw = br.x - tl.x; bh = br.y - tl.y;
+    }
+
+    const text = `${f.rotation}°`;
+    ctx.save();
+    ctx.font         = '11px "Palatino Linotype", Palatino, serif';
+    ctx.fillStyle    = 'rgba(201, 168, 76, 0.9)';
+    ctx.textAlign    = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText(text, bx + bw / 2, by + bh + 5);
+    ctx.restore();
   }
 
   // Converts centimetres to a compact metre string, e.g. 220 → "2.2m", 200 → "2m"

@@ -8,10 +8,19 @@ body:has(.ttt) {
 }
 
 .ttt {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   min-height: 100vh;
   padding: 20px;
   background: #fff;
@@ -54,6 +63,7 @@ body:has(.ttt) {
   font-size: 2.2rem;
   color: #587289;
   cursor: pointer;
+  -webkit-transition: background 0.15s;
   transition: background 0.15s;
 }
 @media (min-width: 768px) {
@@ -90,6 +100,7 @@ body:has(.ttt) {
   padding: 12px 32px;
   border-radius: 4px;
   cursor: pointer;
+  -webkit-transition: background 0.2s;
   transition: background 0.2s;
 }
 .ttt__btn:hover {

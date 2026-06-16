@@ -8,6 +8,8 @@ class FurnitureCatalogue {
     this.sidebar = sidebarEl;
     // Set by designer.js; called with (catalogueItem, mouseEvent) on card mousedown
     this.onDragStart = null;
+    // Set by designer.js; called with (catalogueItem) when a card is clicked without dragging
+    this.onCardClick = null;
     this._render();
   }
 
@@ -59,10 +61,13 @@ class FurnitureCatalogue {
         card.appendChild(name);
         card.appendChild(dims);
 
-        // mousedown (not click) so drag can begin before mouseup
+        // mousedown starts a drag; click (no drag movement) opens the config panel
         card.addEventListener('mousedown', (e) => {
           e.preventDefault(); // prevent text selection during drag
           if (this.onDragStart) this.onDragStart(item, e);
+        });
+        card.addEventListener('click', (e) => {
+          if (this.onCardClick) this.onCardClick(item);
         });
 
         grid.appendChild(card);

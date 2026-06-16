@@ -95,7 +95,7 @@ class RoomsRenderer {
   // hoverVertex: vertex index under cursor, or null
   // hoverEdge:   edge index under cursor, or null
   drawVertexHandles(ctx, viewport, rooms, polygons, selected, hoverVertex, hoverEdge) {
-    if (!selected) return;
+    if (!selected || selected.type === 'furniture') return;
     // Normalise rooms (4 derived corners) and freeform polygons (stored points) to the same array
     const verts = selected.type === 'room'
       ? this._roomVertices(rooms[selected.index])
