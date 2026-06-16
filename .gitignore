@@ -6,7 +6,8 @@ www/shop/*
 
 www/shop/wp-content/plugins/*/vendor/
 
-# Don't commit actual DB backups (they may contain passwords/emails)
+www/html/.claude/
+.claude/
 .env
 db-backups/
 
