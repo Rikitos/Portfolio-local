@@ -141,7 +141,7 @@ class FurnitureRenderer {
     ctx.moveTo(tl.x, tl.y);   // hinge end
     ctx.lineTo(br.x, tl.y);   // free end
     ctx.strokeStyle = 'rgba(201, 168, 76, 0.9)';
-    ctx.lineWidth   = 2.5;
+    ctx.lineWidth   = 5;
     ctx.stroke();
 
     // Hinge dot
