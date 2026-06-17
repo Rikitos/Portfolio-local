@@ -17,7 +17,7 @@ class Viewport {
     this.MAX_ZOOM = 4;
 
     // World boundary — the usable canvas area extends 50m (5000cm) in each direction from origin
-    this.WORLD_LIMIT_CM = 3000;
+    this.WORLD_LIMIT_CM = 1500;
   }
 
   // Converts a real-world position (in cm) to a screen pixel position
