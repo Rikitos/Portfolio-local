@@ -37,7 +37,7 @@ class FurnitureRenderer {
   drawHandles(ctx, viewport, furniture, selected, hoverCorner) {
     if (!selected || selected.type !== 'furniture') return;
     const f = furniture[selected.index];
-    if (!f || f.points || f.rotation) return;
+    if (!f || f.points || f.rotation || f.shape === 'door') return;
     // Convert all four corners from world cm to screen px
     const corners = [
       viewport.worldToScreen(f.x,           f.y),
@@ -72,8 +72,9 @@ class FurnitureRenderer {
   // Draws a semi-transparent preview of a catalogue item while the user is dragging
   // from the sidebar. worldX/worldY is the snapped top-left in world cm.
   drawPreview(ctx, viewport, def, worldX, worldY) {
-    if (def.shape === 'polygon') {
-      // Translate defaultPoints (bounding-box-relative cm) to absolute world coords
+    if (def.shape === 'door') {
+      this._drawDoor(ctx, viewport, { id: def.id, shape: 'door', x: worldX, y: worldY, width: def.defaultWidth, height: def.defaultHeight }, true, false);
+    } else if (def.shape === 'polygon') {
       const pts = def.defaultPoints.map(p => ({ x: worldX + p.x, y: worldY + p.y }));
       this._drawPoly(ctx, viewport, { id: def.id, points: pts, width: def.defaultWidth, height: def.defaultHeight }, true, false);
     } else {
@@ -81,13 +82,75 @@ class FurnitureRenderer {
     }
   }
 
-  // Routes to the correct draw method based on whether the item has polygon points
+  // Routes to the correct draw method based on item shape
   _draw(ctx, viewport, item, isPreview, isSelected, isColliding) {
-    if (item.points) {
+    if (item.shape === 'door') {
+      this._drawDoor(ctx, viewport, item, isPreview, isSelected);
+    } else if (item.points) {
       this._drawPoly(ctx, viewport, item, isPreview, isSelected, isColliding);
     } else {
       this._drawRect(ctx, viewport, item, isPreview, isSelected, isColliding);
     }
+  }
+
+  // Draws a door: a solid panel line at the top edge and a dashed quarter-circle arc
+  // showing the 90° swing area. Hinge is at the top-left corner (before rotation).
+  // Doors are never drawn with a collision colour — they live in walls, not in free space.
+  _drawDoor(ctx, viewport, item, isPreview, isSelected) {
+    const tl = viewport.worldToScreen(item.x, item.y);
+    const br = viewport.worldToScreen(item.x + item.width, item.y + item.height);
+    const w  = br.x - tl.x; // screen-space width = arc radius
+    const cx = tl.x + w / 2, cy = tl.y + w / 2; // bbox centre for rotation pivot
+
+    ctx.save();
+    if (isPreview) ctx.globalAlpha = 0.55;
+    if (item.rotation || item.flipX) {
+      ctx.translate(cx, cy);
+      if (item.rotation) ctx.rotate(item.rotation * Math.PI / 180);
+      if (item.flipX)    ctx.scale(-1, 1); // mirror in local (pre-rotation) space
+      ctx.translate(-cx, -cy);
+    }
+
+    // Selection ring around the bounding box
+    if (isSelected) {
+      const pad = 3;
+      ctx.strokeStyle = 'rgba(201, 168, 76, 0.8)';
+      ctx.lineWidth   = 2.5;
+      ctx.strokeRect(tl.x - pad, tl.y - pad, w + pad * 2, w + pad * 2);
+    }
+
+    // Swing area fill (light tint so the wall behind is still readable)
+    ctx.beginPath();
+    ctx.moveTo(tl.x, tl.y);              // hinge
+    ctx.arc(tl.x, tl.y, w, 0, Math.PI / 2); // arc to (tl.x, tl.y + w)
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(88, 114, 137, 0.12)';
+    ctx.fill();
+
+    // Dashed arc outline
+    ctx.beginPath();
+    ctx.arc(tl.x, tl.y, w, 0, Math.PI / 2);
+    ctx.setLineDash([4, 3]);
+    ctx.strokeStyle = 'rgba(201, 168, 76, 0.4)';
+    ctx.lineWidth   = 1;
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Door panel — solid, thicker line along the top edge
+    ctx.beginPath();
+    ctx.moveTo(tl.x, tl.y);   // hinge end
+    ctx.lineTo(br.x, tl.y);   // free end
+    ctx.strokeStyle = 'rgba(201, 168, 76, 0.9)';
+    ctx.lineWidth   = 2.5;
+    ctx.stroke();
+
+    // Hinge dot
+    ctx.beginPath();
+    ctx.arc(tl.x, tl.y, 3, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(201, 168, 76, 0.9)';
+    ctx.fill();
+
+    ctx.restore();
   }
 
   // Draws a rectangular furniture item in screen space
@@ -102,10 +165,10 @@ class FurnitureRenderer {
 
     ctx.save();
     if (isPreview) ctx.globalAlpha = 0.6;
-    // Rotate around the item's screen-space centre
-    if (item.rotation) {
+    if (item.rotation || item.flipX) {
       ctx.translate(cx, cy);
-      ctx.rotate(item.rotation * Math.PI / 180);
+      if (item.rotation) ctx.rotate(item.rotation * Math.PI / 180);
+      if (item.flipX)    ctx.scale(-1, 1);
       ctx.translate(-cx, -cy);
     }
 
@@ -128,8 +191,8 @@ class FurnitureRenderer {
     ctx.setLineDash([]);
 
     this._drawIcon(ctx, tl.x, tl.y, w, h, item.id);
-    // Only draw dimension labels when the item is large enough on screen to be readable
-    if (!isPreview && w > 50 && h > 36) this._drawLabels(ctx, tl.x, tl.y, w, h, item.width, item.height);
+    if (!item.hideLabel && !isPreview && w > 50 && h > 36)
+      this._drawLabels(ctx, tl.x, tl.y, w, h, item.width, item.height);
 
     ctx.restore();
   }
@@ -147,10 +210,10 @@ class FurnitureRenderer {
 
     ctx.save();
     if (isPreview) ctx.globalAlpha = 0.6;
-    // Rotate around the bounding-box centre in screen space
-    if (item.rotation) {
+    if (item.rotation || item.flipX) {
       ctx.translate(cx, cy);
-      ctx.rotate(item.rotation * Math.PI / 180);
+      if (item.rotation) ctx.rotate(item.rotation * Math.PI / 180);
+      if (item.flipX)    ctx.scale(-1, 1);
       ctx.translate(-cx, -cy);
     }
 
@@ -183,7 +246,8 @@ class FurnitureRenderer {
 
     // Icon and labels use the bounding box, same as the rect path
     this._drawIcon(ctx, bx, by, bw, bh, item.id);
-    if (!isPreview && bw > 50 && bh > 36) this._drawLabels(ctx, bx, by, bw, bh, item.width, item.height);
+    if (!item.hideLabel && !isPreview && bw > 50 && bh > 36)
+      this._drawLabels(ctx, bx, by, bw, bh, item.width, item.height);
 
     ctx.restore();
   }

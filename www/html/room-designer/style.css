@@ -1,6 +1,5 @@
 /** COLORS **/
 /** BRAND PALETTE **/
-/** LEGACY (biuro senatora) **/
 /** RESPONSIVE BREAKPOINTS **/
 /** BREAKPOINTS MEDIA **/
 body:has(.designer) {
@@ -298,6 +297,93 @@ body:has(.designer) {
   text-align: center;
   letter-spacing: 0.04em;
 }
+.designer__welcome {
+  position: absolute;
+  inset: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background: rgba(10, 22, 40, 0.82);
+  z-index: 30;
+  cursor: pointer;
+}
+.designer__welcome__inner {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 14px;
+  text-align: center;
+  cursor: default;
+  pointer-events: none;
+}
+.designer__welcome__title {
+  font-family: "Palatino Linotype", Palatino, serif;
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  color: rgba(200, 216, 232, 0.92);
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 1.2;
+}
+.designer__welcome__sub {
+  font-family: "Palatino Linotype", Palatino, serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: rgba(154, 174, 187, 0.75);
+  margin: 0;
+}
+.designer__welcome__actions {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+  pointer-events: all;
+}
+.designer__welcome__btn {
+  font-family: "Palatino Linotype", Palatino, serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 8px 20px;
+  border-radius: 2px;
+  cursor: pointer;
+  -webkit-transition: background 0.15s, border-color 0.15s, color 0.15s;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.designer__welcome__btn--use {
+  background: transparent;
+  border: 1px solid rgba(201, 168, 76, 0.4);
+  color: rgba(200, 216, 232, 0.85);
+}
+.designer__welcome__btn--use:hover {
+  background: rgba(201, 168, 76, 0.08);
+  border-color: rgba(201, 168, 76, 0.6);
+  color: #C9A84C;
+}
+.designer__welcome__btn--clear {
+  background: rgba(201, 168, 76, 0.12);
+  border: 1px solid rgba(201, 168, 76, 0.5);
+  color: #C9A84C;
+}
+.designer__welcome__btn--clear:hover {
+  background: rgba(201, 168, 76, 0.22);
+  border-color: rgba(201, 168, 76, 0.75);
+}
 .designer__workspace {
   -webkit-box-flex: 1;
       -ms-flex: 1;
@@ -419,6 +505,93 @@ body:has(.designer) {
   border-left: 1px solid rgba(201, 168, 76, 0.15);
   overflow-y: auto;
   padding: 30px 8px 10px;
+}
+.designer__sidebar__saves {
+  margin-bottom: 10px;
+  padding: 9px 8px;
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  border-radius: 3px;
+  background: rgba(17, 34, 64, 0.4);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 6px;
+}
+.designer__sidebar__saves-title {
+  font-family: "Palatino Linotype", Palatino, serif;
+  font-size: 0.52rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #9AAEBB;
+}
+.designer__sidebar__saves-slots {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4px;
+}
+.designer__sidebar__saves-slot {
+  font-family: "Palatino Linotype", Palatino, serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.04em;
+  color: #C8D8E8;
+  background: rgba(10, 22, 40, 0.6);
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  border-radius: 2px;
+  padding: 4px 2px;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-transition: background 0.15s, border-color 0.15s, color 0.15s;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.designer__sidebar__saves-slot:hover:not(:disabled) {
+  background: #060D1A;
+  border-color: rgba(201, 168, 76, 0.5);
+  color: #C9A84C;
+}
+.designer__sidebar__saves-slot:disabled {
+  opacity: 0.38;
+  cursor: default;
+}
+.designer__sidebar__saves-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+.designer__sidebar__saves-btn {
+  font-family: "Palatino Linotype", Palatino, serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.04em;
+  color: #C8D8E8;
+  background: rgba(10, 22, 40, 0.6);
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  border-radius: 2px;
+  padding: 4px 6px;
+  cursor: pointer;
+  text-align: center;
+  -webkit-transition: background 0.15s, border-color 0.15s, color 0.15s;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.designer__sidebar__saves-btn:hover {
+  background: #060D1A;
+  border-color: rgba(201, 168, 76, 0.5);
+  color: #C9A84C;
+}
+.designer__sidebar__saves-btn--clear {
+  width: 100%;
+  color: rgba(238, 136, 136, 0.8);
+  border-color: rgba(238, 136, 136, 0.2);
+}
+.designer__sidebar__saves-btn--clear:hover {
+  background: rgba(238, 136, 136, 0.12);
+  border-color: rgba(238, 136, 136, 0.45);
+  color: #f99;
 }
 .designer__sidebar__config {
   margin-bottom: 14px;

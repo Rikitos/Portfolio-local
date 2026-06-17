@@ -29,12 +29,12 @@ class RoomsRenderer {
     for (let i = 0; i < rooms.length; i++) {
       const isSelected = selected?.type === 'room' && selected.index === i;
       this._drawRect(ctx, viewport, rooms[i], isSelected);
-      this._drawRectLabels(ctx, viewport, rooms[i]);
+      if (!rooms[i].hideLabel) this._drawRectLabels(ctx, viewport, rooms[i]);
     }
     for (let i = 0; i < polygons.length; i++) {
       const isSelected = selected?.type === 'polygon' && selected.index === i;
       this._drawPolygon(ctx, viewport, polygons[i].points, true, isSelected);
-      this._drawPolygonLabels(ctx, viewport, polygons[i].points);
+      if (!polygons[i].hideLabel) this._drawPolygonLabels(ctx, viewport, polygons[i].points);
     }
   }
 

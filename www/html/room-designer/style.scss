@@ -273,6 +273,87 @@ body:has(.designer) {
     }
   }
 
+  &__welcome {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba($navy, 0.82);
+    z-index: 30;
+    cursor: pointer;
+
+    &__inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      text-align: center;
+      cursor: default; // stop propagation visually — click still bubbles to overlay
+      pointer-events: none; // let clicks fall through to the overlay dismiss handler
+    }
+
+    &__title {
+      font-family: $primary-font;
+      font-size: 2rem;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      color: rgba($silver-bright, 0.92);
+      text-transform: uppercase;
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    &__sub {
+      font-family: $primary-font;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      color: rgba($silver-cool, 0.75);
+      margin: 0;
+    }
+
+    &__actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 6px;
+      pointer-events: all; // buttons must be clickable
+    }
+
+    &__btn {
+      font-family: $primary-font;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 8px 20px;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+
+      &--use {
+        background: transparent;
+        border: 1px solid rgba($gold, 0.4);
+        color: rgba($silver-bright, 0.85);
+
+        &:hover {
+          background: rgba($gold, 0.08);
+          border-color: rgba($gold, 0.6);
+          color: $gold;
+        }
+      }
+
+      &--clear {
+        background: rgba($gold, 0.12);
+        border: 1px solid rgba($gold, 0.5);
+        color: $gold;
+
+        &:hover {
+          background: rgba($gold, 0.22);
+          border-color: rgba($gold, 0.75);
+        }
+      }
+    }
+  }
+
   &__workspace {
     flex: 1;
     position: relative;
@@ -366,6 +447,97 @@ body:has(.designer) {
     border-left: 1px solid rgba($gold, 0.15);
     overflow-y: auto;
     padding: 30px 8px 10px;
+
+    &__saves {
+      margin-bottom: 10px;
+      padding: 9px 8px;
+      border: 1px solid rgba($gold, 0.2);
+      border-radius: 3px;
+      background: rgba($navy-light, 0.4);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    &__saves-title {
+      font-family: $primary-font;
+      font-size: 0.52rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: $silver-cool;
+    }
+
+    &__saves-slots {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 4px;
+    }
+
+    &__saves-slot {
+      font-family: $primary-font;
+      font-size: 0.58rem;
+      letter-spacing: 0.04em;
+      color: $silver-bright;
+      background: rgba($navy, 0.6);
+      border: 1px solid rgba($gold, 0.2);
+      border-radius: 2px;
+      padding: 4px 2px;
+      cursor: pointer;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+
+      &:hover:not(:disabled) {
+        background: $navy-dark;
+        border-color: rgba($gold, 0.5);
+        color: $gold;
+      }
+
+      &:disabled {
+        opacity: 0.38;
+        cursor: default;
+      }
+    }
+
+    &__saves-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+    }
+
+    &__saves-btn {
+      font-family: $primary-font;
+      font-size: 0.58rem;
+      letter-spacing: 0.04em;
+      color: $silver-bright;
+      background: rgba($navy, 0.6);
+      border: 1px solid rgba($gold, 0.2);
+      border-radius: 2px;
+      padding: 4px 6px;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+
+      &:hover {
+        background: $navy-dark;
+        border-color: rgba($gold, 0.5);
+        color: $gold;
+      }
+
+      &--clear {
+        width: 100%;
+        color: rgba(#e88, 0.8);
+        border-color: rgba(#e88, 0.2);
+
+        &:hover {
+          background: rgba(#e88, 0.12);
+          border-color: rgba(#e88, 0.45);
+          color: #f99;
+        }
+      }
+    }
 
     &__config {
       margin-bottom: 14px;

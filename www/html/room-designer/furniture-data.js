@@ -45,6 +45,7 @@ const FURNITURE_CATALOGUE = [
     id: 'armchair',
     name: 'Armchair',
     category: 'Seating',
+    noCollide: true,
     defaultWidth: 90,
     defaultHeight: 90,
     icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -58,6 +59,7 @@ const FURNITURE_CATALOGUE = [
     id: 'chair',
     name: 'Chair',
     category: 'Seating',
+    noCollide: true,
     defaultWidth: 50,
     defaultHeight: 50,
     icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -183,6 +185,50 @@ const FURNITURE_CATALOGUE = [
     </svg>`,
   },
 
+  // -- KITCHEN -------------------------------------
+  {
+    id: 'fridge',
+    name: 'Fridge',
+    category: 'Kitchen',
+    defaultWidth: 90,
+    defaultHeight: 70,
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="1" y="1" width="26" height="34" rx="1"/>
+      <line x1="18" y1="15" x2="18" y2="20"/>
+    </svg>`,
+  },
+  {
+    id: 'counter',
+    name: 'Counter',
+    category: 'Kitchen',
+    defaultWidth: 120,
+    defaultHeight: 60,
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="1" y="1" width="46" height="30" rx="1"/>
+      <line x1="1" y1="16" x2="47" y2="16"/>
+      <line x1="14" y1="5" x2="34" y2="5"/>
+      <line x1="14" y1="27" x2="34" y2="27"/>
+    </svg>`,
+  },
+  {
+    id: 'stove',
+    name: 'Stove',
+    category: 'Kitchen',
+    defaultWidth: 60,
+    defaultHeight: 60,
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="1" y="1" width="46" height="46" rx="1"/>
+      <circle cx="13" cy="13" r="6"/>
+      <circle cx="13" cy="13" r="2.5"/>
+      <circle cx="35" cy="13" r="6"/>
+      <circle cx="35" cy="13" r="2.5"/>
+      <circle cx="13" cy="35" r="6"/>
+      <circle cx="13" cy="35" r="2.5"/>
+      <circle cx="35" cy="35" r="6"/>
+      <circle cx="35" cy="35" r="2.5"/>
+    </svg>`,
+  },
+
   // ── BATHROOM ───────────────────────────────────────────────────────────────
   {
     id: 'bathtub',
@@ -221,4 +267,49 @@ const FURNITURE_CATALOGUE = [
       <rect x="16" y="1" width="8" height="5" rx="1"/>
     </svg>`,
   },
+
+  // ── DOORS ─────────────────────────────────────────────────────────────────
+  // shape:'door' — rendered as a panel line + 90° swing arc, ignores collision.
+  // Height always equals width (square bbox = full swing area).
+  // Hinge is at the top-left corner in default orientation; rotate to fit the wall.
+  {
+    id: 'door-90',
+    name: 'Door 90cm',
+    category: 'Doors',
+    shape: 'door',
+    defaultWidth:  90,
+    defaultHeight: 90,
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-linecap="round">
+      <line x1="1" y1="1" x2="31" y2="1" stroke-width="2.5"/>
+      <path d="M31,1 A30,30 0 0,1 1,31" stroke-width="1" stroke-dasharray="3 2"/>
+      <circle cx="1" cy="1" r="2" fill="currentColor" stroke="none"/>
+    </svg>`,
+  },
+  {
+    id: 'door-80',
+    name: 'Door 80cm',
+    category: 'Doors',
+    shape: 'door',
+    defaultWidth:  80,
+    defaultHeight: 80,
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-linecap="round">
+      <line x1="1" y1="1" x2="31" y2="1" stroke-width="2.5"/>
+      <path d="M31,1 A30,30 0 0,1 1,31" stroke-width="1" stroke-dasharray="3 2"/>
+      <circle cx="1" cy="1" r="2" fill="currentColor" stroke="none"/>
+    </svg>`,
+  },
+  {
+    id: 'door-70',
+    name: 'Door 70cm',
+    category: 'Doors',
+    shape: 'door',
+    defaultWidth:  70,
+    defaultHeight: 70,
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-linecap="round">
+      <line x1="1" y1="1" x2="31" y2="1" stroke-width="2.5"/>
+      <path d="M31,1 A30,30 0 0,1 1,31" stroke-width="1" stroke-dasharray="3 2"/>
+      <circle cx="1" cy="1" r="2" fill="currentColor" stroke="none"/>
+    </svg>`,
+  },
 ];
+

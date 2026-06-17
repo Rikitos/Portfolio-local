@@ -74,6 +74,7 @@ class Designer {
     // ── Undo history ─────────────────────────────────────────────────────────
     this.history = [];
 
+
     // ── Furniture corner resize ───────────────────────────────────────────────
     // Only available for rectangular furniture; polygon furniture has a fixed shape
     this.isDraggingFurnitureCorner = false;
@@ -92,17 +93,27 @@ class Designer {
     this.catalogue.onDragStart = (def, e) => this._startFurnitureDrag(def, e);
     // Wire sidebar card click to open the size-and-place config panel
     this.catalogue.onCardClick = (def) => this._openFurnitureConfig(def);
-    // Inject the config panel at the top of the sidebar after catalogue renders
+    // Inject panels at the top of the sidebar after catalogue renders
     // (catalogue clears innerHTML on render so this must happen after)
     this._injectConfigPanel();
+    this.storage = new DesignerStorage();
+    this._injectSavePanel();
+    this._injectWelcomeOverlay();
 
     this.resizeCanvas();
-    this.viewport.zoom = 0.5; // default zoom — 5×4m room visible on load
+    this.viewport.zoom = 0.3; // default zoom — 5×4m room visible on load
     this.centerOrigin();
     this.bindEvents();
     this.render();
     this.updateZoomInput();
     window.__designer = this; // dev reference — makes instance inspectable from console
+
+    // Load the admin default layout once everything is ready
+    this._loadDefault();
+
+    // Pre-select Sofa in the config panel so the sidebar is ready to place on load
+    const sofaDef = FURNITURE_CATALOGUE.find(f => f.id === 'sofa');
+    if (sofaDef) this._openFurnitureConfig(sofaDef);
   }
 
   resizeCanvas() {
@@ -140,10 +151,13 @@ class Designer {
     this.selected    = sel;
     this.hoverVertex = null;
     this.hoverEdge   = null;
-    document.getElementById('ctrl-delete').disabled = sel === null;
+    document.getElementById('ctrl-delete').disabled   = sel === null;
+    document.getElementById('ctrl-duplicate').disabled = sel === null;
     if (sel && changed) this.showDragHint();
     this.updateNudgeControls();
     this._updateRotateControls();
+    this._updateLabelToggle();
+    this._updateFlipButton();
     this.render();
   }
 
@@ -155,7 +169,7 @@ class Designer {
     const panel = document.createElement('div');
     panel.id        = 'furniture-config';
     panel.className = 'designer__sidebar__config';
-    panel.hidden    = true;
+    panel.hidden    = false;
     panel.innerHTML = `
       <div class="designer__sidebar__config-header">
         <span class="designer__sidebar__config-name" id="config-name"></span>
@@ -206,6 +220,69 @@ class Designer {
     }
   }
 
+  // Returns the live data object for the currently selected item (room, polygon, or furniture),
+  // or null when nothing is selected. Used by the label toggle to read/write hideLabel.
+  _getSelectedItem() {
+    if (!this.selected) return null;
+    if (this.selected.type === 'furniture') return this.furniture[this.selected.index];
+    if (this.selected.type === 'room')      return this.rooms[this.selected.index];
+    if (this.selected.type === 'polygon')   return this.polygons[this.selected.index];
+    return null;
+  }
+
+  // Syncs the Labels toggle button state with the selected item's hideLabel flag.
+  // Button is disabled when nothing is selected; active (gold) when labels are hidden.
+  _updateLabelToggle() {
+    const btn  = document.getElementById('ctrl-labels');
+    const item = this._getSelectedItem();
+    btn.disabled = item === null;
+    btn.classList.toggle('designer__canvas-controls__btn--active', !!item?.hideLabel);
+  }
+
+  // Duplicates the selected item (room, polygon, or furniture), offset 20cm down-right.
+  duplicateSelected() {
+    if (!this.selected) return;
+    const OFFSET = 20;
+    if (this.selected.type === 'furniture') {
+      const src = this.furniture[this.selected.index];
+      const copy = JSON.parse(JSON.stringify(src));
+      copy.x += OFFSET; copy.y += OFFSET;
+      this.furniture.push(copy);
+      this.setSelected({ type: 'furniture', index: this.furniture.length - 1 });
+    } else if (this.selected.type === 'room') {
+      const src = this.rooms[this.selected.index];
+      const copy = JSON.parse(JSON.stringify(src));
+      copy.x += OFFSET; copy.y += OFFSET;
+      this.rooms.push(copy);
+      this.setSelected({ type: 'room', index: this.rooms.length - 1 });
+    } else if (this.selected.type === 'polygon') {
+      const src = this.polygons[this.selected.index];
+      const copy = JSON.parse(JSON.stringify(src));
+      copy.points = copy.points.map(p => ({ x: p.x + OFFSET, y: p.y + OFFSET }));
+      this.polygons.push(copy);
+      this.setSelected({ type: 'polygon', index: this.polygons.length - 1 });
+    }
+    this.render();
+  }
+
+  // Flips the selected furniture item horizontally (mirrors its visual and collision shape).
+  flipSelected() {
+    if (this.selected?.type !== 'furniture') return;
+    const f = this.furniture[this.selected.index];
+    f.flipX = !f.flipX;
+    document.getElementById('ctrl-flip').classList.toggle('designer__canvas-controls__btn--active', !!f.flipX);
+    this.render();
+  }
+
+  // Keeps the Flip button enabled/active state in sync with the selected item.
+  _updateFlipButton() {
+    const btn         = document.getElementById('ctrl-flip');
+    const isFurniture = this.selected?.type === 'furniture';
+    btn.disabled = !isFurniture;
+    const f = isFurniture ? this.furniture[this.selected.index] : null;
+    btn.classList.toggle('designer__canvas-controls__btn--active', !!f?.flipX);
+  }
+
   // Places the configured furniture item at the current canvas centre.
   // For polygon furniture, points are scaled to match the entered W/H.
   _placeAtCenter() {
@@ -226,12 +303,12 @@ class Designer {
       const scaleX = wCm / def.defaultWidth;
       const scaleY = hCm / def.defaultHeight;
       f = {
-        id: def.id, name: def.name, rotation: 0,
+        id: def.id, name: def.name, shape: def.shape, noCollide: def.noCollide, rotation: 0,
         points: def.defaultPoints.map(p => ({ x: ox + p.x * scaleX, y: oy + p.y * scaleY })),
         x: ox, y: oy, width: wCm, height: hCm,
       };
     } else {
-      f = { id: def.id, name: def.name, rotation: 0, x: ox, y: oy, width: wCm, height: hCm };
+      f = { id: def.id, name: def.name, shape: def.shape, noCollide: def.noCollide, rotation: 0, x: ox, y: oy, width: wCm, height: hCm };
     }
 
     this.furniture.push(f);
@@ -410,10 +487,10 @@ class Designer {
     return [poly1, poly2];
   }
 
-  // Returns an array of convex sub-polygons (with rotation applied) for collision testing.
+  // Returns an array of convex sub-polygons (with rotation and flip applied) for collision testing.
   // Rect items return one 4-point polygon; L-shaped polygon items return two quads.
   _getItemSubPolygons(f) {
-    const pts = f.points
+    let pts = f.points
       ? f.points
       : [
           { x: f.x,           y: f.y           },
@@ -421,6 +498,12 @@ class Designer {
           { x: f.x + f.width, y: f.y + f.height },
           { x: f.x,           y: f.y + f.height },
         ];
+    // Mirror polygon points around the bbox centre x when flipX is set.
+    // Reversing preserves winding order so the concave-vertex finder still works.
+    if (f.flipX && f.points) {
+      const cx = f.x + f.width / 2;
+      pts = [...pts].reverse().map(p => ({ x: 2 * cx - p.x, y: p.y }));
+    }
     return this._decomposePolygon(pts).map(poly => this._applyRotation(poly, f));
   }
 
@@ -447,11 +530,14 @@ class Designer {
   // Returns a Set of furniture indices whose shapes overlap at least one other item.
   // L-shaped items are decomposed into 2 convex quads before SAT so concave shapes
   // don't produce false positives when another item sits in the empty corner.
+  // Door items are always skipped — they live in walls and intentionally overlap.
   _findCollisions() {
     const colliding  = new Set();
     const subPolys   = this.furniture.map(f => this._getItemSubPolygons(f));
     for (let i = 0; i < this.furniture.length; i++) {
+      if (this.furniture[i].shape === 'door' || this.furniture[i].noCollide) continue;
       for (let j = i + 1; j < this.furniture.length; j++) {
+        if (this.furniture[j].shape === 'door' || this.furniture[j].noCollide) continue;
         // Collision if ANY sub-polygon of i overlaps ANY sub-polygon of j
         let hit = false;
         outer: for (const a of subPolys[i]) {
@@ -775,6 +861,131 @@ class Designer {
     this.render();
   }
 
+  // ── Welcome overlay ───────────────────────────────────────────────────────
+
+  // Injects a semi-transparent overlay over the canvas on first load.
+  // Any click dismisses it; clicking "Clear canvas" also clears the scene first.
+  _injectWelcomeOverlay() {
+    const overlay = document.createElement('div');
+    overlay.id        = 'welcome-overlay';
+    overlay.className = 'designer__welcome';
+    overlay.innerHTML = `
+      <div class="designer__welcome__inner">
+        <h2 class="designer__welcome__title">Design Your Own Household</h2>
+        <p class="designer__welcome__sub">Explore the example layout below, or start with a blank canvas</p>
+        <div class="designer__welcome__actions">
+          <button class="designer__welcome__btn designer__welcome__btn--clear" id="welcome-clear">Clear &amp; Start Fresh</button>
+          <button class="designer__welcome__btn designer__welcome__btn--use" id="welcome-use">Explore Layout</button>
+        </div>
+      </div>
+    `;
+    document.querySelector('.designer__workspace').appendChild(overlay);
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target.id === 'welcome-clear') this.clearCanvas();
+      overlay.hidden = true;
+    });
+  }
+
+  // ── Save / Load ───────────────────────────────────────────────────────────
+
+  // Returns a serialisable snapshot of the current scene.
+  getLayout() {
+    return this.storage.pack(this.rooms, this.polygons, this.furniture);
+  }
+
+  // Replaces the scene with the given layout object, resets selection and history.
+  loadLayout(layout) {
+    this.rooms     = layout.rooms     ?? [];
+    this.polygons  = layout.polygons  ?? [];
+    this.furniture = layout.furniture ?? [];
+    this.selected  = null;
+    this.history   = [];
+    this.syncUndoButton();
+    this._updateRotateControls();
+    this._updateFlipButton();
+    this._updateLabelToggle();
+    this.render();
+  }
+
+  // Empties all scene data — used by "Design Your Own" clear action.
+  clearCanvas() {
+    this.loadLayout({ rooms: [], polygons: [], furniture: [] });
+  }
+
+  // Fetches the admin default layout on first load.
+  async _loadDefault() {
+    const layout = await this.storage.fetchDefault('default-layout.json?v=2');
+    if (layout) this.loadLayout(layout);
+  }
+
+  // Creates the save/load panel and prepends it above the config panel.
+  _injectSavePanel() {
+    const panel = document.createElement('div');
+    panel.id        = 'save-panel';
+    panel.className = 'designer__sidebar__saves';
+    panel.innerHTML = `
+      <span class="designer__sidebar__saves-title">Layouts</span>
+      <div class="designer__sidebar__saves-slots">
+        <button class="designer__sidebar__saves-slot" id="slot-default" title="Load the default example layout">Default</button>
+        <button class="designer__sidebar__saves-slot" id="slot-a" title="Load Slot A"></button>
+        <button class="designer__sidebar__saves-slot" id="slot-b" title="Load Slot B"></button>
+      </div>
+      <div class="designer__sidebar__saves-row">
+        <button class="designer__sidebar__saves-btn" id="save-a" title="Overwrite Slot A with the current layout">Save → A</button>
+        <button class="designer__sidebar__saves-btn" id="save-b" title="Overwrite Slot B with the current layout">Save → B</button>
+      </div>
+      <div class="designer__sidebar__saves-row">
+        <button class="designer__sidebar__saves-btn" id="save-export" title="Download layout as a JSON file">Export</button>
+        <button class="designer__sidebar__saves-btn" id="save-import" title="Load a previously exported JSON file">Import</button>
+      </div>
+      <button class="designer__sidebar__saves-btn designer__sidebar__saves-btn--clear" id="save-clear" title="Clear everything and start fresh">Clear canvas</button>
+    `;
+    // Prepend so it sits above the config panel
+    document.querySelector('.designer__sidebar').prepend(panel);
+    this._updateSavePanel();
+
+    document.getElementById('slot-default').addEventListener('click', () => this._loadDefault());
+    document.getElementById('slot-a').addEventListener('click', () => {
+      const layout = this.storage.load('a');
+      if (layout) this.loadLayout(layout);
+    });
+    document.getElementById('slot-b').addEventListener('click', () => {
+      const layout = this.storage.load('b');
+      if (layout) this.loadLayout(layout);
+    });
+    document.getElementById('save-a').addEventListener('click', () => {
+      this.storage.save('a', this.getLayout());
+      this._updateSavePanel();
+    });
+    document.getElementById('save-b').addEventListener('click', () => {
+      this.storage.save('b', this.getLayout());
+      this._updateSavePanel();
+    });
+    document.getElementById('save-export').addEventListener('click', () => {
+      this.storage.exportJSON(this.getLayout());
+    });
+    document.getElementById('save-import').addEventListener('click', () => {
+      this.storage.importJSON((layout) => {
+        this.loadLayout(layout);
+        this._updateSavePanel();
+      });
+    });
+    document.getElementById('save-clear').addEventListener('click', () => {
+      if (confirm('Clear the canvas? This cannot be undone.')) this.clearCanvas();
+    });
+  }
+
+  // Refreshes slot button labels to show whether each slot has saved data.
+  _updateSavePanel() {
+    const labelA = this.storage.hasSave('a') ? 'Slot A ●' : 'Slot A';
+    const labelB = this.storage.hasSave('b') ? 'Slot B ●' : 'Slot B';
+    document.getElementById('slot-a').textContent = labelA;
+    document.getElementById('slot-b').textContent = labelB;
+    document.getElementById('slot-a').disabled = !this.storage.hasSave('a');
+    document.getElementById('slot-b').disabled = !this.storage.hasSave('b');
+  }
+
   // ── Events ────────────────────────────────────────────────────────────────
 
   bindEvents() {
@@ -1052,6 +1263,8 @@ class Designer {
       }
       if (e.key === 'Delete' || e.key === 'Backspace') this.deleteSelected();
       if (e.key === 'r' || e.key === 'R') { e.preventDefault(); this.rotateSelected(e.shiftKey ? -15 : 15); }
+      if (e.key === 'f' || e.key === 'F') { e.preventDefault(); this.flipSelected(); }
+      if (e.key === 'd' || e.key === 'D') { e.preventDefault(); this.duplicateSelected(); }
     });
 
     ['nav-up','nav-down','nav-left','nav-right'].forEach(id => {
@@ -1081,6 +1294,21 @@ class Designer {
     document.getElementById('rot-right').addEventListener('click', () => this.rotateSelected(15));
     // Close popup when clicking anywhere on the canvas
     this.canvas.addEventListener('mousedown', () => { rotatePopup.hidden = true; });
+
+    // Duplicate — copies the selected item offset 20cm down-right
+    document.getElementById('ctrl-duplicate').addEventListener('click', () => this.duplicateSelected());
+
+    // Flip — mirrors the selected furniture item horizontally
+    document.getElementById('ctrl-flip').addEventListener('click', () => this.flipSelected());
+
+    // Labels toggle — hides/shows the W×H label on the currently selected item only
+    document.getElementById('ctrl-labels').addEventListener('click', () => {
+      const item = this._getSelectedItem();
+      if (!item) return;
+      item.hideLabel = !item.hideLabel;
+      this._updateLabelToggle();
+      this.render();
+    });
     const ctrlWrap   = document.getElementById('canvas-controls');
     const ctrlToggle = document.getElementById('ctrl-toggle');
     const ctrlArrow  = document.getElementById('ctrl-arrow');
@@ -1225,12 +1453,14 @@ class Designer {
           f = {
             id:     def.id,
             name:   def.name,
+            shape:  def.shape,
+            noCollide: def.noCollide,
             points: def.defaultPoints.map(p => ({ x: ox + p.x, y: oy + p.y })),
             x:      ox, y: oy,
             width:  def.defaultWidth, height: def.defaultHeight,
           };
         } else {
-          f = { id: def.id, name: def.name, x: ox, y: oy, width: def.defaultWidth, height: def.defaultHeight };
+          f = { id: def.id, name: def.name, shape: def.shape, noCollide: def.noCollide, x: ox, y: oy, width: def.defaultWidth, height: def.defaultHeight };
         }
         this.furniture.push(f);
         this.history.push({ action: 'place', type: 'furniture', item: f });
