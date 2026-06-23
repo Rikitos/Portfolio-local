@@ -22,10 +22,11 @@ body:has(.designer) {
 }
 
 .designer {
-  height: calc(100vh - 64px);
+  height: calc(100vh - 84px);
   margin-top: 64px;
   background: $steel-blue;
   overflow: hidden;
+  margin-bottom: 100px;
 
   // Flex row: left column (toolbar + canvas) + right sidebar
   &__main {
@@ -445,6 +446,7 @@ body:has(.designer) {
     width: 220px;
     background: $steel-blue;
     border-left: 1px solid rgba($gold, 0.15);
+    border-bottom: 1px solid rgba($gold, 0.15);
     overflow-y: auto;
     padding: 30px 8px 10px;
 

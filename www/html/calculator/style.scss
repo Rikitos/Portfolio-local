@@ -2,7 +2,7 @@
 @import '../_dev/src/scss/utilities/mixins';
 
 body:has(.calc) {
-  background: $primary-bg;
+  background: $navy;
 }
 
 .calc {
@@ -10,11 +10,11 @@ body:has(.calc) {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: $primary-bg;
+  background: $navy;
 
   &__wrapper {
-    background: $white;
-    border: 2px solid $primary-border;
+    background: $navy-light;
+    border: 2px solid rgba($gold, 0.5);
     border-radius: 8px;
     overflow: hidden;
     width: 280px;
@@ -25,13 +25,13 @@ body:has(.calc) {
   }
 
   &__display {
-    background: $primary-color;
+    background: $steel-blue;
     padding: 20px 16px 12px;
     text-align: right;
 
     &__expression {
       font-family: $primary-font;
-      color: rgba($white, 0.6);
+      color: rgba($gold, 0.5);
       font-size: 0.85rem;
       min-height: 1.2em;
       margin-bottom: 4px;
@@ -42,7 +42,7 @@ body:has(.calc) {
 
     &__value {
       font-family: $primary-font;
-      color: $white;
+      color: $silver-bright;
       font-size: 2.2rem;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -62,9 +62,9 @@ body:has(.calc) {
   &__btn {
     font-family: $primary-font;
     font-size: 1.1rem;
-    color: $primary-text;
-    background: $white;
-    border: 1px solid lighten($primary-border, 60%);
+    color: $silver;
+    background: $navy-light;
+    border: 1px solid rgba($gold, 0.15);
     padding: 18px 0;
     cursor: pointer;
     transition: background 0.12s;
@@ -75,25 +75,24 @@ body:has(.calc) {
     }
 
     &:hover {
-      background: lighten($primary-color, 48%);
+      background: $navy-canvas;
     }
 
     &--operator {
-      color: $primary-color;
-      font-weight: bold;
+      color: $gold;
     }
 
     &--equals {
-      background: $primary-color;
-      color: $white;
+      background: $steel-blue;
+      color: $gold;
 
       &:hover {
-        background: darken($primary-color, 10%);
+        background: darken($steel-blue, 6%);
       }
     }
 
     &--clear {
-      color: #c0392b;
+      color: #e05c4a;
     }
 
     &--span2 {

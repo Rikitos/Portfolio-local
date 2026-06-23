@@ -1,7 +1,6 @@
 .footer {
   background: $navy-dark;
   border-top: 1px solid rgba($gold, 0.3);
-  margin-top: 80px;
 
   &__container {
     display: flex;
@@ -49,6 +48,7 @@
       letter-spacing: 0.1em;
       color: $silver-muted;
       margin: 0;
+      padding-left: 42px;
     }
   }
 

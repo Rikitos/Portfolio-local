@@ -2,7 +2,7 @@
 @import '../_dev/src/scss/utilities/mixins';
 
 body:has(.ttt) {
-  background: $primary-bg;
+  background: $navy;
 }
 
 .ttt {
@@ -12,11 +12,11 @@ body:has(.ttt) {
   justify-content: center;
   min-height: 100vh;
   padding: 20px;
-  background: $primary-bg;
+  background: $navy;
 
   &__title {
     font-family: $primary-font;
-    color: $primary-text;
+    color: $silver-bright;
     font-size: 1.8rem;
     margin-bottom: 20px;
 
@@ -27,7 +27,7 @@ body:has(.ttt) {
 
   &__status {
     font-family: $primary-font;
-    color: $primary-text;
+    color: $silver-muted;
     font-size: 1rem;
     margin-bottom: 16px;
     min-height: 1.4em;
@@ -47,11 +47,11 @@ body:has(.ttt) {
   &__cell {
     width: 90px;
     height: 90px;
-    border: 2px solid $primary-border;
-    background: $white;
+    border: 1px solid rgba($gold, 0.25);
+    background: $navy-light;
     font-family: $primary-font;
     font-size: 2.2rem;
-    color: $primary-text;
+    color: $silver;
     cursor: pointer;
     transition: background 0.15s;
 
@@ -62,43 +62,46 @@ body:has(.ttt) {
     }
 
     &:hover {
-      background: lighten($primary-color, 48%);
+      background: $navy-canvas;
     }
 
     &--x {
-      color: $primary-color;
+      color: $gold;
     }
 
     &--o {
-      color: $primary-border;
+      color: $silver-bright;
     }
 
     &--winner {
-      background: lighten($primary-color, 42%);
+      background: rgba($gold, 0.12);
     }
 
     &--disabled {
       cursor: default;
 
       &:hover {
-        background: $white;
+        background: $navy-light;
       }
     }
   }
 
   &__btn {
     font-family: $primary-font;
-    font-size: 1rem;
-    color: $white;
-    background: $primary-color;
-    border: none;
-    padding: 12px 32px;
-    border-radius: 4px;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: $gold;
+    background: $navy-light;
+    border: 1px solid rgba($gold, 0.35);
+    padding: 10px 28px;
+    border-radius: 2px;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background 0.2s, border-color 0.2s;
 
     &:hover {
-      background: darken($primary-color, 10%);
+      background: $navy-dark;
+      border-color: rgba($gold, 0.5);
     }
   }
 }

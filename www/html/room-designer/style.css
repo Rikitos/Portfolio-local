@@ -23,10 +23,11 @@ body:has(.designer) {
 }
 
 .designer {
-  height: calc(100vh - 64px);
+  height: calc(100vh - 84px);
   margin-top: 64px;
   background: #243D5C;
   overflow: hidden;
+  margin-bottom: 100px;
 }
 .designer__main {
   display: -webkit-box;
@@ -503,6 +504,7 @@ body:has(.designer) {
   width: 220px;
   background: #243D5C;
   border-left: 1px solid rgba(201, 168, 76, 0.15);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.15);
   overflow-y: auto;
   padding: 30px 8px 10px;
 }

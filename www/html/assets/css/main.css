@@ -436,10 +436,195 @@ body:has(.hero) {
   border-color: rgba(201, 168, 76, 0.5);
 }
 
+.projects {
+  background: #060D1A;
+  padding: 80px 20px;
+}
+.projects__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.projects__heading {
+  font-family: "Palatino Linotype", Palatino, serif;
+  font-size: 1.4rem;
+  color: #A8B8C8;
+  letter-spacing: 0.1em;
+  margin: 0;
+}
+@media (min-width: 768px) {
+  .projects__heading {
+    font-size: 1.8rem;
+  }
+}
+.projects__line {
+  width: 60px;
+  height: 1px;
+  background: rgba(201, 168, 76, 0.5);
+  margin: 16px 0 48px;
+}
+.projects__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  width: 100%;
+}
+@media (min-width: 768px) {
+  .projects__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.project-card {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  background: #0A1628;
+  border: 1px solid rgba(201, 168, 76, 0.12);
+  border-radius: 4px;
+  overflow: hidden;
+  -webkit-transition: border-color 0.2s, -webkit-transform 0.2s;
+  transition: border-color 0.2s, -webkit-transform 0.2s;
+  transition: border-color 0.2s, transform 0.2s;
+  transition: border-color 0.2s, transform 0.2s, -webkit-transform 0.2s;
+}
+.project-card:hover {
+  border-color: rgba(201, 168, 76, 0.35);
+  -webkit-transform: translateY(-3px);
+          transform: translateY(-3px);
+}
+.project-card__frame {
+  display: block;
+  text-decoration: none;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+}
+.project-card__browser {
+  background: #112240;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.12);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+}
+.project-card__browser__dots {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 5px;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+}
+.project-card__browser__dots i {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(136, 153, 170, 0.25);
+  font-style: normal;
+}
+.project-card__browser__bar {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  font-family: monospace;
+  font-size: 0.65rem;
+  color: #8899AA;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.project-card__img {
+  display: block;
+  width: 100%;
+  height: 220px;
+  -o-object-fit: contain;
+     object-fit: contain;
+  -o-object-position: top;
+     object-position: top;
+}
+@media (min-width: 1200px) {
+  .project-card__img {
+    height: 320px;
+  }
+}
+.project-card__body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+.project-card__title {
+  font-family: "Palatino Linotype", Palatino, serif;
+  font-size: 1rem;
+  color: #C8D8E8;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+.project-card__tag {
+  font-family: "Palatino Linotype", Palatino, serif;
+  font-size: 0.65rem;
+  color: #C9A84C;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+.project-card__desc {
+  font-family: "Palatino Linotype", Palatino, serif;
+  font-size: 0.8rem;
+  color: #8899AA;
+  line-height: 1.6;
+  margin-top: 4px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+.project-card__link {
+  display: inline-block;
+  margin-top: 8px;
+  font-family: "Palatino Linotype", Palatino, serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #C9A84C;
+  text-decoration: none;
+  opacity: 0.7;
+  -webkit-transition: opacity 0.2s;
+  transition: opacity 0.2s;
+}
+.project-card__link:hover {
+  opacity: 1;
+}
+
 .footer {
   background: #060D1A;
   border-top: 1px solid rgba(201, 168, 76, 0.3);
-  margin-top: 80px;
 }
 .footer__container {
   display: -webkit-box;
@@ -503,6 +688,7 @@ body:has(.hero) {
   letter-spacing: 0.1em;
   color: #8899AA;
   margin: 0;
+  padding-left: 42px;
 }
 .footer__links {
   display: -webkit-box;

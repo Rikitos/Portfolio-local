@@ -3,7 +3,7 @@
 /** RESPONSIVE BREAKPOINTS **/
 /** BREAKPOINTS MEDIA **/
 body:has(.calc) {
-  background: #fff;
+  background: #0A1628;
 }
 
 .calc {
@@ -17,11 +17,11 @@ body:has(.calc) {
       -ms-flex-pack: center;
           justify-content: center;
   min-height: 100vh;
-  background: #fff;
+  background: #0A1628;
 }
 .calc__wrapper {
-  background: #fff;
-  border: 2px solid #2C2C2C;
+  background: #112240;
+  border: 2px solid rgba(201, 168, 76, 0.5);
   border-radius: 8px;
   overflow: hidden;
   width: 280px;
@@ -32,13 +32,13 @@ body:has(.calc) {
   }
 }
 .calc__display {
-  background: #587289;
+  background: #243D5C;
   padding: 20px 16px 12px;
   text-align: right;
 }
 .calc__display__expression {
   font-family: "Palatino Linotype", Palatino, serif;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(201, 168, 76, 0.5);
   font-size: 0.85rem;
   min-height: 1.2em;
   margin-bottom: 4px;
@@ -48,7 +48,7 @@ body:has(.calc) {
 }
 .calc__display__value {
   font-family: "Palatino Linotype", Palatino, serif;
-  color: #fff;
+  color: #C8D8E8;
   font-size: 2.2rem;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -66,9 +66,9 @@ body:has(.calc) {
 .calc__btn {
   font-family: "Palatino Linotype", Palatino, serif;
   font-size: 1.1rem;
-  color: #587289;
-  background: #fff;
-  border: 1px solid #c5c5c5;
+  color: #A8B8C8;
+  background: #112240;
+  border: 1px solid rgba(201, 168, 76, 0.15);
   padding: 18px 0;
   cursor: pointer;
   -webkit-transition: background 0.12s;
@@ -81,21 +81,20 @@ body:has(.calc) {
   }
 }
 .calc__btn:hover {
-  background: rgb(230.5226666667, 235.168, 239.2773333333);
+  background: #0E1F38;
 }
 .calc__btn--operator {
-  color: #587289;
-  font-weight: bold;
+  color: #C9A84C;
 }
 .calc__btn--equals {
-  background: #587289;
-  color: #fff;
+  background: #243D5C;
+  color: #C9A84C;
 }
 .calc__btn--equals:hover {
-  background: rgb(68.0533333333, 88.16, 105.9466666667);
+  background: rgb(27.39375, 46.4171875, 70.00625);
 }
 .calc__btn--clear {
-  color: #c0392b;
+  color: #e05c4a;
 }
 .calc__btn--span2 {
   grid-column: span 2;
