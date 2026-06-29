@@ -110,11 +110,11 @@ export default function CalculatorPage() {
 
   return (
     // min-h subtracts the fixed header height (64px) so the calculator fills the remaining viewport
-    <main className="flex items-center justify-center min-h-[calc(100vh-64px)] px-4 py-12 bg-slate-200 dark:bg-navy-900 transition-colors duration-300">
+    <main className="flex items-center justify-center min-h-[calc(100vh-64px)] px-4 py-12 bg-slate-200 dark:bg-navy-700 transition-colors duration-300">
       <div className="w-[280px] sm:w-[320px] border-2 border-[rgba(201,168,76,0.5)] rounded-lg overflow-hidden bg-[#cdd2e0] dark:bg-navy-800">
 
         {/* Display — fixed height so the box doesn't resize when the expression row appears */}
-        <div className="bg-[#c8cdd8] dark:bg-navy-700 px-4 text-right h-[88px] sm:h-[96px] flex flex-col justify-end pb-3">
+        <div className="bg-[#c8cdd8] dark:bg-navy-600 px-4 text-right h-[88px] sm:h-[96px] flex flex-col justify-end pb-3">
           {/* Expression row: shows e.g. "12 ×" while entering the second operand */}
           <div className={`${font} text-[0.85rem] text-[rgba(201,168,76,0.6)] dark:text-[rgba(201,168,76,0.5)] h-[1.2em] mb-1 truncate`}>
             {expression}

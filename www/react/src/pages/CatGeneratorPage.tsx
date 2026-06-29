@@ -46,7 +46,7 @@ export default function CatGeneratorPage() {
 
   return (
     // min-h subtracts the fixed header height (64px) so the page fills the remaining viewport
-    <main className="flex flex-col items-center justify-center min-h-[calc(100vh-64px)] px-5 py-10 bg-slate-200 dark:bg-navy-900 transition-colors duration-300">
+    <main className="flex flex-col items-center justify-center min-h-[calc(100vh-64px)] px-5 py-10 bg-slate-200 dark:bg-navy-700 transition-colors duration-300">
 
       <h1 className={`${font} font-normal text-[1.8rem] sm:text-[2.2rem] tracking-[0.1em] text-[#1a2035] dark:text-[#A8B8C8] mb-2`}>
         Cat Meme Generator

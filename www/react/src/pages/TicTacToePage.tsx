@@ -84,7 +84,7 @@ export default function TicTacToePage() {
 
   return (
     // min-h subtracts the fixed header height (64px) so the game fills the remaining viewport
-    <main className="flex flex-col items-center justify-center min-h-[calc(100vh-64px)] px-4 py-12 bg-slate-200 dark:bg-navy-900 transition-colors duration-300">
+    <main className="flex flex-col items-center justify-center min-h-[calc(100vh-64px)] px-4 py-12 bg-slate-200 dark:bg-navy-800 transition-colors duration-300">
 
       <h1 className={`${font} font-normal text-[1.8rem] sm:text-[2.4rem] text-[#1a2035] dark:text-[#c0c8d8] mb-5`}>
         Tic Tac Toe
