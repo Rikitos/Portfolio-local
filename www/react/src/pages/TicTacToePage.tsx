@@ -82,6 +82,7 @@ export default function TicTacToePage() {
       ? `Player ${state.winner} wins!`
       : `Player ${state.current}'s turn`
 
+      // das
   return (
     // min-h subtracts the fixed header height (64px) so the game fills the remaining viewport
     <main className="flex flex-col items-center justify-center min-h-[calc(100vh-64px)] px-4 py-12 bg-slate-200 dark:bg-navy-800 transition-colors duration-300">
