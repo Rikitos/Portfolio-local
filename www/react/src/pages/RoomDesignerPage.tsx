@@ -96,7 +96,7 @@ function dimsLabel(def: FurnitureDef) {
   return `${fmt(def.defaultWidth)} × ${fmt(def.defaultHeight)}`
 }
 
-export default function RoomDesignerPage({ dark = true, onToggleTheme }: { dark?: boolean; onToggleTheme?: () => void }) {
+export default function RoomDesignerPage({ dark = true }: { dark?: boolean; onToggleTheme?: () => void }) {
   const canvasRef   = useRef<HTMLCanvasElement>(null)
   const workspaceRef = useRef<HTMLDivElement>(null)
   const { state, api } = useDesigner(canvasRef, workspaceRef, dark)
@@ -104,7 +104,7 @@ export default function RoomDesignerPage({ dark = true, onToggleTheme }: { dark?
   // Toolbar local state
   const [roomW, setRoomW] = useState(5)
   const [roomH, setRoomH] = useState(4)
-  const [zoomInput, setZoomInput] = useState(state.zoomDisplay)
+
 
   // Canvas controls
   const [ctrlCollapsed,   setCtrlCollapsed]   = useState(false)
@@ -196,7 +196,7 @@ export default function RoomDesignerPage({ dark = true, onToggleTheme }: { dark?
               <span className={`${font} text-[0.6rem] tracking-[0.12em] uppercase ${thLabel} leading-none`}>Zoom</span>
               <input
                 value={displayedZoom}
-                onChange={e => {}}
+                onChange={_e => {}}
                 onKeyDown={e => { if (e.key === 'Enter') api.applyInputZoom((e.target as HTMLInputElement).value) }}
                 onBlur={e => api.applyInputZoom(e.target.value)}
                 title="Type a zoom % and press Enter"

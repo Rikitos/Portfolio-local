@@ -6,7 +6,7 @@ services:
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./certbot/www:/var/www/certbot
-      - ./www/html:/var/www/html
+      - ./www/react/dist:/var/www/html
     depends_on:
       - portfolio
       - shop
