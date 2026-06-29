@@ -7,7 +7,7 @@ on:
       - 'www/react/**'
 
 env:
-  IMAGE: ghcr.io/${{ github.repository_owner }}/portfolio-local/react
+  IMAGE: ghcr.io/${{ github.repository_owner | lower }}/portfolio-local/react
 
 jobs:
   build-and-push:
