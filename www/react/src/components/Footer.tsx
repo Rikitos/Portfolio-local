@@ -7,9 +7,11 @@ const font = "font-['Palatino_Linotype',Palatino,serif]"
 
 const projects = [
   { label: 'Calculator', href: '/calculator/' },
-  { label: 'Tic Tac Toe', href: '/tic-tac-toe/' },
-  { label: 'Cat Generator', href: '/cat-generator/' },
   { label: 'Room Designer', href: '/room-designer/' },
+  { label: 'Cat Generator', href: '/cat-generator/' },
+  { label: 'Discord Clone', href: '/discord-clone/' },
+  { label: 'Tic Tac Toe', href: '/tic-tac-toe/' },
+  { label: '2048', href: '/2048/' },
 ]
 
 const contact = [

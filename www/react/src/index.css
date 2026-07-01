@@ -22,3 +22,21 @@
 *, *::before, *::after { box-sizing: border-box; }
 body { margin: 0; }
 html { scroll-behavior: smooth; }
+
+/** Discord Clone — typing indicator bounce animation **/
+@keyframes typingBounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  30%           { transform: translateY(-4px); }
+}
+
+/** 2048 — new tile pop-in and merge pop animations **/
+@keyframes tile-pop {
+  0%   { transform: scale(0); opacity: 0; }
+  60%  { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes tile-merge {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}

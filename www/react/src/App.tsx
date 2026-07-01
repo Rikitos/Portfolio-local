@@ -7,6 +7,8 @@ import CalculatorPage from './pages/CalculatorPage'
 import TicTacToePage from './pages/TicTacToePage'
 import CatGeneratorPage from './pages/CatGeneratorPage'
 import RoomDesignerPage from './pages/RoomDesignerPage'
+import DiscordClonePage from './pages/DiscordClonePage'
+import Game2048Page from './pages/Game2048Page'
 
 export default function App() {
   const [dark, setDark] = useState(true)
@@ -22,6 +24,8 @@ export default function App() {
           <Route path="/tic-tac-toe" element={<TicTacToePage />} />
           <Route path="/cat-generator" element={<CatGeneratorPage />} />
           <Route path="/room-designer" element={<RoomDesignerPage dark={dark} onToggleTheme={() => setDark(!dark)} />} />
+          <Route path="/discord-clone" element={<DiscordClonePage dark={dark} />} />
+          <Route path="/2048" element={<Game2048Page dark={dark} />} />
         </Routes>
 
         <Footer />

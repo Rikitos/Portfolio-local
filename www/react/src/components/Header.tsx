@@ -15,6 +15,8 @@ const projects = [
   { label: 'Tic Tac Toe', href: '/tic-tac-toe', external: false },
   { label: 'Cat Generator', href: '/cat-generator', external: false },
   { label: 'Room Designer', href: '/room-designer', external: false },
+  { label: 'Discord Clone', href: '/discord-clone', external: false },
+  { label: '2048', href: '/2048', external: false },
 ]
 
 const font = "font-['Palatino_Linotype',Palatino,serif]"

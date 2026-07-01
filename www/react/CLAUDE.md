@@ -105,7 +105,7 @@ All values are used as inline `style` props or JS-conditional class strings — 
 | Role | Value |
 |------|-------|
 | Page / sidebar background | `#243D5C` |
-| Page root background | `#060D1A` (`navy-900`) |
+| Page root background | `#112240` (`navy-700`) |
 | Header background | `#060D1A` |
 | Header dropdown background | `#0A1628` (`navy-800`) |
 | Panel background | `rgba(17, 34, 64, 0.4)` |

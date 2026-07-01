@@ -4,6 +4,8 @@ import calculatorImg from '../assets/img/project-calculator.png'
 import tictactoeImg from '../assets/img/project-tictactoe.png'
 import catGeneratorImg from '../assets/img/project-cat-generator.png'
 import roomDesignerImg from '../assets/img/project-room-designer.png'
+import discordImg from '../assets/img/project-discord.png'
+import game2048Img from '../assets/img/project-2048.png'
 
 /** TYPES **/
 interface Project {
@@ -27,12 +29,12 @@ const projects: Project[] = [
     url: 'krzysztofpabisz.pl/calculator',
   },
   {
-    title: 'Tic Tac Toe',
-    tags: ['React', 'TypeScript', 'Tailwind'],
-    description: 'Classic two-player game — tracks turns, detects wins and draws, resets in one click.',
-    href: '/tic-tac-toe',
-    img: tictactoeImg,
-    url: 'krzysztofpabisz.pl/tic-tac-toe',
+    title: 'Room Designer',
+    tags: ['HTML', 'Canvas', 'JavaScript'],
+    description: 'Interactive floor planner — draw rooms on a scaled grid, place furniture, export to image.',
+    href: '/room-designer',
+    img: roomDesignerImg,
+    url: 'krzysztofpabisz.pl/room-designer',
     external: false,
   },
   {
@@ -45,12 +47,30 @@ const projects: Project[] = [
     external: false,
   },
   {
-    title: 'Room Designer',
-    tags: ['HTML', 'Canvas', 'JavaScript'],
-    description: 'Interactive floor planner — draw rooms on a scaled grid, place furniture, export to image.',
-    href: '/room-designer',
-    img: roomDesignerImg,
-    url: 'krzysztofpabisz.pl/room-designer',
+    title: 'Discord Clone',
+    tags: ['React', 'TypeScript', 'Tailwind'],
+    description: 'A Discord-inspired chat UI with servers, channels, and a message pane.',
+    href: '/discord-clone',
+    img: discordImg,
+    url: 'krzysztofpabisz.pl/discord-clone',
+    external: false,
+  },
+  {
+    title: 'Tic Tac Toe',
+    tags: ['React', 'TypeScript', 'Tailwind'],
+    description: 'Classic two-player game — tracks turns, detects wins and draws, resets in one click.',
+    href: '/tic-tac-toe',
+    img: tictactoeImg,
+    url: 'krzysztofpabisz.pl/tic-tac-toe',
+    external: false,
+  },
+  {
+    title: '2048',
+    tags: ['React', 'TypeScript', 'Tailwind'],
+    description: 'The sliding tile puzzle — merge matching numbers to reach 2048.',
+    href: '/2048',
+    img: game2048Img,
+    url: 'krzysztofpabisz.pl/2048',
     external: false,
   },
 ]

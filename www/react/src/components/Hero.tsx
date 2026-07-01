@@ -5,7 +5,7 @@ import Button from './Button'
 /** COMPONENT **/
 export default function Hero({ dark }: { dark: boolean }) {
   return (
-    <section className="min-h-screen flex items-center justify-center text-center px-8 bg-slate-200 dark:bg-navy-800">
+    <section className="min-h-screen flex items-center justify-center text-center px-8 bg-slate-200 dark:bg-navy-700">
       <div className="flex flex-col items-center">
 
         {/* Logo */}
