@@ -72,6 +72,11 @@ export function useDesigner(
     })
     designerRef.current = d
 
+    // Apply the initial theme now — the useLayoutEffect below fires before this useEffect
+    // on first mount (designerRef is still null then), so we must seed the theme here.
+    d.theme = dark ? 'dark' : 'light'
+    patch({ theme: dark ? 'dark' : 'light' })
+
     // Load the bundled default layout on first mount
     d.loadLayout(d.storage.getDefault())
     patch({
