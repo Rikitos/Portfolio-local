@@ -11,6 +11,8 @@ www/html/.claude/
 .env
 db-backups/
 
+db-export.sh
+db-import.sh
 portfolio_backup.sql
 shop_backup.sql
 
