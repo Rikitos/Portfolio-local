@@ -1,11 +1,3 @@
-# WordPress core files (re-downloaded by Docker)
-www/portfolio/*
-!www/portfolio/wp-content/
-www/shop/*
-!www/shop/wp-content/
-
-www/shop/wp-content/plugins/*/vendor/
-
 www/html/.claude/
 .claude/
 .env
