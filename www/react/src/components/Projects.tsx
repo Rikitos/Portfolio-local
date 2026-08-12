@@ -1,5 +1,6 @@
 /** IMPORTS **/
 import { Link } from 'react-router-dom'
+import epochronosImg from '../assets/img/project-epochronos.png'
 import calculatorImg from '../assets/img/project-calculator.png'
 import tictactoeImg from '../assets/img/project-tictactoe.png'
 import catGeneratorImg from '../assets/img/project-cat-generator.png'
@@ -20,6 +21,15 @@ interface Project {
 
 /** DATA **/
 const projects: Project[] = [
+  {
+    title: 'Epochronos',
+    tags: ['React', 'JavaScript', 'Vite'],
+    description: 'A historical timeline game — drag and sort event cards from oldest to newest across categories, eras, and timed challenges.',
+    href: 'https://epochronos.krzysztofpabisz.pl',
+    img: epochronosImg,
+    url: 'epochronos.krzysztofpabisz.pl',
+    external: true,
+  },
   {
     title: 'Calculator',
     tags: ['React', 'TypeScript', 'Tailwind'],

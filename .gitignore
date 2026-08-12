@@ -3,6 +3,8 @@ www/html/.claude/
 .env
 db-backups/
 
+makefile
+
 db-export.sh
 db-import.sh
 portfolio_backup.sql
