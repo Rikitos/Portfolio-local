@@ -19,16 +19,44 @@ React 19 · TypeScript 6 · Tailwind CSS v4 · Vite 8 · React Router v7
 
 **Tailwind v4 specifics:**
 - Configured entirely in `src/index.css` via `@import "tailwindcss"` and `@theme { … }` — no `tailwind.config.*` file.
-- Dark mode is defined with `@custom-variant dark (&:where(.dark, .dark *))` — class-based, but this variant has been observed to apply even without a `.dark` ancestor in some browsers (OS dark mode + CSS nesting interaction). **Do not use `dark:` Tailwind variant classes for theme switching in this project.** Use React prop-driven inline `style` props for all background colors and JS conditionals for class names instead.
+- Dark mode is toggled by adding/removing the `.dark` class on the root div in `App.tsx` (`dark ? 'dark' : ''`). The custom variant `@custom-variant dark (&:where(.dark, .dark *))` makes `dark:` utility classes work throughout the codebase — use them freely for standard UI theming. For the canvas renderer (Room Designer) where colors are passed as strings to a 2D drawing API, use inline `style` props or the `dark` boolean prop instead.
 
 ## Architecture
 
 ```
 src/
-  App.tsx                          — Router root; holds global `dark` boolean state
-  components/Header.tsx            — Fixed nav bar; receives dark + onToggle
+  App.tsx                          — Router root; holds global `dark` boolean state + all routes
+  main.tsx                         — React entry point; wraps App in BrowserRouter
+  components/
+    Header.tsx                     — Fixed nav bar; receives dark + onToggle
+    Hero.tsx                       — Full-screen hero section; receives dark for button variant
+    Projects.tsx                   — Project grid (ProjectCard); external projects open in new tab
+    Footer.tsx                     — Site footer with project links and contact info
+    Button.tsx                     — Reusable button/link; supports 5 visual variants
   pages/
+    Home.tsx                       — Landing page; renders Hero + Projects sections
+    CalculatorPage.tsx             — Basic arithmetic calculator
+    TicTacToePage.tsx              — Two-player tic-tac-toe
+    CatGeneratorPage.tsx           — Random cat image with overlaid caption
+    DiscordClonePage.tsx           — Discord-inspired chat UI; receives dark prop
+    Game2048Page.tsx               — Sliding tile puzzle; receives dark prop
     RoomDesignerPage.tsx           — Full-screen layout + all sidebar/toolbar UI
+    discord-clone/
+      ChannelSidebar.tsx           — Server channel list sidebar
+      ChatHeader.tsx               — Channel name + action bar
+      EmojiPicker.tsx              — Emoji selection popup
+      GifPicker.tsx                — GIF search popup
+      MemberList.tsx               — Online members panel
+      Message.tsx                  — Single message bubble
+      MessageInput.tsx             — Compose bar with emoji/GIF buttons
+      MessageList.tsx              — Scrollable message feed
+      ServerRail.tsx               — Left server icons rail
+      UserAvatar.tsx               — Avatar with status indicator
+      UserStatusPanel.tsx          — Bottom-left user identity bar
+      seed-data.ts                 — Initial channels, messages, and members
+      types.ts                     — Shared Discord clone types
+      useBotReply.ts               — Auto-reply bot hook
+      useChatEngine.ts             — Message send/receive state
     room-designer/
       designer.ts                  — Main canvas controller (class)
       useDesigner.ts               — React hook wrapping Designer; bridges canvas ↔ React state
@@ -41,6 +69,18 @@ src/
       furniture-data.ts            — FURNITURE_CATALOGUE: catalogue definitions + SVG icons
       default-layout.json          — Bundled starting layout (loaded on first mount)
 ```
+
+### Routes
+
+| Path | Component |
+|------|-----------|
+| `/` | Home |
+| `/calculator` | CalculatorPage |
+| `/tic-tac-toe` | TicTacToePage |
+| `/cat-generator` | CatGeneratorPage |
+| `/room-designer` | RoomDesignerPage |
+| `/discord-clone` | DiscordClonePage |
+| `/2048` | Game2048Page |
 
 ### Coordinate systems
 
@@ -98,7 +138,7 @@ Continuous `requestAnimationFrame` loop in `Designer`. Only calls `_render()` wh
 
 ## Theme colour palette
 
-All values are used as inline `style` props or JS-conditional class strings — never `dark:` variant classes.
+Canvas renderer values (Room Designer) are passed as strings to the 2D drawing API — use inline `style` props or the `dark` boolean prop there. Standard UI components use `dark:` Tailwind classes.
 
 ### Dark theme (blueprint)
 

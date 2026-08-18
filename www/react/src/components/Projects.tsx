@@ -1,5 +1,7 @@
 /** IMPORTS **/
 import { Link } from 'react-router-dom'
+import kosmetologiaImg from '../assets/img/project-kosmetologia.jpg'
+import kawiarniaImg from '../assets/img/project-kawiarnia.png'
 import epochronosImg from '../assets/img/project-epochronos.png'
 import calculatorImg from '../assets/img/project-calculator.png'
 import tictactoeImg from '../assets/img/project-tictactoe.png'
@@ -21,6 +23,24 @@ interface Project {
 
 /** DATA **/
 const projects: Project[] = [
+  {
+    title: 'Salon Kosmetyczny',
+    tags: ['Astro', 'Tailwind', 'Typescript'],
+    description: 'Page marketing for Beauty Parlor, supports polish and english version',
+    href: 'https://kosmetologia.krzysztofpabisz.pl',
+    img: kosmetologiaImg,
+    url: 'kosmetologia.krzysztofpabisz.pl',
+    external: true,
+  },
+  {
+    title: 'Kawiarnia',
+    tags: ['Astro', 'Tailwind', 'Typescript'],
+    description: 'A Simple landing page for Cafeteria shop, supports quick language switch with English, Polish being the default one',
+    href: 'https://kawiarnia.krzysztofpabisz.pl',
+    img: kawiarniaImg,
+    url: 'kawiarnia.krzysztofpabisz.pl',
+    external: true,
+  },
   {
     title: 'Epochronos',
     tags: ['React', 'JavaScript', 'Vite'],
