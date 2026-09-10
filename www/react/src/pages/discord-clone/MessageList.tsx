@@ -12,6 +12,7 @@
 import { useEffect, useRef } from 'react'
 import type { Message as MessageType, User, LocalUser } from './types'
 import Message from './Message'
+import { useDiscordHousePabisz } from './HousePabiszDiscordContext'
 
 // Two messages from the same user are grouped if they arrive within this window (ms)
 const GROUP_THRESHOLD_MS = 5 * 60_000
@@ -46,8 +47,9 @@ export default function MessageList({ messages, users, localUser, typingUsers, d
     bottomRef.current?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const bg       = dark ? '#313338' : '#ffffff'
-  const metaColor = dark ? '#949ba4' : '#80848e'
+  const housePabisz = useDiscordHousePabisz()
+  const bg        = housePabisz ? 'var(--parchment)' : dark ? '#313338' : '#ffffff'
+  const metaColor = housePabisz ? 'var(--ink-muted)' : dark ? '#949ba4' : '#80848e'
 
   return (
     <div

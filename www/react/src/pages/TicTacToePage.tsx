@@ -1,94 +1,27 @@
-import { useReducer } from 'react'
-
-/** TYPES **/
-type Player = 'X' | 'O'
-type Cell = Player | ''  // empty string = unclaimed cell
-
-interface GameState {
-  board: Cell[]          // flat array of 9 cells, indexed 0–8 left-to-right, top-to-bottom
-  current: Player        // whose turn it is
-  winner: Player | 'draw' | null
-  winLine: number[]      // indices of the three winning cells (used to highlight them)
-}
-
-type GameAction =
-  | { type: 'CLICK'; index: number }
-  | { type: 'RESTART' }
-
-/** LOGIC **/
-// All 8 possible winning combinations as cell index triplets
-const WINNING_LINES = [
-  [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
-  [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
-  [0, 4, 8], [2, 4, 6],             // diagonals
-]
-
-// Returns the winning player + their line, 'draw' if all cells filled, or null if game ongoing
-function checkWinner(board: Cell[]): { winner: Player; line: number[] } | { winner: 'draw'; line: [] } | null {
-  for (const [a, b, c] of WINNING_LINES) {
-    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-      return { winner: board[a] as Player, line: [a, b, c] }
-    }
-  }
-  if (board.every(c => c !== '')) return { winner: 'draw', line: [] }
-  return null
-}
-
-const initialState: GameState = {
-  board: Array(9).fill(''),
-  current: 'X',
-  winner: null,
-  winLine: [],
-}
-
-function reducer(state: GameState, action: GameAction): GameState {
-  switch (action.type) {
-    case 'CLICK': {
-      const { index } = action
-      // Ignore clicks on already-claimed cells or after the game is over
-      if (state.winner || state.board[index]) return state
-
-      // Spread into a new array — never mutate state directly in a reducer
-      const board = [...state.board]
-      board[index] = state.current
-
-      const result = checkWinner(board)
-      if (result) {
-        // Keep current player in state so the status message reads "Player X wins"
-        return { board, current: state.current, winner: result.winner, winLine: result.line }
-      }
-
-      // Alternate player and clear win data (no winner yet)
-      return { board, current: state.current === 'X' ? 'O' : 'X', winner: null, winLine: [] }
-    }
-    case 'RESTART':
-      return initialState
-    default:
-      return state
-  }
-}
+import { useTranslation } from 'react-i18next'
+import { useTicTacToe } from './tic-tac-toe/useTicTacToe'
 
 /** STYLES **/
 const font = "font-['Palatino_Linotype',Palatino,serif]"
 
 /** COMPONENT **/
 export default function TicTacToePage() {
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const { t } = useTranslation()
+  const { state, dispatch } = useTicTacToe()
 
   // Derive the status message from state — no separate status state needed
   const status = state.winner === 'draw'
-    ? "It's a draw!"
+    ? t('games.ticTacToe.draw')
     : state.winner
-      ? `Player ${state.winner} wins!`
-      : `Player ${state.current}'s turn`
+      ? t('games.ticTacToe.win', { player: state.winner })
+      : t('games.ticTacToe.turn', { player: state.current })
 
-      // das
   return (
     // min-h subtracts the fixed header height (64px) so the game fills the remaining viewport
     <main className="flex flex-col items-center justify-center min-h-[calc(100vh-64px)] px-4 py-12 bg-slate-200 dark:bg-navy-800 transition-colors duration-300">
 
       <h1 className={`${font} font-normal text-[1.8rem] sm:text-[2.4rem] text-[#1a2035] dark:text-[#c0c8d8] mb-5`}>
-        Tic Tac Toe
+        {t('games.ticTacToe.title')}
       </h1>
 
       {/* min-h keeps the layout stable — prevents the board from jumping when text changes */}
@@ -133,7 +66,7 @@ export default function TicTacToePage() {
         onClick={() => dispatch({ type: 'RESTART' })}
         className={`${font} text-[0.75rem] tracking-[0.2em] uppercase text-[#1a2035] dark:text-[#C9A84C] bg-[#cdd2e0] dark:bg-navy-700 border border-[rgba(201,168,76,0.35)] hover:text-[#C9A84C] hover:bg-[#e4e8f0] dark:hover:text-[#C9A84C] dark:hover:bg-navy-900 hover:border-[rgba(201,168,76,0.5)] px-7 py-2.5 rounded-sm transition-colors cursor-pointer`}
       >
-        Restart
+        {t('games.ticTacToe.restart')}
       </button>
 
     </main>

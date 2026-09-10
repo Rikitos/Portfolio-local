@@ -21,7 +21,7 @@
  *   CBtn — canvas overlay button (icon + optional text label, collapses to icon-only)
  *   SBtn — sidebar small button (extra small, optional danger variant)
  */
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import { useDesigner } from './room-designer/useDesigner'
 import { FURNITURE_CATALOGUE } from './room-designer/furniture-data'
 import type { FurnitureDef } from './room-designer/types'
@@ -105,6 +105,22 @@ export default function RoomDesignerPage({ dark = true }: { dark?: boolean; onTo
   const [roomW, setRoomW] = useState(5)
   const [roomH, setRoomH] = useState(4)
 
+  // Height always reserves space for the site header; padding-top only needs to
+  // *simulate* that space when the header is `fixed` (out of flow, classic site
+  // header) — a `sticky` header (House Pabisz) already occupies it in normal flow,
+  // so adding padding on top of that would double-count it.
+  const [headerHeight, setHeaderHeight] = useState(64)
+  const [headerIsFixed, setHeaderIsFixed] = useState(true)
+  useEffect(() => {
+    const headerEl = document.querySelector('header')
+    if (!headerEl) return
+    const measure = () => setHeaderHeight(headerEl.getBoundingClientRect().height)
+    const observer = new ResizeObserver(measure)
+    observer.observe(headerEl)
+    measure()
+    setHeaderIsFixed(getComputedStyle(headerEl).position === 'fixed')
+    return () => observer.disconnect()
+  }, [])
 
   // Canvas controls
   const [ctrlCollapsed,   setCtrlCollapsed]   = useState(false)
@@ -147,8 +163,8 @@ export default function RoomDesignerPage({ dark = true }: { dark?: boolean; onTo
   const displayedZoom = state.zoomDisplay
 
   return (
-    <div className="pt-16" style={bgStyle}>
-      <div className="flex flex-col" style={{ height: 'calc(100vh - 64px)', ...bgStyle }}>
+    <div style={{ paddingTop: headerIsFixed ? headerHeight : 0, ...bgStyle }}>
+      <div className="flex flex-col" style={{ height: `calc(100vh - ${headerHeight}px)`, ...bgStyle }}>
 
         {/* ── Toolbar ── */}
         <div className="flex-shrink-0 flex items-end justify-center gap-6 px-5 py-2 mt-4 mx-5 rounded-[4px]" style={bgStyle}>

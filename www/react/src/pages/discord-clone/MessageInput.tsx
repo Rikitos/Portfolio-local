@@ -12,6 +12,7 @@ import { useState, useRef } from 'react'
 import type { KeyboardEvent } from 'react'
 import EmojiPicker from './EmojiPicker'
 import GifPicker   from './GifPicker'
+import { useDiscordHousePabisz } from './HousePabiszDiscordContext'
 
 type OpenPicker = 'none' | 'emoji' | 'gif'
 
@@ -29,10 +30,15 @@ export default function MessageInput({ channelName, dark, onSend, onSendGif, onT
   const textareaRef  = useRef<HTMLTextAreaElement>(null)
   const typingRef    = useRef(false)
 
-  const inputBg   = dark ? '#383a40' : '#ebedef'
-  const textColor = dark ? '#dbdee1' : '#313338'
-  const iconColor = dark ? '#b5bac1' : '#80848e'
-  const iconHover = dark ? '#dbdee1' : '#313338'
+  const housePabisz = useDiscordHousePabisz()
+  const inputBg   = housePabisz ? 'var(--parchment-deep)' : dark ? '#383a40' : '#ebedef'
+  const textColor = housePabisz ? 'var(--ink)' : dark ? '#dbdee1' : '#313338'
+  const iconColor = housePabisz ? 'var(--ink-muted)' : dark ? '#b5bac1' : '#80848e'
+  const iconHover = housePabisz ? 'var(--maroon)' : dark ? '#dbdee1' : '#313338'
+  const barBg     = housePabisz ? 'var(--parchment)' : dark ? '#313338' : '#ffffff'
+  const activeBg  = housePabisz ? 'color-mix(in srgb, var(--gold) 18%, transparent)' : dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)'
+  const sendBg    = housePabisz ? 'var(--maroon)' : '#5865F2'
+  const sendText  = housePabisz ? 'var(--parchment)' : '#ffffff'
 
   function handleSend() {
     const trimmed = value.trim()
@@ -77,7 +83,7 @@ export default function MessageInput({ channelName, dark, onSend, onSendGif, onT
         onClick={onClick}
         title={title}
         className="shrink-0 w-8 h-8 flex items-center justify-center rounded border-0 cursor-pointer transition-colors"
-        style={{ backgroundColor: active ? (dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)') : 'transparent',
+        style={{ backgroundColor: active ? activeBg : 'transparent',
                  color: active ? iconHover : iconColor }}
       >
         {children}
@@ -88,7 +94,7 @@ export default function MessageInput({ channelName, dark, onSend, onSendGif, onT
   return (
     <div
       className="px-4 py-3 shrink-0"
-      style={{ backgroundColor: dark ? '#313338' : '#ffffff' }}
+      style={{ backgroundColor: barBg }}
     >
       <div
         className="flex items-end gap-1 rounded-lg px-3 py-2"
@@ -151,7 +157,7 @@ export default function MessageInput({ channelName, dark, onSend, onSendGif, onT
             <button
               onClick={handleSend}
               className="w-8 h-8 flex items-center justify-center rounded border-0 cursor-pointer transition-colors"
-              style={{ backgroundColor: '#5865F2', color: '#ffffff' }}
+              style={{ backgroundColor: sendBg, color: sendText }}
               title="Send Message"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">

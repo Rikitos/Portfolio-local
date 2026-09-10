@@ -8,6 +8,7 @@
 
 import { useState } from 'react'
 import { GIF_POOL } from './seed-data'
+import { useDiscordHousePabisz } from './HousePabiszDiscordContext'
 
 interface GifPickerProps {
   onPick: (gif: { url: string; alt: string }) => void
@@ -22,12 +23,15 @@ const ALL_TAGS = ['all', ...Array.from(new Set(
 
 export default function GifPicker({ onPick, onClose, dark }: GifPickerProps) {
   const [activeTag, setActiveTag] = useState('all')
+  const housePabisz = useDiscordHousePabisz()
 
-  const bg       = dark ? '#2b2d31' : '#ffffff'
-  const border   = dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.1)'
-  const chipBg   = dark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'
-  const chipActive = '#5865F2'
-  const textMute = dark ? '#949ba4' : '#6d6f78'
+  const bg          = housePabisz ? 'var(--card)' : dark ? '#2b2d31' : '#ffffff'
+  const border      = housePabisz ? 'var(--line)' : dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.1)'
+  const chipBg      = housePabisz ? 'color-mix(in srgb, var(--ink) 8%, transparent)' : dark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'
+  const chipActive  = housePabisz ? 'var(--maroon)' : '#5865F2'
+  const chipActiveText = housePabisz ? 'var(--parchment)' : '#ffffff'
+  const textMute    = housePabisz ? 'var(--ink-muted)' : dark ? '#949ba4' : '#6d6f78'
+  const tileBg      = housePabisz ? 'var(--parchment-deep)' : dark ? '#1e1f22' : '#f2f3f5'
 
   const filtered = activeTag === 'all'
     ? GIF_POOL
@@ -63,7 +67,7 @@ export default function GifPicker({ onPick, onClose, dark }: GifPickerProps) {
                 className="px-2 py-[3px] rounded-full text-[0.72rem] font-medium border-0 cursor-pointer transition-colors capitalize"
                 style={{
                   backgroundColor: activeTag === tag ? chipActive : chipBg,
-                  color: activeTag === tag ? '#ffffff' : textMute,
+                  color: activeTag === tag ? chipActiveText : textMute,
                 }}
               >
                 {tag}
@@ -80,7 +84,7 @@ export default function GifPicker({ onPick, onClose, dark }: GifPickerProps) {
                 key={gif.url}
                 onClick={() => { onPick(gif); onClose() }}
                 className="relative rounded-md overflow-hidden border-0 cursor-pointer p-0 transition-opacity hover:opacity-80"
-                style={{ aspectRatio: '16/9', backgroundColor: dark ? '#1e1f22' : '#f2f3f5' }}
+                style={{ aspectRatio: '16/9', backgroundColor: tileBg }}
                 title={gif.alt}
               >
                 <img

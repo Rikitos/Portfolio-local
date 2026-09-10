@@ -10,6 +10,7 @@
  */
 
 import type { User, LocalUser, UserStatus } from './types'
+import { useDiscordHousePabisz } from './HousePabiszDiscordContext'
 
 const STATUS_COLORS: Record<UserStatus, string> = {
   online:  '#23a55a',
@@ -28,12 +29,13 @@ interface UserAvatarProps {
 }
 
 export default function UserAvatar({ userId, users, localUser, size = 40, showStatus = false }: UserAvatarProps) {
+  const housePabisz = useDiscordHousePabisz()
   // Resolve either a bot user or the local user
   const user: User | LocalUser | undefined =
     userId === 'local_user' ? localUser : users[userId]
 
   const displayName = user?.displayName ?? '?'
-  const color       = (user as User)?.avatarColor ?? '#5865F2'
+  const color       = (user as User)?.avatarColor ?? (housePabisz ? 'var(--maroon)' : '#5865F2')
   const initial     = displayName.charAt(0).toUpperCase()
   const avatarUrl   = (user as User)?.avatarUrl
   const status      = (user as User)?.status ?? (localUser?.status ?? 'offline')

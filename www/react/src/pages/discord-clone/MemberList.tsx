@@ -11,6 +11,7 @@
 import { useState } from 'react'
 import type { User, Server, LocalUser } from './types'
 import UserAvatar from './UserAvatar'
+import { useDiscordHousePabisz } from './HousePabiszDiscordContext'
 
 const STATUS_ORDER = ['online', 'idle', 'dnd', 'offline'] as const
 
@@ -23,10 +24,13 @@ interface MemberListProps {
 }
 
 export default function MemberList({ server, users, localUser, collapsed, dark }: MemberListProps) {
-  const bg         = dark ? '#2b2d31' : '#f2f3f5'
-  const textStrong = dark ? '#f2f3f5' : '#313338'
-  const textMuted  = dark ? '#949ba4' : '#6d6f78'
-  const labelColor = dark ? '#949ba4' : '#6d6f78'
+  const housePabisz = useDiscordHousePabisz()
+  const bg          = housePabisz ? 'var(--card)' : dark ? '#2b2d31' : '#f2f3f5'
+  const textStrong  = housePabisz ? 'var(--ink)' : dark ? '#f2f3f5' : '#313338'
+  const textMuted   = housePabisz ? 'var(--ink-muted)' : dark ? '#949ba4' : '#6d6f78'
+  const labelColor  = housePabisz ? 'var(--ink-muted)' : dark ? '#949ba4' : '#6d6f78'
+  const rowHoverBg  = housePabisz ? 'color-mix(in srgb, var(--gold) 14%, transparent)' : dark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'
+  const textHover   = housePabisz ? 'var(--maroon)' : dark ? '#ffffff' : '#060607'
 
   const members = server.memberIds
     .map((id) => users[id])
@@ -64,9 +68,7 @@ export default function MemberList({ server, users, localUser, collapsed, dark }
     const u = user as User
     const isOffline = u.status === 'offline'
     const [hovered, setHovered] = useState(false)
-    const rowBg = hovered
-      ? (dark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)')
-      : 'transparent'
+    const rowBg = hovered ? rowHoverBg : 'transparent'
     return (
       <div
         className="flex items-center gap-2 px-2 py-[6px] rounded-md cursor-pointer transition-colors"
@@ -76,7 +78,7 @@ export default function MemberList({ server, users, localUser, collapsed, dark }
       >
         <UserAvatar userId={u.id} users={users} localUser={localUser} size={32} showStatus />
         <div className="flex flex-col min-w-0">
-          <span className="text-[0.87rem] font-medium leading-tight truncate" style={{ color: isOffline ? textMuted : hovered ? (dark ? '#ffffff' : '#060607') : textStrong }}>
+          <span className="text-[0.87rem] font-medium leading-tight truncate" style={{ color: isOffline ? textMuted : hovered ? textHover : textStrong }}>
             {u.displayName}
           </span>
           {u.role && (

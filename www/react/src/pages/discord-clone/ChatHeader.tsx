@@ -9,6 +9,7 @@
  */
 
 import type { Channel } from './types'
+import { useDiscordHousePabisz } from './HousePabiszDiscordContext'
 
 export type MemberListMode = 'full' | 'collapsed' | 'hidden'
 
@@ -31,12 +32,14 @@ export default function ChatHeader({
   showSidebarToggle,
   dark,
 }: ChatHeaderProps) {
-  const bg         = dark ? '#313338' : '#ffffff'
-  const border     = dark ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.08)'
-  const textStrong = dark ? '#f2f3f5' : '#313338'
-  const textMuted  = dark ? '#949ba4' : '#6d6f78'
-  const iconBase   = dark ? '#949ba4' : '#80848e'
-  const iconActive = dark ? '#dbdee1' : '#313338'
+  const housePabisz = useDiscordHousePabisz()
+  const bg         = housePabisz ? 'var(--parchment)' : dark ? '#313338' : '#ffffff'
+  const border     = housePabisz ? 'var(--line)' : dark ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.08)'
+  const textStrong = housePabisz ? 'var(--ink)' : dark ? '#f2f3f5' : '#313338'
+  const textMuted  = housePabisz ? 'var(--ink-muted)' : dark ? '#949ba4' : '#6d6f78'
+  const iconBase   = housePabisz ? 'var(--ink-muted)' : dark ? '#949ba4' : '#80848e'
+  const iconActive = housePabisz ? 'var(--maroon)' : dark ? '#dbdee1' : '#313338'
+  const activeBg   = housePabisz ? 'color-mix(in srgb, var(--gold) 16%, transparent)' : dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)'
 
   const typeIcon = channel.type === 'announcement' ? '📢' : '#'
 
@@ -55,7 +58,7 @@ export default function ChatHeader({
           className="flex flex-col gap-[4px] w-7 h-7 items-center justify-center rounded border-0 cursor-pointer transition-colors shrink-0"
           title={sidebarOpen ? 'Close channel list' : 'Open channel list'}
           style={{
-            backgroundColor: sidebarOpen ? (dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)') : 'transparent',
+            backgroundColor: sidebarOpen ? activeBg : 'transparent',
             color: sidebarOpen ? iconActive : iconBase,
           }}
         >
@@ -93,7 +96,7 @@ export default function ChatHeader({
                                           'Show member list'
         }
         style={{
-          backgroundColor: membersActive ? (dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)') : 'transparent',
+          backgroundColor: membersActive ? activeBg : 'transparent',
           color: membersActive ? iconActive : iconBase,
         }}
       >

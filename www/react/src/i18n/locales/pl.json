@@ -1,0 +1,163 @@
+{
+  "header": {
+    "projectsLabel": "Projekty",
+    "toggleToLight": "Przełącz na jasny motyw",
+    "toggleToDark": "Przełącz na ciemny motyw",
+    "toggleMenu": "Przełącz menu",
+    "brandLine1": "Portfolio",
+    "brandName": "Krzysztof Pabisz",
+    "housePabiszLink": "House Pabisz",
+    "lang": "Język"
+  },
+  "footer": {
+    "role": "Twórca stron internetowych",
+    "projectsHeading": "Projekty",
+    "contactHeading": "Kontakt",
+    "rights": "© {{year}} Krzysztof Pabisz. Wszelkie prawa zastrzeżone."
+  },
+  "hero": {
+    "role": "Web Developer",
+    "cta": "Zobacz projekty"
+  },
+  "projects": {
+    "kosmetologia": { "title": "Salon Kosmetyczny", "description": "Strona marketingowa dla salonu kosmetycznego, dostępna w wersji polskiej i angielskiej" },
+    "kawiarnia": { "title": "Kawiarnia", "description": "Prosta strona wizytówkowa dla kawiarni, z szybkim przełączaniem języka - domyślnie polski, dostępny też angielski" },
+    "epochronos": { "description": "Gra historyczna z osią czasu - przeciągaj i układaj karty wydarzeń od najstarszych do najnowszych, w kategoriach, epokach i trybie na czas." },
+    "calculator": { "description": "Przejrzysty kalkulator z podstawowymi działaniami: dodawanie, odejmowanie, mnożenie, dzielenie i procenty." },
+    "room-designer": { "description": "Interaktywny planer pomieszczeń - rysuj pokoje na skalowanej siatce, rozmieszczaj meble, eksportuj do obrazu." },
+    "cat-generator": { "description": "Pobiera losowe zdjęcie kota z API i nakłada na nie własny podpis." },
+    "discord-clone": { "description": "Interfejs czatu inspirowany Discordem - z serwerami, kanałami i oknem wiadomości." },
+    "tic-tac-toe": { "description": "Klasyczna gra dla dwóch graczy - liczy tury, wykrywa wygraną i remis, reset jednym kliknięciem." },
+    "game-2048": { "description": "Łamigłówka z przesuwanymi kaflami - łącz takie same liczby, by dojść do 2048." }
+  },
+  "games": {
+    "ticTacToe": {
+      "title": "Kółko i Krzyżyk",
+      "turn": "Ruch gracza {{player}}",
+      "win": "Gracz {{player}} wygrywa!",
+      "draw": "Remis!",
+      "restart": "Od nowa"
+    },
+    "catGenerator": {
+      "title": "Generator Kocich Memów",
+      "subtitle": "Kliknij przycisk, aby zobaczyć losowego kota",
+      "next": "Następny Kot"
+    },
+    "game2048": {
+      "title": "2048",
+      "tagline": "Łącz kafle, dojdź do 2048!",
+      "score": "Wynik",
+      "best": "Rekord",
+      "newGame": "Nowa Gra",
+      "undoHint": "Cofnij ostatni ruch - zdobyte za stworzenie kafla 128",
+      "swapHint": "Zamień miejscami dwa kafle - zdobyte za stworzenie kafla 256",
+      "deleteHint": "Usuń wszystkie kafle z wybranym numerem - zdobyte za stworzenie kafla 512",
+      "pickFirst": "Wybierz pierwszy kafel do zamiany",
+      "pickSecond": "Wybierz drugi kafel do zamiany",
+      "pickDelete": "Wybierz kafel - wszystkie kafle z tym numerem zostaną usunięte",
+      "cancel": "Anuluj",
+      "win": "Wygrałeś!",
+      "gameOver": "Koniec gry",
+      "keepPlaying": "Graj Dalej",
+      "tryAgain": "Spróbuj Ponownie"
+    }
+  },
+  "housePabisz": {
+    "header": {
+      "brand": "House Pabisz",
+      "navDomain": "Domena",
+      "navDiplomacy": "Dyplomacja",
+      "day": "DZIEŃ",
+      "night": "NOC",
+      "toggleAria": "Przełącz dzień i noc",
+      "classicLink": "Widok klasyczny",
+      "returnToDomain": "← Powrót do Włości",
+      "holdings": "Posiadłości",
+      "lang": "Język"
+    },
+    "hero": {
+      "role": "Web Developer",
+      "flavor": "Przysięga programisty: Czysty kod wykuwany z precyzją, strony szybkie niczym królewski posłaniec oraz rycerska czujność nad projektem długo po zachodzie słońca.",
+      "statDuchies": "Księstwa",
+      "statBaronies": "Baronie",
+      "statHoldings": "Posiadłości",
+      "ctaSurvey": "Obejrzyj posiadłości",
+      "ctaDiplomacy": "Otwórz Dyplomację",
+      "sealAria": "Osobista pieczęć Krzysztofa Pabisza"
+    },
+    "domain": {
+      "chapter": "Rozdział I",
+      "title": "Włości",
+      "eyebrow": "Posiadłości, większe i mniejsze",
+      "vassalLabel": "W lennie - Klient",
+      "personalLabelSingular": "Posiadłość Osobista: Projekt Własny",
+      "personalLabelPlural": "Posiadłości Osobiste: Projekty Własne",
+      "baroniesTitle": "Baronie",
+      "baroniesSubtitle": "Sześć mniejszych posiadłości, blisko zamku.",
+      "visitDuchy": "Odwiedź Księstwo →",
+      "duchyTag": "Księstwo",
+      "kosmetologia": { "description": "Witryna salonu urody, w której pierwsze skrzypce grają wyraziste fotografie na pełnym ekranie połączone z stonowaną, elegancką typografią." },
+      "kawiarnia": { "description": "Projekt stworzony z myślą o wszystkim, co niezbędne lokalnej czarkowstrętnej gospodzie: godny i ciepły gościniec cyfrowy, przejrzysty spis kunsztownych napitków oraz prosta ścieżka do nawiązania kontaktu z gospodarzami." },
+      "epochronos": { "description": "Przyporządkuj wydarzenia do właściwych epok, przeciągaj daty wydarzeń na odpowiednie miejsce zanim skończy ci się czas." }
+    },
+    "council": {
+      "chapter": "Rozdział II",
+      "title": "Urzędy Dworskie",
+      "eyebrow": "Jeden monarcha, wiele koronnych obowiązków",
+      "chancellorTitle": "Marszałek",
+      "chancellorDesc": "Dyplomacja, ustalanie granic projektu oraz prowadzenie wymagających rokowań dyplomatycznych o ostateczne terminy.",
+      "stewardTitle": "Zarządca",
+      "stewardDesc": "Nadzór nad skarbcem i czasem. Strzeże aby koszty i rozmiar włości nie urosły po cichu ponad stan.",
+      "spymasterTitle": "Wywiadowca",
+      "spymasterDesc": "Wykrywanie intryg w kodzie, testy jakości oraz dochodzenie do prawdy o tej jednej anomalii, o której reszta dworu nie miała pojęcia.",
+      "physicianTitle": "Strażnik Włości",
+      "physicianDesc": "Doglądanie stanu włości, stosowanie maści i łat oraz zapewnianie protekcji projektom długo po ich przekazaniu.",
+      "bio": "Jedna osoba dzierży wszystkie powyższe insygnie. Brak tu rozbudowanego dworu, ale jest za to twórca, który samodzielnie prowadzi całą kampanię: od szytych na miarę witryn wymagających czystości i szybkości posłańca, po własne od zera wykuwane gry i mechaniki. Na co dzien wierny sojusznik technologii React, TypeScript i Tailwind CSS, wspierając się lekkim orężem Astro przy mniejszych bitwach.",
+      "portraitAria": "Pieczęć Krzysztofa Pabisza"
+    },
+    "diplomacy": {
+      "chapter": "Rozdział III",
+      "title": "Dyplomacja",
+      "eyebrow": "Sprawy Zagraniczne",
+      "openAlliance": "Otwarty na Sojusz",
+      "question": "Masz przedsięwzięcie godne korony?",
+      "flavor": "Wyślij poselstwo, a odpowiedź powrotna przybędzie bez zbędnej zwłoki. Wysyłanie gołębia pocztowego nie wymagane.",
+      "emailAria": "Wyślij e-mail"
+    },
+    "footer": {
+      "domainHeading": "Domena",
+      "diplomacyHeading": "Dyplomacja",
+      "tagline": "© {{year}} Krzysztof Pabisz"
+    },
+    "ticTacToe": {
+      "title": "Kółko i Krzyżyk",
+      "turn": "Ruch gracza {{player}}",
+      "win": "{{player}} zdobywa pole!",
+      "draw": "Remis - pole pozostaje niczyje.",
+      "restart": "Zagraj Ponownie"
+    },
+    "catGenerator": {
+      "title": "Generator Kocich Memów",
+      "subtitle": "Przywołaj kota by podnieść morale.",
+      "next": "Przywołaj Kolejnego"
+    },
+    "game2048": {
+      "title": "2048",
+      "subtitle": "Łącz kafle, dojdź do 2048!",
+      "score": "Wynik",
+      "best": "Rekord",
+      "newGame": "Nowa Gra",
+      "undoHint": "Cofnij ostatni ruch - zdobyte za stworzenie kafla 128",
+      "swapHint": "Zamień miejscami dwa kafle - zdobyte za stworzenie kafla 256",
+      "deleteHint": "Usuń wszystkie kafle z wybranym numerem - zdobyte za stworzenie kafla 512",
+      "pickFirst": "Wybierz pierwszy kafel do zamiany",
+      "pickSecond": "Wybierz drugi kafel do zamiany",
+      "pickDelete": "Wybierz kafel - wszystkie kafle z tym numerem zostaną usunięte",
+      "cancel": "Anuluj",
+      "win": "Wygrałeś!",
+      "gameOver": "Koniec gry",
+      "keepPlaying": "Graj Dalej",
+      "tryAgain": "Spróbuj Ponownie"
+    }
+  }
+}

@@ -8,6 +8,7 @@
 
 import { useState } from 'react'
 import type { Server } from './types'
+import { useDiscordHousePabisz } from './HousePabiszDiscordContext'
 
 interface ServerRailProps {
   servers: Server[]
@@ -19,8 +20,9 @@ interface ServerRailProps {
 }
 
 export default function ServerRail({ servers, selectedId, onSelect, dark, unreadChannelIds }: ServerRailProps) {
-  const bg     = dark ? '#1e2124' : '#e3e5e8'
-  const pillBg = dark ? '#ffffff' : '#313338'
+  const housePabisz = useDiscordHousePabisz()
+  const bg     = housePabisz ? 'var(--parchment-deep)' : dark ? '#1e2124' : '#e3e5e8'
+  const pillBg = housePabisz ? 'var(--ink)' : dark ? '#ffffff' : '#313338'
 
   // Track which server button is hovered for the pill animation
   const [hoveredId, setHoveredId] = useState<string | null>(null)
@@ -79,7 +81,7 @@ export default function ServerRail({ servers, selectedId, onSelect, dark, unread
                 style={{
                   width: 10,
                   height: 10,
-                  backgroundColor: dark ? '#ffffff' : '#313338',
+                  backgroundColor: pillBg,
                   border: `2px solid ${bg}`,
                   bottom: 2,
                   right: 10,

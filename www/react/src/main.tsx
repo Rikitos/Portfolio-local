@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import './index.css'
+import './i18n'
 import App from './App.tsx'
 
 // BrowserRouter must wrap App so that useNavigate / Link / Routes work anywhere in the tree.

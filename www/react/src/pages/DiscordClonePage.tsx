@@ -28,6 +28,7 @@ import ChatHeader, { type MemberListMode } from './discord-clone/ChatHeader'
 import MessageList    from './discord-clone/MessageList'
 import MessageInput   from './discord-clone/MessageInput'
 import MemberList     from './discord-clone/MemberList'
+import { useDiscordHousePabisz } from './discord-clone/HousePabiszDiscordContext'
 
 interface DiscordClonePageProps {
   dark: boolean
@@ -58,6 +59,10 @@ export default function DiscordClonePage({ dark }: DiscordClonePageProps) {
   const [localUser,         setLocalUser]         = useState<LocalUser>(LOCAL_USER_DEFAULT)
   // Actual pixel height of the portfolio header — measured via ResizeObserver so it adapts to breakpoints
   const [headerHeight,      setHeaderHeight]      = useState(64)
+  // Whether the header sits out of normal flow (classic Header is `fixed`, needing
+  // marginTop to clear it) vs in-flow (House Pabisz header is `sticky`, already
+  // pushing this page down on its own — adding marginTop on top would double it)
+  const [headerIsFixed,     setHeaderIsFixed]     = useState(true)
 
   // Derived: current server and channel objects
   const server  = useMemo(() => SERVERS.find((s) => s.id === selectedServerId)!,  [selectedServerId])
@@ -145,6 +150,7 @@ export default function DiscordClonePage({ dark }: DiscordClonePageProps) {
       )
       headerObsRef.current.observe(headerEl)
       setHeaderHeight(headerEl.getBoundingClientRect().height)
+      setHeaderIsFixed(getComputedStyle(headerEl).position === 'fixed')
     }
 
     function apply(width: number) {
@@ -215,7 +221,8 @@ export default function DiscordClonePage({ dark }: DiscordClonePageProps) {
 
   const channelMessages = messages[channel.id] ?? []
 
-  const chatBg = dark ? '#313338' : '#ffffff'
+  const housePabisz = useDiscordHousePabisz()
+  const chatBg = housePabisz ? 'var(--parchment)' : dark ? '#313338' : '#ffffff'
 
   // Member list toggle cycles: full → collapsed → hidden → full
   function handleToggleMemberList() {
@@ -223,7 +230,7 @@ export default function DiscordClonePage({ dark }: DiscordClonePageProps) {
   }
 
   return (
-    <div className="flex overflow-hidden relative" style={{ height: `calc(100vh - ${headerHeight}px)`, marginTop: headerHeight }}>
+    <div className="flex overflow-hidden relative" style={{ height: `calc(100vh - ${headerHeight}px)`, marginTop: headerIsFixed ? headerHeight : 0 }}>
 
       {/* Server rail — always visible */}
       <ServerRail

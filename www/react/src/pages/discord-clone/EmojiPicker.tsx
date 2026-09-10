@@ -5,6 +5,8 @@
  * Renders above the message input bar.
  */
 
+import { useDiscordHousePabisz } from './HousePabiszDiscordContext'
+
 const EMOJI_GROUPS: { label: string; emojis: string[] }[] = [
   { label: 'Faces', emojis: ['😂','😭','😍','🥹','😊','😎','🤔','😅','🤣','😤','🥲','😏','🤩','😬','😴','🤯','😱','🥸','😇','🤗'] },
   { label: 'Gestures', emojis: ['👍','👎','👏','🙌','🤝','🫡','✌️','🤙','💪','🫶','🙏','🤞','👀','🫠','💅','🫂'] },
@@ -20,9 +22,11 @@ interface EmojiPickerProps {
 }
 
 export default function EmojiPicker({ onPick, onClose, dark }: EmojiPickerProps) {
-  const bg     = dark ? '#2b2d31' : '#ffffff'
-  const border = dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.1)'
-  const label  = dark ? '#949ba4' : '#6d6f78'
+  const housePabisz = useDiscordHousePabisz()
+  const bg      = housePabisz ? 'var(--card)' : dark ? '#2b2d31' : '#ffffff'
+  const border  = housePabisz ? 'var(--line)' : dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.1)'
+  const label   = housePabisz ? 'var(--ink-muted)' : dark ? '#949ba4' : '#6d6f78'
+  const hoverBg = housePabisz ? 'color-mix(in srgb, var(--gold) 16%, transparent)' : dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.07)'
 
   return (
     <>
@@ -52,7 +56,7 @@ export default function EmojiPicker({ onPick, onClose, dark }: EmojiPickerProps)
                   onClick={() => { onPick(emoji); onClose() }}
                   className="text-xl w-9 h-9 flex items-center justify-center rounded border-0 cursor-pointer transition-colors"
                   style={{ backgroundColor: 'transparent' }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.07)' }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = hoverBg }}
                   onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent' }}
                 >
                   {emoji}

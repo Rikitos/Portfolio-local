@@ -9,6 +9,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import type { LocalUser, UserStatus } from './types'
+import { useDiscordHousePabisz } from './HousePabiszDiscordContext'
 
 const STATUSES: { value: UserStatus; label: string; color: string }[] = [
   { value: 'online',  label: 'Online',           color: '#23a55a' },
@@ -31,12 +32,14 @@ export default function UserStatusPanel({ localUser, onUpdate, onClose, dark }: 
   // Focus the name input on open
   useEffect(() => { inputRef.current?.focus() }, [])
 
-  const bg       = dark ? '#111214' : '#ffffff'
-  const border   = dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.1)'
-  const textMain = dark ? '#f2f3f5' : '#313338'
-  const textMute = dark ? '#949ba4' : '#6d6f78'
-  const inputBg  = dark ? '#1e1f22' : '#f2f3f5'
-  const rowHover = dark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)'
+  const housePabisz = useDiscordHousePabisz()
+  const bg       = housePabisz ? 'var(--card)' : dark ? '#111214' : '#ffffff'
+  const border   = housePabisz ? 'var(--line)' : dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.1)'
+  const textMain = housePabisz ? 'var(--ink)' : dark ? '#f2f3f5' : '#313338'
+  const textMute = housePabisz ? 'var(--ink-muted)' : dark ? '#949ba4' : '#6d6f78'
+  const inputBg  = housePabisz ? 'var(--parchment-deep)' : dark ? '#1e1f22' : '#f2f3f5'
+  const rowHover = housePabisz ? 'color-mix(in srgb, var(--gold) 12%, transparent)' : dark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)'
+  const rowActive = housePabisz ? 'color-mix(in srgb, var(--gold) 18%, transparent)' : dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.07)'
 
   function handleNameCommit() {
     const trimmed = name.trim()
@@ -94,7 +97,7 @@ export default function UserStatusPanel({ localUser, onUpdate, onClose, dark }: 
                 onClick={() => { onUpdate({ status: s.value }); onClose() }}
                 className="flex items-center gap-3 w-full px-2 py-[7px] rounded text-left border-0 cursor-pointer transition-colors text-[0.9rem]"
                 style={{
-                  backgroundColor: isActive ? (dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.07)') : 'transparent',
+                  backgroundColor: isActive ? rowActive : 'transparent',
                   color: textMain,
                 }}
                 onMouseEnter={(e) => { if (!isActive) (e.currentTarget as HTMLElement).style.backgroundColor = rowHover }}

@@ -19,6 +19,7 @@
 import { useState, useRef, useEffect } from 'react'
 import type { Message as MessageType, User, LocalUser } from './types'
 import UserAvatar from './UserAvatar'
+import { useDiscordHousePabisz } from './HousePabiszDiscordContext'
 
 // Quick-react emojis shown in the hover popup — most common Discord reactions
 const QUICK_REACTIONS = ['👍', '❤️', '😂', '😮', '😢', '🙏', '🔥', '💀', '😭', '🫡', '💯', '👀']
@@ -34,12 +35,15 @@ interface MessageProps {
 }
 
 export default function Message({ message, users, localUser, grouped, dark, onReact }: MessageProps) {
+  const housePabisz = useDiscordHousePabisz()
   const isLocal     = message.userId === 'local_user'
   const user        = isLocal ? localUser : users[message.userId]
   const displayName = user?.displayName ?? 'Unknown'
-  const textColor   = dark ? '#dbdee1' : '#313338'
-  const nameColor   = dark ? '#f2f3f5' : '#060607'
-  const metaColor   = dark ? '#949ba4' : '#80848e'
+  const textColor   = housePabisz ? 'var(--ink)' : dark ? '#dbdee1' : '#313338'
+  const nameColor   = housePabisz ? 'var(--ink)' : dark ? '#f2f3f5' : '#060607'
+  const metaColor   = housePabisz ? 'var(--ink-muted)' : dark ? '#949ba4' : '#80848e'
+  const smileyActiveBg = housePabisz ? 'color-mix(in srgb, var(--gold) 22%, transparent)' : dark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)'
+  const smileyIdleBg   = housePabisz ? 'color-mix(in srgb, var(--ink) 8%, transparent)' : dark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.05)'
 
   const [hovered,      setHovered]      = useState(false)
   const [pickerOpen,   setPickerOpen]   = useState(false)
@@ -64,11 +68,13 @@ export default function Message({ message, users, localUser, grouped, dark, onRe
 
   const time = new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 
-  const rowBg = isLocal
-    ? (dark ? 'rgba(88,101,242,0.06)' : 'rgba(88,101,242,0.04)')
-    : hovered
-      ? (dark ? 'rgba(0,0,0,0.06)' : 'rgba(0,0,0,0.03)')
-      : 'transparent'
+  const rowBg = housePabisz
+    ? (isLocal ? 'color-mix(in srgb, var(--gold) 8%, transparent)' : hovered ? 'color-mix(in srgb, var(--ink) 5%, transparent)' : 'transparent')
+    : isLocal
+      ? (dark ? 'rgba(88,101,242,0.06)' : 'rgba(88,101,242,0.04)')
+      : hovered
+        ? (dark ? 'rgba(0,0,0,0.06)' : 'rgba(0,0,0,0.03)')
+        : 'transparent'
 
   return (
     <div
@@ -130,17 +136,17 @@ export default function Message({ message, users, localUser, grouped, dark, onRe
                   onClick={() => onReact?.(message.id, reaction.emoji)}
                   className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[0.8rem] border cursor-pointer transition-colors"
                   style={{
-                    backgroundColor: userReacted
-                      ? (dark ? 'rgba(88,101,242,0.3)' : 'rgba(88,101,242,0.15)')
-                      : (dark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'),
-                    borderColor: userReacted
-                      ? 'rgba(88,101,242,0.6)'
-                      : (dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.1)'),
-                    color: dark ? '#dbdee1' : '#313338',
+                    backgroundColor: housePabisz
+                      ? (userReacted ? 'color-mix(in srgb, var(--gold) 26%, transparent)' : 'color-mix(in srgb, var(--ink) 6%, transparent)')
+                      : userReacted ? (dark ? 'rgba(88,101,242,0.3)' : 'rgba(88,101,242,0.15)') : (dark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'),
+                    borderColor: housePabisz
+                      ? (userReacted ? 'var(--gold)' : 'var(--line)')
+                      : userReacted ? 'rgba(88,101,242,0.6)' : (dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.1)'),
+                    color: textColor,
                   }}
                 >
                   <span>{reaction.emoji}</span>
-                  <span className="font-medium text-[0.78rem]" style={{ color: dark ? '#b5bac1' : '#4e5058' }}>
+                  <span className="font-medium text-[0.78rem]" style={{ color: metaColor }}>
                     {reaction.userIds.length}
                   </span>
                 </button>
@@ -165,8 +171,8 @@ export default function Message({ message, users, localUser, grouped, dark, onRe
               style={{
                 bottom: 0,
                 width: 228,
-                backgroundColor: dark ? '#2b2d31' : '#ffffff',
-                border: `1px solid ${dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.1)'}`,
+                backgroundColor: housePabisz ? 'var(--card)' : dark ? '#2b2d31' : '#ffffff',
+                border: `1px solid ${housePabisz ? 'var(--line)' : dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.1)'}`,
                 boxShadow: '0 4px 16px rgba(0,0,0,0.25)',
               }}
               onMouseEnter={cancelClose}
@@ -178,7 +184,7 @@ export default function Message({ message, users, localUser, grouped, dark, onRe
                   onClick={() => { onReact?.(message.id, emoji); setPickerOpen(false) }}
                   className="text-lg w-8 h-8 flex items-center justify-center rounded border-0 cursor-pointer transition-colors"
                   style={{ backgroundColor: 'transparent' }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.07)' }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = housePabisz ? 'color-mix(in srgb, var(--gold) 16%, transparent)' : dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.07)' }}
                   onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent' }}
                   title={emoji}
                 >
@@ -194,13 +200,11 @@ export default function Message({ message, users, localUser, grouped, dark, onRe
             className="w-7 h-7 flex items-center justify-center rounded border-0 cursor-pointer transition-colors"
             title="Add reaction"
             style={{
-              backgroundColor: pickerOpen
-                ? (dark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)')
-                : (dark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.05)'),
-              color: dark ? '#b5bac1' : '#4e5058',
+              backgroundColor: pickerOpen ? smileyActiveBg : smileyIdleBg,
+              color: metaColor,
             }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = dark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)' }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = pickerOpen ? (dark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)') : (dark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.05)') }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = smileyActiveBg }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = pickerOpen ? smileyActiveBg : smileyIdleBg }}
           >
             {/* Smiley + plus icon */}
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

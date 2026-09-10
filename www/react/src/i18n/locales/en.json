@@ -1,0 +1,163 @@
+{
+  "header": {
+    "projectsLabel": "Projects",
+    "toggleToLight": "Switch to light mode",
+    "toggleToDark": "Switch to dark mode",
+    "toggleMenu": "Toggle menu",
+    "brandLine1": "Portfolio",
+    "brandName": "Krzysztof Pabisz",
+    "housePabiszLink": "House Pabisz",
+    "lang": "Language"
+  },
+  "footer": {
+    "role": "Web developer",
+    "projectsHeading": "Projects",
+    "contactHeading": "Contact",
+    "rights": "© {{year}} Krzysztof Pabisz. All rights reserved."
+  },
+  "hero": {
+    "role": "Web Developer",
+    "cta": "View Projects"
+  },
+  "projects": {
+    "kosmetologia": { "title": "Beauty Parlour", "description": "Page marketing for Beauty Parlor, supports polish and english version" },
+    "kawiarnia": { "title": "Cafeteria", "description": "A Simple landing page for Cafeteria shop, supports quick language switch with English, Polish being the default one" },
+    "epochronos": { "description": "A historical timeline game - drag and sort event cards from oldest to newest across categories, eras, and timed challenges." },
+    "calculator": { "description": "A clean calculator covering the basics: add, subtract, multiply, divide, and percentage." },
+    "room-designer": { "description": "Interactive floor planner - draw rooms on a scaled grid, place furniture, export to image." },
+    "cat-generator": { "description": "Fetches a random cat image from an API and overlays a customisable caption." },
+    "discord-clone": { "description": "A Discord-inspired chat UI with servers, channels, and a message pane." },
+    "tic-tac-toe": { "description": "Classic two-player game - tracks turns, detects wins and draws, resets in one click." },
+    "game-2048": { "description": "The sliding tile puzzle - merge matching numbers to reach 2048." }
+  },
+  "games": {
+    "ticTacToe": {
+      "title": "Tic Tac Toe",
+      "turn": "Player {{player}}'s turn",
+      "win": "Player {{player}} wins!",
+      "draw": "It's a draw!",
+      "restart": "Restart"
+    },
+    "catGenerator": {
+      "title": "Cat Meme Generator",
+      "subtitle": "Click the button for a random cat",
+      "next": "Next Cat"
+    },
+    "game2048": {
+      "title": "2048",
+      "tagline": "Join the tiles, get to 2048!",
+      "score": "Score",
+      "best": "Best",
+      "newGame": "New Game",
+      "undoHint": "Undo the last move - earned by making a 128 tile",
+      "swapHint": "Swap two tiles' positions - earned by making a 256 tile",
+      "deleteHint": "Delete every tile with a chosen number - earned by making a 512 tile",
+      "pickFirst": "Pick the first tile to swap",
+      "pickSecond": "Pick the second tile to swap",
+      "pickDelete": "Pick a tile - every tile with that number will be deleted",
+      "cancel": "Cancel",
+      "win": "You win!",
+      "gameOver": "Game over",
+      "keepPlaying": "Keep Playing",
+      "tryAgain": "Try Again"
+    }
+  },
+  "housePabisz": {
+    "header": {
+      "brand": "House Pabisz",
+      "navDomain": "Domain",
+      "navDiplomacy": "Diplomacy",
+      "day": "DAY",
+      "night": "NIGHT",
+      "toggleAria": "Toggle day and night",
+      "classicLink": "Classic view",
+      "returnToDomain": "← Return to the Domain",
+      "holdings": "Holdings",
+      "lang": "Language"
+    },
+    "hero": {
+      "role": "Web Developer",
+      "flavor": "Websites and small tools, built with care. A developer's oath: code forged clean, pages quick as a royal courier, and knightly vigils long after the sun sets.",
+      "statDuchies": "Duchies",
+      "statBaronies": "Baronies",
+      "statHoldings": "Holdings",
+      "ctaSurvey": "Survey the Domain",
+      "ctaDiplomacy": "Open Diplomacy",
+      "sealAria": "Personal seal of Krzysztof Pabisz"
+    },
+    "domain": {
+      "chapter": "Chapter I",
+      "title": "The Domain",
+      "eyebrow": "Holdings, Great & Small",
+      "vassalLabel": "Held in Vassalage - Client",
+      "personalLabelSingular": "Held Directly - Personal",
+      "personalLabelPlural": "Held Directly - Personal",
+      "baroniesTitle": "The Baronies",
+      "baroniesSubtitle": "Six smaller holdings, kept close to the keep.",
+      "visitDuchy": "Visit the Duchy →",
+      "duchyTag": "Duchy",
+      "kosmetologia": { "description": "A beauty parlour that lets its photography do the talking; full-bleed imagery, quiet typography." },
+      "kawiarnia": { "description": "Built to give a local coffee shop everything it actually needs online: a warm first impression, a clear menu, and an easy way to get in touch." },
+      "epochronos": { "description": "Match each epoch to its place, before chronos catches up - drag the ages into order across categories, eras, and timed challenges." }
+    },
+    "council": {
+      "chapter": "Chapter II",
+      "title": "The Small Council",
+      "eyebrow": "Offices Held by One",
+      "chancellorTitle": "Chancellor",
+      "chancellorDesc": "Client relations, scoping, and the occasional difficult conversation about deadlines.",
+      "stewardTitle": "Steward",
+      "stewardDesc": "Budgets, timelines, and keeping a project's scope from quietly doubling.",
+      "spymasterTitle": "Spymaster",
+      "spymasterDesc": "Debugging, QA, and finding the one edge case everyone else missed.",
+      "physicianTitle": "Court Physician",
+      "physicianDesc": "Maintenance, patches, and keeping a site healthy long after launch.",
+      "bio": "One person holds every office above - no court, no retinue, just a developer who handles both sides of the work: client websites that need speed and clarity, and personal builds of games or mechanics designed from scratch.\n Currently sworn to React, TypeScript, and Tailwind CSS, with Astro for lighter holdings.",
+      "portraitAria": "Seal of Krzysztof Pabisz"
+    },
+    "diplomacy": {
+      "chapter": "Chapter III",
+      "title": "Diplomacy",
+      "eyebrow": "Foreign Affairs",
+      "openAlliance": "Open to Alliance",
+      "question": "Have a project worth pursuing?",
+      "flavor": "Send word, and a reply will follow swiftly - no raven required.",
+      "emailAria": "Send an email"
+    },
+    "footer": {
+      "domainHeading": "Domain",
+      "diplomacyHeading": "Diplomacy",
+      "tagline": "© {{year}} Krzysztof Pabisz"
+    },
+    "ticTacToe": {
+      "title": "Tic Tac Toe",
+      "turn": "{{player}}'s turn to move",
+      "win": "{{player}} claims the field!",
+      "draw": "A stalemate - the field is unclaimed.",
+      "restart": "Play Again"
+    },
+    "catGenerator": {
+      "title": "Cat Meme Generator",
+      "subtitle": "Summon a cat to increase morale.",
+      "next": "Summon Another"
+    },
+    "game2048": {
+      "title": "2048",
+      "subtitle": "Join the tiles, get to 2048!",
+      "score": "Score",
+      "best": "Best",
+      "newGame": "New Game",
+      "undoHint": "Undo the last move - earned by making a 128 tile",
+      "swapHint": "Swap two tiles' positions - earned by making a 256 tile",
+      "deleteHint": "Delete every tile with a chosen number - earned by making a 512 tile",
+      "pickFirst": "Pick the first tile to swap",
+      "pickSecond": "Pick the second tile to swap",
+      "pickDelete": "Pick a tile - every tile with that number will be deleted",
+      "cancel": "Cancel",
+      "win": "You win!",
+      "gameOver": "Game over",
+      "keepPlaying": "Keep Playing",
+      "tryAgain": "Try Again"
+    }
+  }
+}

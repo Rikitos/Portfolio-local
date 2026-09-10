@@ -14,6 +14,7 @@ import { useState } from 'react'
 import type { Server, LocalUser } from './types'
 import UserAvatar from './UserAvatar'
 import UserStatusPanel from './UserStatusPanel'
+import { useDiscordHousePabisz } from './HousePabiszDiscordContext'
 
 const STATUS_COLORS: Record<string, string> = {
   online:  '#23a55a',
@@ -59,16 +60,19 @@ export default function ChannelSidebar({
   dark,
 }: ChannelSidebarProps) {
   const [panelOpen, setPanelOpen] = useState(false)
+  const housePabisz = useDiscordHousePabisz()
 
-  const bg         = dark ? '#2b2d31' : '#f2f3f5'
-  const headerBg   = dark ? '#2b2d31' : '#f2f3f5'
-  const footerBg   = dark ? '#232428' : '#e3e5e8'
-  const textMuted  = dark ? '#949ba4' : '#6d6f78'
-  const textStrong = dark ? '#f2f3f5' : '#313338'
+  const bg         = housePabisz ? 'var(--card)' : dark ? '#2b2d31' : '#f2f3f5'
+  const headerBg   = housePabisz ? 'var(--card)' : dark ? '#2b2d31' : '#f2f3f5'
+  const footerBg   = housePabisz ? 'var(--parchment-deep)' : dark ? '#232428' : '#e3e5e8'
+  const textMuted  = housePabisz ? 'var(--ink-muted)' : dark ? '#949ba4' : '#6d6f78'
+  const textStrong = housePabisz ? 'var(--ink)' : dark ? '#f2f3f5' : '#313338'
 
-  const rowSelected    = dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
-  const rowTextActive  = dark ? '#ffffff' : '#313338'
-  const rowTextDefault = dark ? '#949ba4' : '#6d6f78'
+  const rowSelected    = housePabisz ? 'color-mix(in srgb, var(--gold) 18%, transparent)' : dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
+  const rowTextActive  = housePabisz ? 'var(--ink)' : dark ? '#ffffff' : '#313338'
+  const rowTextDefault = housePabisz ? 'var(--ink-muted)' : dark ? '#949ba4' : '#6d6f78'
+  const borderColor    = housePabisz ? 'var(--line-soft)' : dark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.08)'
+  const hoverBg        = housePabisz ? 'color-mix(in srgb, var(--gold) 12%, transparent)' : dark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'
 
   const channelMap = Object.fromEntries(server.channels.map(c => [c.id, c]))
 
@@ -95,7 +99,7 @@ export default function ChannelSidebar({
         style={{
           backgroundColor: headerBg,
           color: textStrong,
-          borderColor: dark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.08)',
+          borderColor,
           minHeight: 48,
         }}
       >
@@ -152,7 +156,7 @@ export default function ChannelSidebar({
                   {isUnread && (
                     <span
                       className="shrink-0 rounded-full ml-2"
-                      style={{ width: 8, height: 8, backgroundColor: dark ? '#ffffff' : '#313338' }}
+                      style={{ width: 8, height: 8, backgroundColor: rowTextActive }}
                     />
                   )}
                 </button>
@@ -177,9 +181,7 @@ export default function ChannelSidebar({
           onClick={() => setPanelOpen((v) => !v)}
           className="flex items-center gap-2 w-full px-2 py-2 border-0 cursor-pointer text-left transition-colors"
           style={{
-            backgroundColor: panelOpen
-              ? (dark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)')
-              : footerBg,
+            backgroundColor: panelOpen ? hoverBg : footerBg,
             minHeight: 52,
           }}
           title="Change status or nickname"

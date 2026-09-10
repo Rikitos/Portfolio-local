@@ -1,9 +1,11 @@
 /** IMPORTS **/
+import { useTranslation } from 'react-i18next'
 import logo from '../assets/img/logo.svg'
 import Button from './Button'
 
 /** COMPONENT **/
 export default function Hero({ dark }: { dark: boolean }) {
+  const { t } = useTranslation()
   return (
     <section className="min-h-screen flex items-center justify-center text-center px-8 bg-slate-200 dark:bg-navy-700">
       <div className="flex flex-col items-center">
@@ -21,7 +23,7 @@ export default function Hero({ dark }: { dark: boolean }) {
 
         {/* Role */}
         <p className="font-['Palatino_Linotype',Palatino,serif] text-sm tracking-[0.3em] uppercase text-[#5a6480] dark:text-[#8896b0] mb-10">
-          Web Developer
+          {t('hero.role')}
         </p>
 
         {/* CTA */}
@@ -30,7 +32,7 @@ export default function Hero({ dark }: { dark: boolean }) {
           variant={dark ? 'primary' : 'primary-lightV2'}
           className="font-['Palatino_Linotype',Palatino,serif] text-[0.7rem] tracking-[0.2em] uppercase px-12 py-4"
         >
-          View Projects
+          {t('hero.cta')}
         </Button>
 
       </div>
