@@ -44,20 +44,22 @@ function Barony({ project, index }: { project: Project; index: number }) {
   const { ref, visible } = useReveal<HTMLAnchorElement>()
   const title = t(`projects.${project.key}.title`, { defaultValue: project.title })
   const inner = (
-    <div className="barony-card">
-      <div className="barony-bg transparent">
-        <div className="mid" />
-        <div className="cap top" />
-        <div className="cap bottom" />
-      </div>
-      <div className="barony-inner">
-        <img src={project.img} alt={title} />
-        <div className="barony-body">
-          <h4>{title}</h4>
-          <span className="chapter">{project.tags[0]}</span>
+    <>
+      <div className="barony-card">
+        <div className="barony-bg transparent">
+          <div className="mid" />
+          <div className="cap top" />
+          <div className="cap bottom" />
+        </div>
+        <div className="barony-inner">
+          <img src={project.img} alt={title} />
         </div>
       </div>
-    </div>
+      <div className="barony-body">
+        <h4>{title}</h4>
+        <span className="chapter">{project.tags[0]}</span>
+      </div>
+    </>
   )
   const className = `barony reveal ${visible ? 'visible' : ''}`
   return project.external ? (

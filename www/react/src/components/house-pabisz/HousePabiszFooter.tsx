@@ -1,7 +1,6 @@
 /** IMPORTS **/
-import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { baronies } from '../../data/projects'
+import { duchies } from '../../data/projects'
 
 const EMAIL = 'krzysiek.pabisz@email.com'
 
@@ -21,7 +20,11 @@ export default function HousePabiszFooter() {
           <div className="foot-links">
             <div className="foot-col">
               <span className="h">{t('housePabisz.footer.domainHeading')}</span>
-              {baronies.slice(0, 3).map((p) => <Link key={p.href} to={p.href}>{p.title}</Link>)}
+              {duchies.map((p) => (
+                <a key={p.key} href={p.href} target="_blank" rel="noopener noreferrer">
+                  {t(`projects.${p.key}.title`, { defaultValue: p.title })}
+                </a>
+              ))}
             </div>
             <div className="foot-col">
               <span className="h">{t('housePabisz.footer.diplomacyHeading')}</span>

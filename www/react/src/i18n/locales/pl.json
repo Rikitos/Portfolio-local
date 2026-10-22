@@ -23,6 +23,7 @@
     "kosmetologia": { "title": "Salon Kosmetyczny", "description": "Strona marketingowa dla salonu kosmetycznego, dostępna w wersji polskiej i angielskiej" },
     "kawiarnia": { "title": "Kawiarnia", "description": "Prosta strona wizytówkowa dla kawiarni, z szybkim przełączaniem języka - domyślnie polski, dostępny też angielski" },
     "epochronos": { "description": "Gra historyczna z osią czasu - przeciągaj i układaj karty wydarzeń od najstarszych do najnowszych, w kategoriach, epokach i trybie na czas." },
+    "haymakers": { "description": "Demo gry bijatyki - wybierz wojownika i stań do pojedynku w grywalnym prototypie w przeglądarce." },
     "calculator": { "description": "Przejrzysty kalkulator z podstawowymi działaniami: dodawanie, odejmowanie, mnożenie, dzielenie i procenty." },
     "room-designer": { "description": "Interaktywny planer pomieszczeń - rysuj pokoje na skalowanej siatce, rozmieszczaj meble, eksportuj do obrazu." },
     "cat-generator": { "description": "Pobiera losowe zdjęcie kota z API i nakłada na nie własny podpis." },
@@ -98,6 +99,7 @@
       "duchyTag": "Księstwo",
       "kosmetologia": { "description": "Witryna salonu urody, w której pierwsze skrzypce grają wyraziste fotografie na pełnym ekranie połączone z stonowaną, elegancką typografią." },
       "kawiarnia": { "description": "Projekt stworzony z myślą o wszystkim, co niezbędne lokalnej czarkowstrętnej gospodzie: godny i ciepły gościniec cyfrowy, przejrzysty spis kunsztownych napitków oraz prosta ścieżka do nawiązania kontaktu z gospodarzami." },
+      "haymakers": { "description": "Demo gry bijatyki - wkrocz na arenę, wybierz wojownika. Grywalny light prototyp w przeglądarce." },
       "epochronos": { "description": "Przyporządkuj wydarzenia do właściwych epok, przeciągaj daty wydarzeń na odpowiednie miejsce zanim skończy ci się czas." }
     },
     "council": {
@@ -127,7 +129,7 @@
     "footer": {
       "domainHeading": "Domena",
       "diplomacyHeading": "Dyplomacja",
-      "tagline": "© {{year}} Krzysztof Pabisz"
+      "tagline": "© {{year}} Krzysztof Pabisz. All rights reserved."
     },
     "ticTacToe": {
       "title": "Kółko i Krzyżyk",

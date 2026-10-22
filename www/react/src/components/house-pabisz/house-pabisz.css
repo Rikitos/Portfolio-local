@@ -309,7 +309,11 @@
 
 .house-pabisz .baronies { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 20px; }
 .house-pabisz .barony { position: relative; display: block; text-decoration: none; color: var(--ink); }
-.house-pabisz .barony-card { position: relative; border: 1px solid var(--line); border-radius: 2px; overflow: hidden; background: #EFE6CC; transition: transform .3s cubic-bezier(.22,.61,.36,1), box-shadow .3s ease; }
+/* Image-only card: the picture fills the whole tile (200px), inset 5px on
+   every side so the illustrated .barony-bg frame shows as a border all the
+   way around, bottom included. The name/tag caption lives below the card
+   as its own block (see HousePabiszDomain.tsx) rather than inside it. */
+.house-pabisz .barony-card { position: relative; height: 200px; border: 1px solid var(--line); border-radius: 2px; overflow: hidden; background: #EFE6CC; transition: transform .3s cubic-bezier(.22,.61,.36,1), box-shadow .3s ease; }
 .house-pabisz .barony:hover .barony-card { transform: translateY(-4px) scale(1.035); box-shadow: 0 10px 20px rgba(43,27,18,0.18); }
 /* darkening wash — same color-mix(parchment)/55%-transparent technique as
    .linen-wash::before: tints barely at all by day, meaningfully by night,
@@ -331,9 +335,9 @@
 .house-pabisz .barony-bg.transparent .cap.bottom { bottom: 0; aspect-ratio: 708/348; background-image: var(--barony-trans-bottom-img); }
 .dark .house-pabisz .barony-bg { filter: brightness(.75) saturate(.85); }
 
-.house-pabisz .barony-inner { position: relative; z-index: 2; }
-.house-pabisz .barony img { display: block; width: 100%; height: 130px; object-fit: cover; object-position: top; box-sizing: border-box; padding: 5px 5px 0 5px; background: transparent; }
-.house-pabisz .barony-body { padding: 14px 16px 18px; text-align: center; }
+.house-pabisz .barony-inner { position: absolute; inset: 0; z-index: 2; }
+.house-pabisz .barony img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; box-sizing: border-box; padding: 5px; background: transparent; }
+.house-pabisz .barony-body { padding: 14px 16px 18px; margin-top: 6px; text-align: center; }
 .house-pabisz .barony-body h4 { font-size: .95rem; font-weight: 600; }
 .house-pabisz .barony-body .chapter { margin: 6px 0 0; font-size: .6rem; }
 
@@ -376,6 +380,12 @@
 .house-pabisz .diplomacy-panel .diplomacy-inner { padding: clamp(56px,9vw,88px) clamp(30px,6vw,60px) clamp(30px,6vw,60px); position: relative; max-width: 780px; }
 .house-pabisz .diplomacy-panel h2 { font-size: clamp(2rem,4.4vw,2.8rem); }
 .house-pabisz .diplomacy-panel .flavor { font-family: 'EB Garamond', serif; font-style: italic; color: var(--ink-muted); margin: 18px auto 0; max-width: 44ch; font-size: 1.05rem; }
+/* The diplomacy panel stays a light "letter" surface even at night (only
+   dimmed via the .diplomacy-bg brightness filter above), so night mode's
+   --ink-muted (light tan, meant for the dark surfaces used elsewhere) reads
+   as low-contrast here — use the same dark ink light mode uses on this
+   panel's parchment instead. */
+.dark .house-pabisz .diplomacy-panel .flavor { color: #625340; }
 .house-pabisz .diplomacy-actions { display: flex; align-items: center; justify-content: center; gap: 26px; margin-top: 40px; flex-wrap: wrap; }
 .house-pabisz .diplomacy-email { font-family: 'Cinzel', serif; font-size: .85rem; letter-spacing: .05em; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); transition: opacity .2s ease; }
 .house-pabisz .diplomacy-email:hover { color: var(--maroon); opacity: .75; }
@@ -388,8 +398,12 @@
 .house-pabisz .foot-links { display: flex; gap: 44px; flex-wrap: wrap; }
 .house-pabisz .foot-col { display: flex; flex-direction: column; gap: 9px; }
 .house-pabisz .foot-col .h { font-family: 'Cinzel', serif; font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 2px; font-weight: 600; }
-.house-pabisz .foot-col a { font-family: 'EB Garamond', serif; font-size: .92rem; color: var(--ink); text-decoration: none; transition: color .2s ease, padding-left .2s ease; }
-.house-pabisz .foot-col a:hover { color: var(--maroon); padding-left: 4px; }
+/* translateX rather than padding-left for the hover nudge — padding changes
+   the element's own box width, and in this column-stretch layout (all links
+   in a .foot-col share the widest sibling's width) that can shift the whole
+   column and everything after it; transform is paint-only, so it can't. */
+.house-pabisz .foot-col a { font-family: 'EB Garamond', serif; font-size: .92rem; color: var(--ink); text-decoration: none; transition: color .2s ease, transform .2s ease; }
+.house-pabisz .foot-col a:hover { color: var(--maroon); transform: translateX(4px); }
 .dark .house-pabisz .foot-col a:hover { color: var(--gold-bright); }
 .house-pabisz .foot-bottom { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line-soft); font-family: 'Cinzel', serif; font-size: .62rem; letter-spacing: .06em; color: var(--ink-muted); text-align: center; }
 

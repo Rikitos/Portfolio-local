@@ -15,32 +15,56 @@ No test runner is configured — testing is done visually in the browser via the
 
 ## Stack
 
-React 19 · TypeScript 6 · Tailwind CSS v4 · Vite 8 · React Router v7
+React 19 · TypeScript 6 · Tailwind CSS v4 · Vite 8 · React Router v7 · react-i18next
 
 **Tailwind v4 specifics:**
 - Configured entirely in `src/index.css` via `@import "tailwindcss"` and `@theme { … }` — no `tailwind.config.*` file.
 - Dark mode is toggled by adding/removing the `.dark` class on the root div in `App.tsx` (`dark ? 'dark' : ''`). The custom variant `@custom-variant dark (&:where(.dark, .dark *))` makes `dark:` utility classes work throughout the codebase — use them freely for standard UI theming. For the canvas renderer (Room Designer) where colors are passed as strings to a 2D drawing API, use inline `style` props or the `dark` boolean prop instead.
 
+**i18n (react-i18next):**
+- Setup lives in `src/i18n/index.ts`: `LanguageDetector` + `initReactI18next`, `fallbackLng: 'en'`, `supportedLngs: ['en', 'pl']`.
+- Detection order is `['localStorage', 'htmlTag']` — deliberately excludes `navigator`, so a first-time visitor always lands in English regardless of browser locale; a saved manual choice (`localStorage`) still wins on return visits.
+- One `translation` namespace per language (`src/i18n/locales/en.json` / `pl.json`), holding both the classic-design strings (`header`, `footer`, `hero`, `projects`, `games`) and the House Pabisz strings (nested under `housePabisz`) side by side in the same file — not split into separate namespaces.
+- A missing key in one locale falls back to the **English resource bundle**, not to a JS-level `defaultValue` — always add a key to both locale files together, even a literal duplicate, or the other language silently shows English.
+
 ## Architecture
+
+The app has **two visual designs that coexist in one codebase**, switched live at runtime — see [House Pabisz theme](#house-pabisz-theme) below before touching either. "Classic" is the original design; "House Pabisz" is a heraldry/medieval-parchment reskin.
 
 ```
 src/
-  App.tsx                          — Router root; holds global `dark` boolean state + all routes
+  App.tsx                          — Router root; holds global `dark` + `design` state, all routes
   main.tsx                         — React entry point; wraps App in BrowserRouter
+  data/
+    projects.ts                    — Shared project catalogue: `projects[]`, plus `duchies`/`baronies`
+                                      (filtered by `external`) — single source of truth for both designs
+    themedRoutes.ts                — THEMED_ROUTES: paths that have a House Pabisz variant
+  i18n/
+    index.ts                       — react-i18next setup (see Stack above)
+    locales/en.json, pl.json       — all copy for both designs, one namespace per language
   components/
-    Header.tsx                     — Fixed nav bar; receives dark + onToggle
-    Hero.tsx                       — Full-screen hero section; receives dark for button variant
-    Projects.tsx                   — Project grid (ProjectCard); external projects open in new tab
-    Footer.tsx                     — Site footer with project links and contact info
+    Header.tsx                     — Classic fixed nav bar; receives dark + onToggle
+    Hero.tsx                       — Classic full-screen hero section; receives dark for button variant
+    Projects.tsx                   — Classic project grid (ProjectCard); external projects open in new tab
+    Footer.tsx                     — Classic site footer with project links and contact info
     Button.tsx                     — Reusable button/link; supports 5 visual variants
+    LanguageSwitch.tsx             — Classic PL/EN text toggle
+    house-pabisz/                  — Everything for the House Pabisz design (see below)
   pages/
-    Home.tsx                       — Landing page; renders Hero + Projects sections
-    CalculatorPage.tsx             — Basic arithmetic calculator
-    TicTacToePage.tsx              — Two-player tic-tac-toe
-    CatGeneratorPage.tsx           — Random cat image with overlaid caption
-    DiscordClonePage.tsx           — Discord-inspired chat UI; receives dark prop
-    Game2048Page.tsx               — Sliding tile puzzle; receives dark prop
-    RoomDesignerPage.tsx           — Full-screen layout + all sidebar/toolbar UI
+    Home.tsx                       — Landing page; renders classic Hero+Projects or HousePabiszHome
+                                      depending on `design`; exports the `HomeDesign` type
+    CalculatorPage.tsx             — Classic calculator; logic from calculator/useCalculator
+    TicTacToePage.tsx              — Classic tic-tac-toe; logic from tic-tac-toe/useTicTacToe
+    CatGeneratorPage.tsx           — Classic random cat image; logic from cat-generator/useCatGenerator
+    DiscordClonePage.tsx           — Discord-inspired chat UI; receives dark prop (shared by both designs,
+                                      see House Pabisz theme below)
+    Game2048Page.tsx               — Classic sliding tile puzzle; logic from 2048/useGame2048
+    RoomDesignerPage.tsx           — Full-screen layout + all sidebar/toolbar UI (shared by both designs)
+    calculator/useCalculator.ts    — Calculator engine (useReducer), shared by classic + themed pages
+    tic-tac-toe/useTicTacToe.ts    — Game logic (useReducer), shared by classic + themed pages
+    cat-generator/useCatGenerator.ts — CATS array + fade/cycle hook, shared by classic + themed pages
+    2048/useGame2048.ts            — Full game engine + shared presentation constants (TILE_COLORS, etc.),
+                                      shared by classic + themed pages
     discord-clone/
       ChannelSidebar.tsx           — Server channel list sidebar
       ChatHeader.tsx               — Channel name + action bar
@@ -53,6 +77,7 @@ src/
       ServerRail.tsx               — Left server icons rail
       UserAvatar.tsx               — Avatar with status indicator
       UserStatusPanel.tsx          — Bottom-left user identity bar
+      HousePabiszDiscordContext.tsx — `useDiscordHousePabisz()` flag read by every file above (see below)
       seed-data.ts                 — Initial channels, messages, and members
       types.ts                     — Shared Discord clone types
       useBotReply.ts               — Auto-reply bot hook
@@ -72,15 +97,49 @@ src/
 
 ### Routes
 
-| Path | Component |
-|------|-----------|
-| `/` | Home |
-| `/calculator` | CalculatorPage |
-| `/tic-tac-toe` | TicTacToePage |
-| `/cat-generator` | CatGeneratorPage |
-| `/room-designer` | RoomDesignerPage |
-| `/discord-clone` | DiscordClonePage |
-| `/2048` | Game2048Page |
+Every route currently has a House Pabisz variant — `App.tsx` branches all seven on `design`, matching `THEMED_ROUTES` exactly:
+
+| Path | Classic component | House Pabisz component |
+|------|--------------------|-------------------------|
+| `/` | `Home` (branches internally) | — |
+| `/calculator` | `CalculatorPage` | `HousePabiszCalculatorPage` |
+| `/tic-tac-toe` | `TicTacToePage` | `HousePabiszTicTacToePage` |
+| `/cat-generator` | `CatGeneratorPage` | `HousePabiszCatGeneratorPage` |
+| `/room-designer` | `RoomDesignerPage` | `HousePabiszRoomDesignerPage` (header/nav reskin only — canvas untouched) |
+| `/discord-clone` | `DiscordClonePage` | `HousePabiszDiscordClonePage` (colors only — same layout, see below) |
+| `/2048` | `Game2048Page` | `HousePabiszGame2048Page` |
+
+All House Pabisz page components share the same 3-prop signature: `dark`, `onToggleDark`, `onShowClassic`.
+
+## House Pabisz theme
+
+A full alternate visual design (heraldry / medieval-parchment), switchable live alongside "classic" without a page reload. Read this before adding a page to either design or extending the theme further.
+
+**Global state (`App.tsx`):**
+- `dark: boolean` — light/dark, independent of which design is active, threaded into both classic and House Pabisz pages.
+- `design: 'house-pabisz' | 'current'` (`HomeDesign` type, exported from `pages/Home.tsx`) — the design switch. Defaults to `'house-pabisz'`.
+- `showAppChrome = !(design === 'house-pabisz' && THEMED_ROUTES.includes(pathname))` — hides the classic `Header`/`Footer` only when House Pabisz is active on a themed route, since those pages render their own header/footer. `THEMED_ROUTES` (`src/data/themedRoutes.ts`) is the single list both `App.tsx` and the classic `Header`'s "House Pabisz" link read from.
+
+**Adding a new themed page** — the established low-diff pattern:
+1. Extract the page's logic into a `useX` hook under `src/pages/<name>/`, consumed by both the classic and themed page (see `calculator/useCalculator.ts`, `tic-tac-toe/useTicTacToe.ts`, `cat-generator/useCatGenerator.ts`, `2048/useGame2048.ts` for the pattern — including any presentation constants the two versions must keep in sync, e.g. `useGame2048`'s `TILE_COLORS`).
+2. Build `HousePabisz<Name>Page.tsx` in `src/components/house-pabisz/`: `HousePabiszShell` → `HousePabiszHeader dark={dark} onToggleDark={onToggleDark} onShowClassic={onShowClassic} isHome={false}` → page content → (optional) `.frieze-band` → `HousePabiszFooter`.
+3. Add the path to `THEMED_ROUTES`.
+4. Wire the route in `App.tsx`: `design === 'house-pabisz' ? <HousePabisz...Page .../> : <ClassicPage .../>`.
+5. Not every page needs the full treatment — `HousePabiszRoomDesignerPage` and `HousePabiszDiscordClonePage` deliberately reskin only the header/colors and reuse the classic page's body untouched (see below); match the scope the task actually calls for.
+
+**Recoloring an existing component in place (Discord Clone pattern):** rather than prop-drill a `housePabisz` boolean through a deep component tree, `src/pages/discord-clone/HousePabiszDiscordContext.tsx` exposes it via `useDiscordHousePabisz()` (default `false`), set to `true` by wrapping the tree in `HousePabiszDiscordProvider`. Every subcomponent that has locally-computed colors reads the flag once and swaps in House Pabisz CSS variables:
+```ts
+const bg = housePabisz ? 'var(--card)' : dark ? '#2b2d31' : '#ffffff'
+```
+Convention: background tiers `var(--parchment)` → `var(--card)` → `var(--parchment-deep)` (lightest→darkest); text `var(--ink)`/`var(--ink-muted)`; primary accent (replacing Discord's blurple) `var(--maroon)`; hover/selected tints `color-mix(in srgb, var(--gold) N%, transparent)`; borders `var(--line)`/`var(--line-soft)`. Status-dot colors and each server's own branding `iconColor` are semantic/data-driven and deliberately left unchanged, same as 2048's `TILE_COLORS` and Tic-Tac-Toe's X/O colors.
+
+**Header-height gotcha:** the House Pabisz header is `position: sticky` (occupies flow space); the classic header is `fixed` (doesn't). A page like `RoomDesignerPage`/`DiscordClonePage` that's shared by both designs and needs to fill the viewport below the header must measure the actual header and check `getComputedStyle(headerEl).position === 'fixed'` before deciding whether to add a compensating `marginTop`/`paddingTop` — hardcoding one header height for both breaks one design's layout.
+
+**CSS:** all House Pabisz styling lives in `src/components/house-pabisz/house-pabisz.css` (single stylesheet, imported once by `HousePabiszShell`), scoped under a `.house-pabisz` root class with `.dark .house-pabisz` overrides for night mode. Theme colors are CSS custom properties (`--parchment`, `--card`, `--ink`, `--maroon`, `--gold`, `--line`, …) defined on `.house-pabisz` and redefined under `.dark .house-pabisz` — reference them directly in inline styles (`style={{ backgroundColor: 'var(--card)' }}`) without JS-level dark/light branching for anything House-Pabisz-specific. `src/components/house-pabisz/assets.ts` is the single import hub for the theme's illustration assets (`housePabiszArt`).
+
+## Room Designer
+
+The sections below (through Layout persistence) are all about the canvas-based Room Designer — shared unchanged by both designs.
 
 ### Coordinate systems
 

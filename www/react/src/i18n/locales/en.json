@@ -23,6 +23,7 @@
     "kosmetologia": { "title": "Beauty Parlour", "description": "Page marketing for Beauty Parlor, supports polish and english version" },
     "kawiarnia": { "title": "Cafeteria", "description": "A Simple landing page for Cafeteria shop, supports quick language switch with English, Polish being the default one" },
     "epochronos": { "description": "A historical timeline game - drag and sort event cards from oldest to newest across categories, eras, and timed challenges." },
+    "haymakers": { "description": "A fighter game demo - pick your warrior and duel it out in a playable browser light prototype." },
     "calculator": { "description": "A clean calculator covering the basics: add, subtract, multiply, divide, and percentage." },
     "room-designer": { "description": "Interactive floor planner - draw rooms on a scaled grid, place furniture, export to image." },
     "cat-generator": { "description": "Fetches a random cat image from an API and overlays a customisable caption." },
@@ -98,6 +99,7 @@
       "duchyTag": "Duchy",
       "kosmetologia": { "description": "A beauty parlour that lets its photography do the talking; full-bleed imagery, quiet typography." },
       "kawiarnia": { "description": "Built to give a local coffee shop everything it actually needs online: a warm first impression, a clear menu, and an easy way to get in touch." },
+      "haymakers": { "description": "A fighter game demo - step into the arena, pick your warrior and settle the dispute with steel in a playable browser light prototype." },
       "epochronos": { "description": "Match each epoch to its place, before chronos catches up - drag the ages into order across categories, eras, and timed challenges." }
     },
     "council": {
@@ -127,7 +129,7 @@
     "footer": {
       "domainHeading": "Domain",
       "diplomacyHeading": "Diplomacy",
-      "tagline": "© {{year}} Krzysztof Pabisz"
+      "tagline": "© {{year}} Krzysztof Pabisz. All rights reserved."
     },
     "ticTacToe": {
       "title": "Tic Tac Toe",

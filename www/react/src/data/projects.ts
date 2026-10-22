@@ -11,6 +11,7 @@
 import kosmetologiaImg from '../assets/img/project-kosmetologia.jpg'
 import kawiarniaImg from '../assets/img/project-kawiarnia.png'
 import epochronosImg from '../assets/img/project-epochronos.png'
+import haymakersImg from '../assets/img/project-haymakers.png'
 import calculatorImg from '../assets/img/project-calculator.png'
 import tictactoeImg from '../assets/img/project-tictactoe.png'
 import catGeneratorImg from '../assets/img/project-cat-generator.png'
@@ -61,6 +62,16 @@ export const projects: Project[] = [
     href: 'https://epochronos.krzysztofpabisz.pl',
     img: epochronosImg,
     url: 'epochronos.krzysztofpabisz.pl',
+    external: true,
+    personal: true,
+  },
+  {
+    key: 'haymakers',
+    title: 'Haymakers',
+    tags: ['Game', 'Demo'],
+    href: 'https://haymakers.krzysztofpabisz.pl',
+    img: haymakersImg,
+    url: 'haymakers.krzysztofpabisz.pl',
     external: true,
     personal: true,
   },
