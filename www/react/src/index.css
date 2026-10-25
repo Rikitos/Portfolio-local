@@ -36,6 +36,40 @@ body { margin: 0; }
 html { scroll-behavior: smooth; scroll-padding-top: 4.5rem; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
+/** HERO SCENE ANIMATION (see components/HeroScene.tsx) **/
+/* Transform/opacity only, so it stays on the compositor. The SVG elements scale
+   about the px origin set inline on each one (transform-box defaults to view-box). */
+/* One breath, 5.4s: a quicker rise (inhale, 0-35%), a slower settle back to the
+   original picture (exhale, 35-85%), then a short rest (85-100%). Rest is scale 1,
+   i.e. the picture itself, so the copy only ever lifts the back up from it. The
+   timing function in each keyframe shapes the stretch that starts there. */
+@keyframes hero-breathe {
+  0%   { transform: scale(1, 1);         animation-timing-function: cubic-bezier(0.25, 0.1, 0.35, 1); }
+  35%  { transform: scale(1.004, 1.024); animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
+  85%  { transform: scale(1, 1); }
+  100% { transform: scale(1, 1); }
+}
+@keyframes hero-lamp-swell {
+  0%, 100% { opacity: 0.68; transform: scale(0.96); }
+  50%      { opacity: 1;    transform: scale(1.04); }
+}
+@keyframes hero-twinkle {
+  0%, 100% { opacity: 0;    transform: scale(0.55); }
+  50%      { opacity: 0.7;  transform: scale(1.1); }
+}
+.hero-cat   { animation: hero-breathe 5.4s linear infinite; }
+.hero-lamp  { animation: hero-lamp-swell 5.6s ease-in-out infinite; }
+/* stars start invisible, so with motion off only the picture's own stars show;
+   each star sets its own duration and delay inline; transform-box centres the scale */
+.hero-star  { opacity: 0; animation: hero-twinkle 4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+/* freeze while the hero is off screen (HeroScene sets data-offscreen) */
+[data-offscreen='true'] .hero-anim { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-anim { animation: none; }
+  .hero-cat  { display: none; }   /* the breathing copy has nothing to do when still */
+  .hero-lamp { opacity: 0.85; }
+}
+
 /** SCROLL REVEAL (see hooks/useReveal.ts) **/
 @keyframes reveal-in {
   from { opacity: 0; transform: translateY(24px); }

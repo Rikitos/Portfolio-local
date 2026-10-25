@@ -1,31 +1,24 @@
 /** IMPORTS **/
 import { useTranslation } from 'react-i18next'
-import dayImg from '../assets/img/hero-desk-day.webp'
-import nightImg from '../assets/img/hero-desk-night.webp'
 import Button from './Button'
+import HeroScene from './HeroScene'
 
 /** DATA **/
 const font = 'font-body'
 
-// shared by both desk illustrations (same scene, day vs night). The laptop and
-// the cat sit right of centre, so on narrow screens we anchor the crop there
-// instead of the middle, otherwise a portrait viewport would show only the chair
-const imgClass =
-  'absolute inset-0 w-full h-full object-cover object-[68%_50%] md:object-center transition-opacity duration-700'
-
 /** COMPONENT **/
-// Full-screen hero: the desk illustration fills the section and the day/night
-// variants cross-fade when the theme toggle flips. Text is always light because
-// the left third of both illustrations is dark (chair + shelf), and a left-side
-// scrim keeps it readable over the brighter window area on wide screens.
+// Full-screen hero: the animated desk illustration (HeroScene) fills the section
+// and its day/night variants cross-fade when the theme toggle flips. Text is
+// always light because the left third of both illustrations is dark (chair +
+// shelf), and a left-side scrim keeps it readable over the brighter window area
+// on wide screens.
 export default function Hero({ dark }: { dark: boolean }) {
   const { t } = useTranslation()
   return (
     <section className="relative min-h-svh flex items-center overflow-hidden bg-navy-900">
 
-      {/* Background: both images stay mounted so the theme switch cross-fades */}
-      <img src={dayImg} alt={t('hero.imageAlt')} className={`${imgClass} ${dark ? 'opacity-0' : 'opacity-100'}`} />
-      <img src={nightImg} alt="" aria-hidden="true" className={`${imgClass} ${dark ? 'opacity-100' : 'opacity-0'}`} />
+      {/* Background: the illustration with its animated layer */}
+      <HeroScene dark={dark} alt={t('hero.imageAlt')} />
 
       {/* Scrim: darkens the text side only, so the window and cat stay vivid */}
       <div className="absolute inset-0 bg-gradient-to-r from-[rgba(6,13,26,0.85)] via-[rgba(6,13,26,0.45)] to-transparent md:via-[rgba(6,13,26,0.3)]" />

@@ -47,6 +47,8 @@ src/
     themedRoutes.ts                — THEMED_ROUTES: paths that have a House Pabisz variant
     navSections.ts                 — NAV_SECTIONS: classic homepage chapter ids + nav label keys (page order)
     contact.ts                     — Email / GitHub / LinkedIn, shared by hero, Contact section and footer
+    heroScene.ts                   — Measured star / lamp / cat-torso coordinates for HeroScene (redo them if the
+                                      hero artwork changes; how they were measured is in the file header)
     techIcons.ts                   — Technology logo paths + brand colours (Simple Icons, CC0), keyed by the
                                       skill names in About.tsx; add a skill there and an entry here together
   hooks/
@@ -58,7 +60,12 @@ src/
   components/
     Header.tsx                     — Classic fixed nav bar; section links ("/#games" etc., from data/navSections.ts)
                                       with an active-section highlight on "/"; receives dark + onToggle
-    Hero.tsx                       — Classic full-screen hero: day/night desk illustration cross-fading on `dark`
+    Hero.tsx                       — Classic full-screen hero: copy + buttons over <HeroScene>
+    HeroScene.tsx                  — The hero background: day/night illustration (cross-fading on `dark`) plus an
+                                      animated SVG in the picture's own 1672x941 pixel space: twinkling stars (night),
+                                      lamp glow, cat torso "breathing" (clipped duplicate of the picture scaled ~2%).
+                                      All layers share one cover-fit box so overlays stay aligned; CSS in index.css;
+                                      reduced-motion disables it, and it pauses while scrolled off screen
     Projects.tsx                   — Composes the three project chapters: DemoSites, Games, Tools
     DemoSites.tsx / Games.tsx / Tools.tsx — Chapters 01-03; each renders one `category` from data/projects.ts
                                       (tools show a 3-dot `level` meter; advanced tools are featured)
