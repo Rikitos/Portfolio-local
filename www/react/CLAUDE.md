@@ -73,7 +73,7 @@ src/
     LanguageSwitch.tsx             — Classic PL/EN text toggle
     house-pabisz/                  — Everything for the House Pabisz design (see below)
   pages/
-    Home.tsx                       — Landing page; renders classic Hero+Projects or HousePabiszHome
+    Home.tsx                       — Landing page; renders classic Hero+Projects+About+Contact or HousePabiszHome
                                       depending on `design`; exports the `HomeDesign` type
     CalculatorPage.tsx             — Classic calculator; logic from calculator/useCalculator
     TicTacToePage.tsx              — Classic tic-tac-toe; logic from tic-tac-toe/useTicTacToe
@@ -139,7 +139,7 @@ A full alternate visual design (heraldry / medieval-parchment), switchable live 
 
 **Global state (`App.tsx`):**
 - `dark: boolean` — light/dark, independent of which design is active, threaded into both classic and House Pabisz pages.
-- `design: 'house-pabisz' | 'current'` (`HomeDesign` type, exported from `pages/Home.tsx`) — the design switch. Defaults to `'house-pabisz'`.
+- `design: 'house-pabisz' | 'current'` (`HomeDesign` type, exported from `pages/Home.tsx`) — the design switch. Defaults to `'current'` (classic); House Pabisz is opt-in via the classic header's "House Pabisz" link, and the choice is not persisted (a reload returns to classic).
 - `showAppChrome = !(design === 'house-pabisz' && THEMED_ROUTES.includes(pathname))` — hides the classic `Header`/`Footer` only when House Pabisz is active on a themed route, since those pages render their own header/footer. `THEMED_ROUTES` (`src/data/themedRoutes.ts`) is the single list both `App.tsx` and the classic `Header`'s "House Pabisz" link read from.
 
 **Adding a new themed page** — the established low-diff pattern:

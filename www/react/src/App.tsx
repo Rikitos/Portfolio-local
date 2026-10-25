@@ -21,7 +21,10 @@ import type { HomeDesign } from './pages/Home'
 
 export default function App() {
   const [dark, setDark] = useState(false)
-  const [design, setDesign] = useState<HomeDesign>('house-pabisz')
+  // the classic design is the default; visitors switch to House Pabisz from the
+  // header link, and back via its "Classic view" button (not persisted, so a
+  // reload returns to classic)
+  const [design, setDesign] = useState<HomeDesign>('current')
   const { pathname } = useLocation()
 
   // House Pabisz pages are fully self-contained (own header + footer, same
