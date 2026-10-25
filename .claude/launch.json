@@ -9,6 +9,13 @@
       "autoPort": true
     },
     {
+      "name": "Vite Dev Server",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "www/react", "run", "dev"],
+      "port": 5173,
+      "autoPort": true
+    },
+    {
       "name": "Docker Stack (nginx + WordPress + MySQL)",
       "runtimeExecutable": "docker",
       "runtimeArgs": ["compose", "up"],

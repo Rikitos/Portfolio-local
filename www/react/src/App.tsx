@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import ScrollToHash from './components/ScrollToHash'
 import Home from './pages/Home'
 import CalculatorPage from './pages/CalculatorPage'
 import TicTacToePage from './pages/TicTacToePage'
@@ -29,6 +30,7 @@ export default function App() {
 
   return (
     <div className={dark ? 'dark' : ''}>
+      <ScrollToHash />
       <div className="min-h-screen" style={{ backgroundColor: dark ? '#060D1A' : '#d8dce8' }}>
         {showAppChrome && (
           <Header dark={dark} onToggle={() => setDark(!dark)} onShowHousePabisz={() => setDesign('house-pabisz')} />

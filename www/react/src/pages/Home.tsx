@@ -1,5 +1,7 @@
 import Hero from '../components/Hero'
 import Projects from '../components/Projects'
+import About from '../components/About'
+import Contact from '../components/Contact'
 import HousePabiszHome from '../components/house-pabisz/HousePabiszHome'
 
 export type HomeDesign = 'house-pabisz' | 'current'
@@ -20,6 +22,8 @@ export default function Home({ dark, design, onToggleDark, onShowClassic }: Home
     <>
       <Hero dark={dark} />
       <Projects />
+      <About />
+      <Contact />
     </>
   )
 }

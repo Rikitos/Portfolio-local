@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { CATS, useCatGenerator } from './cat-generator/useCatGenerator'
 
 /** STYLES **/
-const font = "font-['Palatino_Linotype',Palatino,serif]"
+const font = 'font-body'
 
 /** COMPONENT **/
 export default function CatGeneratorPage() {
@@ -13,7 +13,7 @@ export default function CatGeneratorPage() {
     // min-h subtracts the fixed header height (64px) so the page fills the remaining viewport
     <main className="flex flex-col items-center justify-center min-h-[calc(100vh-64px)] px-5 py-10 bg-slate-200 dark:bg-navy-700 transition-colors duration-300">
 
-      <h1 className={`${font} font-normal text-[1.8rem] sm:text-[2.2rem] tracking-[0.1em] text-[#1a2035] dark:text-[#A8B8C8] mb-2`}>
+      <h1 className={`font-display font-normal text-[2.4rem] sm:text-[3rem] tracking-tight text-[#1a2035] dark:text-[#A8B8C8] mb-2`}>
         {t('games.catGenerator.title')}
       </h1>
 

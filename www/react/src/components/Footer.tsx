@@ -2,9 +2,10 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import logo from '../assets/img/logo.svg'
+import { CONTACT_EMAIL, CONTACT_MAILTO, GITHUB_URL, LINKEDIN_URL } from '../data/contact'
 
 /** DATA **/
-const font = "font-['Palatino_Linotype',Palatino,serif]"
+const font = 'font-body'
 
 const projects = [
   { label: 'Calculator', href: '/calculator/' },
@@ -16,9 +17,9 @@ const projects = [
 ]
 
 const contact = [
-  { label: 'krzysiek.pabisz@email.com', href: 'mailto:krzysiek.pabisz@email.com' },
-  { label: 'GitHub', href: 'https://github.com/Rikitos', external: true },
-  { label: 'LinkedIn', href: 'https://linkedin.com/', external: true },
+  { label: CONTACT_EMAIL, href: CONTACT_MAILTO },
+  { label: 'GitHub', href: GITHUB_URL, external: true },
+  { label: 'LinkedIn', href: LINKEDIN_URL, external: true },
 ]
 
 /** SUBCOMPONENTS **/
@@ -61,7 +62,7 @@ export default function Footer() {
           <div className="flex flex-col items-center min-[800px]:items-start gap-3 shrink-0">
             <Link to="/" className="flex items-center gap-3 no-underline">
               <img src={logo} alt="KP logo" className="h-8 w-auto" />
-              <span className={`${font} text-[0.95rem] tracking-[0.1em] text-[#1a2035] dark:text-[#A8B8C8]`}>
+              <span className="font-display text-[1.3rem] tracking-[0.03em] text-[#1a2035] dark:text-[#A8B8C8]">
                 Krzysztof Pabisz
               </span>
             </Link>

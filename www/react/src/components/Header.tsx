@@ -1,10 +1,12 @@
 /** IMPORTS **/
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import logo from '../assets/img/logo.svg'
 import LanguageSwitch from './LanguageSwitch'
 import { THEMED_ROUTES } from '../data/themedRoutes'
+import { NAV_SECTIONS, NAV_SECTION_IDS } from '../data/navSections'
+import { useActiveSection } from '../hooks/useActiveSection'
 
 /** TYPES **/
 interface HeaderProps {
@@ -14,42 +16,51 @@ interface HeaderProps {
 }
 
 /** DATA **/
-const projects = [
-  { label: 'Calculator', href: '/calculator', external: false },
-  { label: 'Tic Tac Toe', href: '/tic-tac-toe', external: false },
-  { label: 'Cat Generator', href: '/cat-generator', external: false },
-  { label: 'Room Designer', href: '/room-designer', external: false },
-  { label: 'Discord Clone', href: '/discord-clone', external: false },
-  { label: '2048', href: '/2048', external: false },
-]
-
-const font = "font-['Palatino_Linotype',Palatino,serif]"
+const font = 'font-body'
 
 /** COMPONENT **/
 export default function Header({ dark, onToggle, onShowHousePabisz }: HeaderProps) {
   const { t } = useTranslation()
-  const [dropdownOpen, setDropdownOpen] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [atTop, setAtTop] = useState(true)
   const { pathname } = useLocation()
+
+  // track whether the page is scrolled to the very top (24px of slack so a tiny
+  // scroll doesn't flash the solid bar); passive listener, read once on mount
+  useEffect(() => {
+    const onScroll = () => setAtTop(window.scrollY < 24)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+  // the section links point at "/#id" so they work from any page; the scroll
+  // itself is done by ScrollToHash. The highlight only makes sense on the home
+  // page, where those sections exist.
+  const activeSection = useActiveSection(NAV_SECTION_IDS, pathname === '/')
   // switch the current page's theme in place if it has a House Pabisz
   // version (e.g. /calculator); otherwise there's nothing themed to show
   // here, so fall back to sending the visitor to the House Pabisz homepage
   const housePabiszTarget = THEMED_ROUTES.includes(pathname) ? pathname : '/'
 
-  const text      = dark ? 'text-[#A8B8C8]' : 'text-[#1a2035]'
+  // On the home page, at the top of the page, the bar goes transparent so it
+  // blends into the hero illustration; it is solid on every other page, after
+  // any scroll, and whenever the mobile menu is open (that menu needs a backdrop).
+  // Over the (always dark) hero the links switch to light text in both themes.
+  const overHero = pathname === '/' && atTop && !mobileOpen
+
+  const text      = overHero ? 'text-[#e4e8f0]' : dark ? 'text-[#A8B8C8]' : 'text-[#1a2035]'
   const textHover = 'hover:text-[#C9A84C]'
-  const hdrBorder = dark ? 'border-[rgba(201,168,76,0.3)]' : 'border-[rgba(201,168,76,0.25)]'
-  const ddBg      = dark ? 'border border-[rgba(201,168,76,0.2)]' : 'border-2 border-[rgba(201,168,76,0.5)]'
-  const ddItem    = dark
-    ? `hover:text-[#C9A84C] hover:bg-[rgba(201,168,76,0.06)] border-b border-[rgba(201,168,76,0.2)]`
-    : `hover:text-[#8B6810] hover:bg-[rgba(201,168,76,0.1)] border-b-2 border-[rgba(201,168,76,0.35)]`
-  const hamBg     = dark ? 'bg-[#A8B8C8]' : 'bg-[#1a2035]'
-  const mobLabel  = dark ? 'text-[#8899AA]' : 'text-[#5a6480]'
-  const hdrBgStyle = { backgroundColor: dark ? '#060D1A' : '#e4e8f0' }
-  const ddBgStyle  = { backgroundColor: dark ? '#0A1628' : '#cdd2e0' }
+  const activeText = overHero || dark ? 'text-[#C9A84C]' : 'text-[#8B6810]'
+  const hdrBorder = overHero
+    ? 'border-transparent'
+    : dark ? 'border-[rgba(201,168,76,0.3)]' : 'border-[rgba(201,168,76,0.25)]'
+  const hamBg     = overHero ? 'bg-[#e4e8f0]' : dark ? 'bg-[#A8B8C8]' : 'bg-[#1a2035]'
+  const hdrBgStyle = {
+    backgroundColor: overHero ? 'rgba(6,13,26,0)' : dark ? '#060D1A' : '#e4e8f0',
+  }
 
   return (
-    <header className={`fixed top-0 left-0 w-full z-50 border-b ${hdrBorder}`}
+    <header className={`fixed top-0 left-0 w-full z-50 border-b transition-[background-color,border-color] duration-300 ${hdrBorder}`}
       style={hdrBgStyle}>
       <div className="flex items-center max-w-[1200px] mx-auto px-5 py-3 lg:px-10 lg:py-4">
 
@@ -61,36 +72,27 @@ export default function Header({ dark, onToggle, onShowHousePabisz }: HeaderProp
               {t('header.brandLine1')}
             </span>
             <span className="block w-full h-px bg-[rgba(201,168,76,0.5)]" />
-            <span className={`text-[0.8rem] md:text-[0.95rem] tracking-[0.1em] leading-none ${font} ${text}`}>
+            <span className={`text-[1rem] md:text-[1.2rem] tracking-[0.04em] leading-none font-display ${text}`}>
               {t('header.brandName')}
             </span>
           </div>
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden lg:flex items-center ml-auto mr-12">
-          <div
-            className="relative"
-            onMouseEnter={() => setDropdownOpen(true)}
-            onMouseLeave={() => setDropdownOpen(false)}
-          >
-            <button className={`flex items-center gap-1.5 ${font} text-[0.85rem] tracking-[0.12em] ${text} ${textHover} transition-colors bg-transparent border-0 px-3 py-1.5 cursor-pointer`}>
-              {t('header.projectsLabel')}
-              <span className={`text-[0.6rem] transition-transform duration-200 inline-block ${dropdownOpen ? 'rotate-180' : ''}`}>▼</span>
-            </button>
-
-            {dropdownOpen && (
-              <div className={`absolute top-full left-0 min-w-[200px] ${ddBg} rounded overflow-hidden shadow-lg`}
-                style={ddBgStyle}>
-                {projects.map((p) => {
-                  const cls = `block px-4 py-2.5 ${font} text-[0.85rem] tracking-[0.1em] ${text} ${ddItem} last:border-0 no-underline transition-colors`
-                  return p.external
-                    ? <a key={p.href} href={p.href} target="_blank" rel="noopener noreferrer" className={cls}>{p.label}</a>
-                    : <Link key={p.href} to={p.href} onClick={() => setDropdownOpen(false)} className={cls}>{p.label}</Link>
-                })}
-              </div>
-            )}
-          </div>
+        {/* Desktop nav: one link per homepage chapter */}
+        <nav className="hidden lg:flex items-center gap-1 ml-auto mr-6" aria-label={t('header.sections')}>
+          {NAV_SECTIONS.map((s) => {
+            const isActive = activeSection === s.id
+            return (
+              <Link
+                key={s.id}
+                to={`/#${s.id}`}
+                aria-current={isActive ? 'location' : undefined}
+                className={`${font} text-[0.85rem] tracking-[0.1em] no-underline px-3 py-1.5 border-b border-transparent transition-colors ${textHover} ${isActive ? `${activeText} !border-[rgba(201,168,76,0.6)]` : text}`}
+              >
+                {t(s.labelKey)}
+              </Link>
+            )
+          })}
         </nav>
 
         {/* House Pabisz + language switch */}
@@ -132,6 +134,7 @@ export default function Header({ dark, onToggle, onShowHousePabisz }: HeaderProp
           className="flex lg:hidden flex-col gap-[5px] w-6 bg-transparent border-0 p-0 cursor-pointer shrink-0"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label={t('header.toggleMenu')}
+          aria-expanded={mobileOpen}
         >
           <span className={`block h-px w-full ${hamBg}`} />
           <span className={`block h-px w-full ${hamBg}`} />
@@ -142,15 +145,20 @@ export default function Header({ dark, onToggle, onShowHousePabisz }: HeaderProp
 
       {/* Mobile nav */}
       {mobileOpen && (
-        <nav className="flex lg:hidden flex-col border-t border-[rgba(201,168,76,0.15)] py-3">
-          <span className={`${font} text-[0.65rem] tracking-[0.2em] uppercase ${mobLabel} px-5 py-2 opacity-70`}>
-            {t('header.projectsLabel')}
-          </span>
-          {projects.map((p) => {
-            const cls = `${font} text-[0.9rem] tracking-[0.1em] ${text} ${textHover} px-5 py-3 no-underline border-b border-[rgba(201,168,76,0.08)] last:border-0 transition-colors`
-            return p.external
-              ? <a key={p.href} href={p.href} target="_blank" rel="noopener noreferrer" className={cls}>{p.label}</a>
-              : <Link key={p.href} to={p.href} onClick={() => setMobileOpen(false)} className={cls}>{p.label}</Link>
+        <nav className="flex lg:hidden flex-col border-t border-[rgba(201,168,76,0.15)] py-3" aria-label={t('header.sections')}>
+          {NAV_SECTIONS.map((s) => {
+            const isActive = activeSection === s.id
+            return (
+              <Link
+                key={s.id}
+                to={`/#${s.id}`}
+                onClick={() => setMobileOpen(false)}
+                aria-current={isActive ? 'location' : undefined}
+                className={`${font} text-[0.9rem] tracking-[0.1em] ${isActive ? activeText : text} ${textHover} px-5 py-3 no-underline border-b border-[rgba(201,168,76,0.08)] transition-colors`}
+              >
+                {t(s.labelKey)}
+              </Link>
+            )
           })}
           <div className="flex items-center justify-between px-5 pt-4 mt-2 border-t border-[rgba(201,168,76,0.15)]">
             <Link

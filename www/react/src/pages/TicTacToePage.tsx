@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { useTicTacToe } from './tic-tac-toe/useTicTacToe'
 
 /** STYLES **/
-const font = "font-['Palatino_Linotype',Palatino,serif]"
+const font = 'font-body'
 
 /** COMPONENT **/
 export default function TicTacToePage() {
@@ -20,7 +20,7 @@ export default function TicTacToePage() {
     // min-h subtracts the fixed header height (64px) so the game fills the remaining viewport
     <main className="flex flex-col items-center justify-center min-h-[calc(100vh-64px)] px-4 py-12 bg-slate-200 dark:bg-navy-800 transition-colors duration-300">
 
-      <h1 className={`${font} font-normal text-[1.8rem] sm:text-[2.4rem] text-[#1a2035] dark:text-[#c0c8d8] mb-5`}>
+      <h1 className={`font-display font-normal text-[2.4rem] sm:text-[3rem] text-[#1a2035] dark:text-[#c0c8d8] mb-5`}>
         {t('games.ticTacToe.title')}
       </h1>
 

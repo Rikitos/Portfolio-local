@@ -1,7 +1,7 @@
 import { useCalculator } from './calculator/useCalculator'
 
 /** STYLES **/
-const font = "font-['Palatino_Linotype',Palatino,serif]"
+const font = 'font-body'
 
 /** COMPONENT **/
 export default function CalculatorPage() {
@@ -66,7 +66,7 @@ function Btn({ label, onClick, className = '', span2 = false, equals = false }: 
   span2?: boolean   // makes the button span 2 grid columns (used for "0")
   equals?: boolean  // applies the "=" accent styling
 }) {
-  const font = "font-['Palatino_Linotype',Palatino,serif]"
+  const font = 'font-body'
   const base = `${font} text-[1.1rem] sm:text-[1.2rem] py-[18px] sm:py-5 cursor-pointer border border-[rgba(201,168,76,0.15)] transition-colors duration-100 text-[#5a6480] dark:text-[#A8B8C8]`
   const bg = equals
     ? 'bg-[#bec4d0] dark:bg-navy-700 hover:bg-[#b4bac8] dark:hover:bg-navy-600 text-[#C9A84C]'

@@ -26,7 +26,7 @@ import { useDesigner } from './room-designer/useDesigner'
 import { FURNITURE_CATALOGUE } from './room-designer/furniture-data'
 import type { FurnitureDef } from './room-designer/types'
 
-const font = "font-['Palatino_Linotype',Palatino,serif]"
+const font = 'font-body'
 const H    = 'h-8'
 
 function TBtn({ label, active = false, disabled = false, title, className = '', onClick }: {

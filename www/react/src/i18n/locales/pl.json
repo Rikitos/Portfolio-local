@@ -7,7 +7,15 @@
     "brandLine1": "Portfolio",
     "brandName": "Krzysztof Pabisz",
     "housePabiszLink": "House Pabisz",
+    "sections": "Sekcje strony",
     "lang": "Język"
+  },
+  "nav": {
+    "demoSites": "Strony demo",
+    "games": "Gry",
+    "tools": "Narzędzia",
+    "about": "O mnie",
+    "contact": "Kontakt"
   },
   "footer": {
     "role": "Twórca stron internetowych",
@@ -17,18 +25,69 @@
   },
   "hero": {
     "role": "Web Developer",
-    "cta": "Zobacz projekty"
+    "headline": "Tworzę szybkie, przejrzyste strony internetowe.",
+    "subtitle": "Pracuję w Astro, React, TypeScript i Tailwind. W wolnym czasie robię też małe gry.",
+    "cta": "Zobacz projekty",
+    "ctaSecondary": "Napisz do mnie",
+    "imageAlt": "Biurko o zachodzie słońca z laptopem, padem do gier i śpiącym kotem"
+  },
+  "demoSites": {
+    "eyebrow": "Wyróżnione strony",
+    "intro": "Strony dla małych firm",
+    "badge": "Demo",
+    "cta": "Zobacz demo"
+  },
+  "about": {
+    "eyebrow": "O mnie",
+    "title": "Kilka słów o mnie",
+    "paragraph1": "Skupiam się na tworzeniu nowoczesnych stron, aplikacji webowych, gier. Tworze demo gier, bo lubię zamieniać nowe technologie, pomysły i problemy w kreatywne rozwiązania",
+    "paragraph2": "W wolnej chwili gram w gry, szukam nowych pomysłów albo pracuję nad kolejnym projektem pobocznym.",
+    "factLocation": "Polska",
+    "factOpen": "Chętnie podejmę nowe projekty",
+    "factGames": "Gry to moja pasja",
+    "imageAlt": "Laptop z kodem, tablet i telefon na biurku",
+    "mottoBuild": "Buduj",
+    "mottoPlay": "Graj",
+    "mottoDebug": "Debuguj",
+    "mottoRepeat": "Powtórz",
+    "skillsHeading": "Umiejętności i technologie",
+    "skillsText": "Pracuję z nowoczesnymi technologiami, tworząc strony, gry i niestandardowe narzędzia. Cały czas się uczę i szukam nowych sposobów na poprawienie doświadczenia użytkownika i klienta."
+  },
+  "contact": {
+    "eyebrow": "Kontakt",
+    "title": "Skontaktuj się",
+    "text": "Szukam pracy jako web developer i chętnie przyjmę zlecenia. Najszybciej odpowiem na maila.",
+    "cta": "Napisz maila",
+    "emailLabel": "E-mail",
+    "otherWays": "Inne sposoby kontaktu",
+    "scribble": "Pogadajmy o Twoich pomysłach"
+  },
+  "toolsSection": {
+    "eyebrow": "Proste projekty",
+    "intro": "Proste aplikacje i narzędzia",
+    "cta": "Otwórz",
+    "levels": {
+      "simple": "Prosty",
+      "intermediate": "Średni",
+      "advanced": "Zaawansowany"
+    }
+  },
+  "gamesSection": {
+    "eyebrow": "Gry",
+    "intro": "Do zagrania w przeglądarce",
+    "badge": "Do zagrania",
+    "cta": "Zagraj teraz"
   },
   "projects": {
     "kosmetologia": { "title": "Salon Kosmetyczny", "description": "Strona marketingowa dla salonu kosmetycznego, dostępna w wersji polskiej i angielskiej" },
     "kawiarnia": { "title": "Kawiarnia", "description": "Prosta strona wizytówkowa dla kawiarni, z szybkim przełączaniem języka - domyślnie polski, dostępny też angielski" },
     "epochronos": { "description": "Gra historyczna z osią czasu - przeciągaj i układaj karty wydarzeń od najstarszych do najnowszych, w kategoriach, epokach i trybie na czas." },
-    "haymakers": { "description": "Demo gry bijatyki - wybierz wojownika i stań do pojedynku w grywalnym prototypie w przeglądarce." },
+    "haymakers": { "description": "Bijatyka zbudowana w Godot. Wybierz wojownika i stań do pojedynku w lekkiej wersji demo, w którą zagrasz w przeglądarce." },
     "calculator": { "description": "Przejrzysty kalkulator z podstawowymi działaniami: dodawanie, odejmowanie, mnożenie, dzielenie i procenty." },
-    "room-designer": { "description": "Interaktywny planer pomieszczeń - rysuj pokoje na skalowanej siatce, rozmieszczaj meble, eksportuj do obrazu." },
-    "cat-generator": { "description": "Pobiera losowe zdjęcie kota z API i nakłada na nie własny podpis." },
-    "discord-clone": { "description": "Interfejs czatu inspirowany Discordem - z serwerami, kanałami i oknem wiadomości." },
-    "tic-tac-toe": { "description": "Klasyczna gra dla dwóch graczy - liczy tury, wykrywa wygraną i remis, reset jednym kliknięciem." },
+    "room-designer": { "description": "Interaktywny planer pomieszczeń - rysuj pokoje na papierze w kratke, rozmieszczaj meble, zapisz szkic." },
+    "cat-generator": { "description": "Pobiera losowe zdjęcie kota z API." },
+    "discord-clone": { "description": "Demo interfejs czatu inspirowany Discordem - z serwerami, kanałami i oknem wiadomości." },
+    "tic-tac-toe": { "description": "Klasyczna gra dla dwóch graczy - liczy tury, wykrywa wygraną i remis." },
     "game-2048": { "description": "Łamigłówka z przesuwanymi kaflami - łącz takie same liczby, by dojść do 2048." }
   },
   "games": {

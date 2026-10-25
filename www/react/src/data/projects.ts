@@ -19,8 +19,17 @@ import roomDesignerImg from '../assets/img/project-room-designer.png'
 import discordImg from '../assets/img/project-discord.png'
 import game2048Img from '../assets/img/project-2048.png'
 
+/** Which homepage section a project belongs to (classic design): hiring-focused demo
+ * websites lead, then games, then small tools. */
+export type ProjectCategory = 'demo' | 'game' | 'tool'
+
+/** Rough build complexity, shown on the tools section (tools only). */
+export type ProjectLevel = 'simple' | 'intermediate' | 'advanced'
+
 export interface Project {
   key: string
+  category: ProjectCategory
+  level?: ProjectLevel
   title: string
   tags: string[]
   href: string
@@ -37,8 +46,9 @@ export interface Project {
 export const projects: Project[] = [
   {
     key: 'kosmetologia',
+    category: 'demo',
     title: 'Salon Kosmetyczny',
-    tags: ['Astro', 'Tailwind', 'Typescript'],
+    tags: ['Astro', 'Tailwind', 'TypeScript'],
     href: 'https://kosmetologia.krzysztofpabisz.pl',
     img: kosmetologiaImg,
     url: 'kosmetologia.krzysztofpabisz.pl',
@@ -47,8 +57,9 @@ export const projects: Project[] = [
   },
   {
     key: 'kawiarnia',
+    category: 'demo',
     title: 'Kawiarnia',
-    tags: ['Astro', 'Tailwind', 'Typescript'],
+    tags: ['Astro', 'Tailwind', 'TypeScript'],
     href: 'https://kawiarnia.krzysztofpabisz.pl',
     img: kawiarniaImg,
     url: 'kawiarnia.krzysztofpabisz.pl',
@@ -57,6 +68,7 @@ export const projects: Project[] = [
   },
   {
     key: 'epochronos',
+    category: 'game',
     title: 'Epochronos',
     tags: ['React', 'JavaScript', 'Vite'],
     href: 'https://epochronos.krzysztofpabisz.pl',
@@ -67,8 +79,9 @@ export const projects: Project[] = [
   },
   {
     key: 'haymakers',
+    category: 'game',
     title: 'Haymakers',
-    tags: ['Game', 'Demo'],
+    tags: ['Godot', 'Fighting game', 'Web demo'],
     href: 'https://haymakers.krzysztofpabisz.pl',
     img: haymakersImg,
     url: 'haymakers.krzysztofpabisz.pl',
@@ -77,6 +90,8 @@ export const projects: Project[] = [
   },
   {
     key: 'calculator',
+    category: 'tool',
+    level: 'simple',
     title: 'Calculator',
     tags: ['React', 'TypeScript', 'Tailwind'],
     href: '/calculator',
@@ -86,6 +101,8 @@ export const projects: Project[] = [
   },
   {
     key: 'room-designer',
+    category: 'tool',
+    level: 'advanced',
     title: 'Room Designer',
     tags: ['HTML', 'Canvas', 'JavaScript'],
     href: '/room-designer',
@@ -96,6 +113,8 @@ export const projects: Project[] = [
   },
   {
     key: 'cat-generator',
+    category: 'tool',
+    level: 'simple',
     title: 'Cat Meme Generator',
     tags: ['React', 'TypeScript', 'Tailwind'],
     href: '/cat-generator',
@@ -106,6 +125,8 @@ export const projects: Project[] = [
   },
   {
     key: 'discord-clone',
+    category: 'tool',
+    level: 'advanced',
     title: 'Discord Clone',
     tags: ['React', 'TypeScript', 'Tailwind'],
     href: '/discord-clone',
@@ -116,6 +137,8 @@ export const projects: Project[] = [
   },
   {
     key: 'tic-tac-toe',
+    category: 'tool',
+    level: 'simple',
     title: 'Tic Tac Toe',
     tags: ['React', 'TypeScript', 'Tailwind'],
     href: '/tic-tac-toe',
@@ -126,6 +149,8 @@ export const projects: Project[] = [
   },
   {
     key: 'game-2048',
+    category: 'tool',
+    level: 'intermediate',
     title: '2048',
     tags: ['React', 'TypeScript', 'Tailwind'],
     href: '/2048',
@@ -138,3 +163,7 @@ export const projects: Project[] = [
 
 export const duchies = projects.filter((p) => p.external)
 export const baronies = projects.filter((p) => !p.external)
+export const demoSites = projects.filter((p) => p.category === 'demo')
+export const otherProjects = projects.filter((p) => p.category !== 'demo')
+export const games = projects.filter((p) => p.category === 'game')
+export const tools = projects.filter((p) => p.category === 'tool')

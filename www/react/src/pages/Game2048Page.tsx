@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useGame2048, SIZE, MAX_CHARGE, TILE_COLORS, HIGH_TILE, TILE_PCT, cellPct, fontSizeFor } from './2048/useGame2048'
 
 /** STYLES **/
-const font = "font-['Palatino_Linotype',Palatino,serif]"
+const font = 'font-body'
 
 /** BUTTON SUBCOMPONENTS **/
 // Both buttons manage their own hover state in JS rather than a Tailwind `hover:` class,
@@ -158,7 +158,7 @@ export default function Game2048Page({ dark }: Game2048PageProps) {
       <div className="w-full max-w-[420px]">
 
         <div className="flex items-center justify-between mb-4">
-          <h1 className={`${font} font-normal text-[2rem] sm:text-[2.6rem]`} style={{ color: text }}>{t('games.game2048.title')}</h1>
+          <h1 className={`font-display font-normal text-[2.6rem] sm:text-[3.2rem]`} style={{ color: text }}>{t('games.game2048.title')}</h1>
 
           <div className="flex gap-2">
             <div className="rounded px-4 py-2 text-center min-w-[68px]" style={{ backgroundColor: scoreBg }}>

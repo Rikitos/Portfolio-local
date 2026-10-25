@@ -7,7 +7,15 @@
     "brandLine1": "Portfolio",
     "brandName": "Krzysztof Pabisz",
     "housePabiszLink": "House Pabisz",
+    "sections": "Page sections",
     "lang": "Language"
+  },
+  "nav": {
+    "demoSites": "Demo sites",
+    "games": "Games",
+    "tools": "Tools",
+    "about": "About",
+    "contact": "Contact"
   },
   "footer": {
     "role": "Web developer",
@@ -17,17 +25,68 @@
   },
   "hero": {
     "role": "Web Developer",
-    "cta": "View Projects"
+    "headline": "I build fast, clean websites.",
+    "subtitle": "I work with Astro, React, TypeScript and Tailwind. In my free time I also make small games.",
+    "cta": "View Projects",
+    "ctaSecondary": "Get in touch",
+    "imageAlt": "A desk at sunset with a laptop, a game controller and a sleeping cat"
+  },
+  "demoSites": {
+    "eyebrow": "Featured websites",
+    "intro": "Small-business websites",
+    "badge": "Demo",
+    "cta": "Visit demo"
+  },
+  "about": {
+    "eyebrow": "About",
+    "title": "A bit about me",
+    "paragraph1": "I'm a developer based in Poland, I build fast, clean websites and web apps, mostly with Astro and React. I develop demo games because I enjoy turning ideas and problems into creative experiences that are both useful and fun.",
+    "paragraph2": "When I'm not coding, you'll probably find me playing games, exploring new ideas or working on the next side project.",
+    "factLocation": "Based in Poland",
+    "factOpen": "Open to new projects",
+    "factGames": "Passionate about games",
+    "imageAlt": "A laptop showing code, a tablet and a phone on a desk",
+    "mottoBuild": "Build",
+    "mottoPlay": "Play",
+    "mottoDebug": "Debug",
+    "mottoRepeat": "Repeat",
+    "skillsHeading": "Skills and technologies",
+    "skillsText": "I work with modern technologies to build websites, games and custom tools. I'm always learning and exploring new ways to create better digital experiences."
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Get in touch",
+    "text": "I'm looking for a web developer role and open to freelance projects. Email is the quickest way to reach me.",
+    "cta": "Email me",
+    "emailLabel": "Email",
+    "otherWays": "Other ways to reach me",
+    "scribble": "Let's talk about your ideas"
+  },
+  "toolsSection": {
+    "eyebrow": "Small projects",
+    "intro": "Simple web apps and tools",
+    "cta": "Open",
+    "levels": {
+      "simple": "Simple",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    }
+  },
+  "gamesSection": {
+    "eyebrow": "Games",
+    "intro": "Playable in your browser",
+    "badge": "Playable",
+    "cta": "Play now"
   },
   "projects": {
-    "kosmetologia": { "title": "Beauty Parlour", "description": "Page marketing for Beauty Parlor, supports polish and english version" },
-    "kawiarnia": { "title": "Cafeteria", "description": "A Simple landing page for Cafeteria shop, supports quick language switch with English, Polish being the default one" },
+    "kosmetologia": { "title": "Beauty Parlour", "description": "A marketing site for a beauty salon, available in Polish and English." },
+    "kawiarnia": { "title": "Cafeteria", "description": "A simple landing page for a cafe with a quick language switch. Polish is the default and English is available." },
     "epochronos": { "description": "A historical timeline game - drag and sort event cards from oldest to newest across categories, eras, and timed challenges." },
-    "haymakers": { "description": "A fighter game demo - pick your warrior and duel it out in a playable browser light prototype." },
+    "haymakers": { "description": "A fighting game built in Godot. Pick a warrior and duel it out in a light demo you can play in the browser." },
     "calculator": { "description": "A clean calculator covering the basics: add, subtract, multiply, divide, and percentage." },
     "room-designer": { "description": "Interactive floor planner - draw rooms on a scaled grid, place furniture, export to image." },
-    "cat-generator": { "description": "Fetches a random cat image from an API and overlays a customisable caption." },
-    "discord-clone": { "description": "A Discord-inspired chat UI with servers, channels, and a message pane." },
+    "cat-generator": { "description": "Fetches a random cat image from an API." },
+    "discord-clone": { "description": "A Discord-inspired demo chat UI with servers, channels, and a message panel." },
     "tic-tac-toe": { "description": "Classic two-player game - tracks turns, detects wins and draws, resets in one click." },
     "game-2048": { "description": "The sliding tile puzzle - merge matching numbers to reach 2048." }
   },

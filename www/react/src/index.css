@@ -16,12 +16,41 @@
   --color-slate-300: #cdd2e0;
   --color-charcoal-900: #1a2035;
   --color-charcoal-600: #5a6480;
+
+  /* Classic design type pair, self-hosted via @fontsource (imported in main.tsx).
+     Not --font-sans on purpose: that would restyle every page that relies on the
+     default sans (House Pabisz has its own fonts). Use font-display for headings
+     and font-body for everything else. Instrument Serif has a single weight (400),
+     so headings must stay font-normal. */
+  --font-display: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --font-body: "DM Sans Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* handwriting, for the small scribbled notes only (font-hand) */
+  --font-hand: "Caveat", "Segoe Script", "Bradley Hand", cursive;
 }
 
 /** GLOBAL **/
 *, *::before, *::after { box-sizing: border-box; }
 body { margin: 0; }
-html { scroll-behavior: smooth; }
+/* Smooth anchor scrolling; scroll-padding-top keeps a section's top edge just
+   below the fixed classic header (about 72px) when jumping to an anchor. */
+html { scroll-behavior: smooth; scroll-padding-top: 4.5rem; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/** SCROLL REVEAL (see hooks/useReveal.ts) **/
+@keyframes reveal-in {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: none; }
+}
+.reveal { opacity: 0; }
+.reveal.is-visible {
+  opacity: 1;
+  animation: reveal-in 0.7s ease-out backwards;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; }
+  .reveal.is-visible { animation: none; }
+}
 
 /** Discord Clone — typing indicator bounce animation **/
 @keyframes typingBounce {

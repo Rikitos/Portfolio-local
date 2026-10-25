@@ -21,6 +21,12 @@ React 19 · TypeScript 6 · Tailwind CSS v4 · Vite 8 · React Router v7 · reac
 - Configured entirely in `src/index.css` via `@import "tailwindcss"` and `@theme { … }` — no `tailwind.config.*` file.
 - Dark mode is toggled by adding/removing the `.dark` class on the root div in `App.tsx` (`dark ? 'dark' : ''`). The custom variant `@custom-variant dark (&:where(.dark, .dark *))` makes `dark:` utility classes work throughout the codebase — use them freely for standard UI theming. For the canvas renderer (Room Designer) where colors are passed as strings to a 2D drawing API, use inline `style` props or the `dark` boolean prop instead.
 
+**Typography (classic design):**
+- Two self-hosted fonts (`@fontsource/instrument-serif`, `@fontsource-variable/dm-sans`), imported in `main.tsx`; no Google Fonts requests. Tokens live in `src/index.css` `@theme`: `font-display` (Instrument Serif) for headings and the brand name, `font-body` (DM Sans) for everything else.
+- Deliberately not `--font-sans`, so pages that rely on the default sans and the House Pabisz theme (its own fonts) are unaffected.
+- Instrument Serif only has weight 400 (plus italic), so headings stay `font-normal`, and it runs small, so headings are sized a step up from the old Palatino ones.
+- Classic components declare `const font = 'font-body'` and put `font-display` directly on `h1`-`h3`. The Room Designer canvas labels still use Palatino (canvas strings, not Tailwind).
+
 **i18n (react-i18next):**
 - Setup lives in `src/i18n/index.ts`: `LanguageDetector` + `initReactI18next`, `fallbackLng: 'en'`, `supportedLngs: ['en', 'pl']`.
 - Detection order is `['localStorage', 'htmlTag']` — deliberately excludes `navigator`, so a first-time visitor always lands in English regardless of browser locale; a saved manual choice (`localStorage`) still wins on return visits.
@@ -39,13 +45,29 @@ src/
     projects.ts                    — Shared project catalogue: `projects[]`, plus `duchies`/`baronies`
                                       (filtered by `external`) — single source of truth for both designs
     themedRoutes.ts                — THEMED_ROUTES: paths that have a House Pabisz variant
+    navSections.ts                 — NAV_SECTIONS: classic homepage chapter ids + nav label keys (page order)
+    contact.ts                     — Email / GitHub / LinkedIn, shared by hero, Contact section and footer
+    techIcons.ts                   — Technology logo paths + brand colours (Simple Icons, CC0), keyed by the
+                                      skill names in About.tsx; add a skill there and an entry here together
+  hooks/
+    useReveal.ts                   — Fade/slide-in on first scroll into view (CSS in index.css; honours reduced motion)
+    useActiveSection.ts            — Which section is under the viewport middle, for the header highlight
   i18n/
     index.ts                       — react-i18next setup (see Stack above)
     locales/en.json, pl.json       — all copy for both designs, one namespace per language
   components/
-    Header.tsx                     — Classic fixed nav bar; receives dark + onToggle
-    Hero.tsx                       — Classic full-screen hero section; receives dark for button variant
-    Projects.tsx                   — Classic project grid (ProjectCard); external projects open in new tab
+    Header.tsx                     — Classic fixed nav bar; section links ("/#games" etc., from data/navSections.ts)
+                                      with an active-section highlight on "/"; receives dark + onToggle
+    Hero.tsx                       — Classic full-screen hero: day/night desk illustration cross-fading on `dark`
+    Projects.tsx                   — Composes the three project chapters: DemoSites, Games, Tools
+    DemoSites.tsx / Games.tsx / Tools.tsx — Chapters 01-03; each renders one `category` from data/projects.ts
+                                      (tools show a 3-dot `level` meter; advanced tools are featured)
+    SectionHeading.tsx             — Ruled "01  LABEL ———  note" heading shared by chapters 01-03
+    About.tsx / Contact.tsx        — Chapters 04-05 (About: quick-fact icons + skill chips with tech logos;
+                                      Contact: GitHub / LinkedIn / email icon tiles)
+    icons.tsx                      — Inline SVG icons: Lucide (ISC) for map-pin/laptop/gamepad/mail,
+                                      Bootstrap Icons (MIT) for GitHub/LinkedIn; licences noted in the file
+    ScrollToHash.tsx               — Mounted once in App; scrolls to the URL hash (or top) after each navigation
     Footer.tsx                     — Classic site footer with project links and contact info
     Button.tsx                     — Reusable button/link; supports 5 visual variants
     LanguageSwitch.tsx             — Classic PL/EN text toggle

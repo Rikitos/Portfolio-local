@@ -3,7 +3,7 @@ interface ButtonProps {
   children: React.ReactNode
   onClick?: () => void
   href?: string
-  variant?: 'primary' | 'primary-light' | 'primary-lightV2' | 'outline' | 'outline-light'
+  variant?: 'primary' | 'primary-light' | 'primary-lightV2' | 'outline' | 'outline-light' | 'glass'
   className?: string
 }
 
@@ -13,6 +13,8 @@ interface ButtonProps {
  *  primary-light — slate bg, dark text, gold border        (light mode)
  *  outline       — transparent bg, silver text, gold border (dark mode)
  *  outline-light — transparent bg, dark text, gold border  (light mode)
+ *  glass         — translucent dark bg + blur, white text   (over photos / illustrations,
+ *                  where a transparent button's text would get lost in the image)
  */
 export default function Button({ children, onClick, href, variant = 'primary', className = '' }: ButtonProps) {
   const base = `rounded border border-[rgba(201,168,76,0.4)] hover:border-[rgba(201,168,76,0.8)] hover:text-[#C9A84C] transition-colors cursor-pointer inline-block no-underline`
@@ -23,6 +25,7 @@ export default function Button({ children, onClick, href, variant = 'primary', c
     'primary-lightV2':  'bg-slate-300 hover:bg-slate-100 text-[#1a2035]',
     'outline':          'bg-transparent text-[#c0c8d8]',
     'outline-light':    'bg-transparent text-[#1a2035]',
+    'glass':            'bg-[rgba(6,13,26,0.55)] hover:bg-[rgba(6,13,26,0.8)] backdrop-blur-sm text-white',
   }
 
   const classes = `${base} ${variants[variant]} ${className}`
